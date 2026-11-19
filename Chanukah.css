@@ -1,36 +1,58 @@
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Raleway:wght@400;500;600;700&family=Signika:wght@500;600;700&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
 
-/* --- Full-bleed Midnight Canvas Overrides for ChabadOne Mini-Site --- */
+/* --- Full-bleed Midnight Canvas Overrides for ChabadOne Templateless Mini-Site --- */
 html,
 body,
-#content,
-#BodyContainer,
+.cco_templatelates_content,
+#co_content_container,
 .body_wrapper,
 .body_wrapper.co_body,
-#co_content_container,
 #co_body_container,
-#cco_body,
-.content.js-content,
-.article-body {
+#BodyContainer {
   background-color: #06132e !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  padding-top: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
   width: 100% !important;
   max-width: 100% !important;
 }
 
 .breadcrumbs,
 .article-header,
-.page-tools-sidebar {
+.page-tools-sidebar,
+.cco_templatelates_content .bh {
   display: none !important;
 }
 
-/* Fallback CSS hide for ChabadOne's default "Back to main site" bar */
-body > div:has(> a[href*="TheChabadCenter.org"]):not(#ch-chanukah),
-body > div:has(> a[href*="thechabadcenter.org"]):not(#ch-chanukah) {
-  display: none !important;
+/* Blend ChabadOne's required bottom footer cleanly into the dark theme */
+#BodyContainer .g960.footer {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 36px 20px 48px !important;
+  background-color: #040d21 !important;
+  border-top: 1px solid rgba(255, 230, 154, 0.14);
+  color: rgba(255, 255, 255, 0.72) !important;
+  font-family: "Raleway", Arial, sans-serif !important;
+  font-size: 13px !important;
+  text-align: center !important;
+}
+
+#BodyContainer .g960.footer .poweredby {
+  margin-bottom: 0 !important;
+}
+
+#BodyContainer .g960.footer .footer-title {
+  color: #ffe69a !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  display: block;
+  margin-bottom: 4px;
+}
+
+#BodyContainer .g960.footer a {
+  color: #ffe69a !important;
+  text-decoration: underline;
 }
 
 /* --- Scoped Design Tokens --- */
@@ -54,7 +76,7 @@ body > div:has(> a[href*="thechabadcenter.org"]):not(#ch-chanukah) {
   color: var(--ch-white);
   font-family: var(--ch-font-sans);
   min-height: 100vh;
-  padding-bottom: 90px;
+  padding-bottom: 84px;
   text-align: left;
   -webkit-font-smoothing: antialiased;
 }
@@ -70,7 +92,7 @@ body > div:has(> a[href*="thechabadcenter.org"]):not(#ch-chanukah) {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(6, 19, 46, 0.92);
+  background: rgba(6, 19, 46, 0.94);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 230, 154, 0.14);
@@ -101,14 +123,6 @@ html body.cco_body #ch-chanukah a.ch-nav-brand,
   white-space: nowrap;
 }
 
-#ch-chanukah .ch-nav-brand-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--ch-gold);
-  display: inline-block;
-}
-
 #ch-chanukah .ch-nav-links {
   display: flex;
   align-items: center;
@@ -117,7 +131,7 @@ html body.cco_body #ch-chanukah a.ch-nav-brand,
 
 html body.cco_body #ch-chanukah .ch-nav-links a,
 #ch-chanukah .ch-nav-links a {
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.88);
   text-decoration: none;
   font-family: var(--ch-font-sans);
   font-size: 14px;
@@ -155,7 +169,8 @@ html body.cco_body #ch-chanukah a.ch-nav-mainsite:hover,
   width: 40px;
   height: 40px;
   border-radius: 8px;
-  font-size: 18px;
+  font-size: 20px;
+  line-height: 1;
   cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -200,7 +215,7 @@ html body.cco_body #ch-chanukah a.ch-nav-mainsite:hover,
   }
 }
 
-/* --- 2. REIMAGINED WINTER CHANUKAH HERO --- */
+/* --- 2. WINTER CHANUKAH HERO --- */
 #ch-chanukah .ch-hero {
   position: relative;
   overflow: hidden;
@@ -210,7 +225,6 @@ html body.cco_body #ch-chanukah a.ch-nav-mainsite:hover,
   border-bottom: 1px solid rgba(255, 230, 154, 0.12);
 }
 
-/* Subtle winter night starfield (from chanukahlivenj.com) */
 #ch-chanukah .ch-hero::before {
   content: "";
   position: absolute;
@@ -226,6 +240,15 @@ html body.cco_body #ch-chanukah a.ch-nav-mainsite:hover,
     radial-gradient(2px 2px at 90% 16%, rgba(250, 255, 224, 0.35) 50%, transparent 51%),
     radial-gradient(1px 1px at 14% 64%, rgba(250, 255, 224, 0.35) 50%, transparent 51%),
     radial-gradient(1.5px 1.5px at 86% 56%, rgba(250, 255, 224, 0.35) 50%, transparent 51%);
+}
+
+#ch-chanukah .ch-hero-bh {
+  position: absolute;
+  top: 14px;
+  right: 22px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  z-index: 2;
 }
 
 #ch-chanukah .ch-hero-inner {
@@ -373,7 +396,6 @@ html body.cco_body #ch-chanukah a.ch-btn-ghost:hover,
 #ch-chanukah .ch-night-header img.ch-menorah-icon {
   width: 56px;
   height: auto;
-  /* Re-tints Chabad.org menorah PNG into warm candlelight gold */
   filter: brightness(0) saturate(100%) invert(90%) sepia(28%) saturate(700%) hue-rotate(344deg) brightness(105%) contrast(101%);
 }
 
@@ -442,7 +464,6 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
   border-color: rgba(255, 230, 154, 0.30);
 }
 
-/* Single event on a night: centered at exact single-card desktop width */
 #ch-chanukah .ch-modules-wrapper.ch-single-night .ch-event-card {
   flex: 0 1 600px;
 }
@@ -531,7 +552,7 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
   text-decoration: none;
 }
 
-/* Right-side Flyer Pane (handles mixed aspect ratios cleanly) */
+/* Right-side Flyer Pane */
 #ch-chanukah .ch-event-flyer {
   flex: 0 0 190px;
   background-color: #071430;
@@ -552,7 +573,6 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
   display: block;
 }
 
-/* Use flyerFit: "contain" in Chanukah.js for wide/tall flyers with edge text */
 #ch-chanukah .ch-event-flyer.ch-contain {
   padding: 8px;
 }
@@ -561,7 +581,6 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
   object-fit: contain;
 }
 
-/* Minimalist "Flyer Coming Soon" placeholder */
 #ch-chanukah .ch-flyer-placeholder {
   flex: 0 0 190px;
   background: rgba(6, 19, 46, 0.55);
@@ -590,7 +609,6 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
   line-height: 1.35;
 }
 
-/* Tablet: 1 column wide */
 @media (max-width: 980px) {
   #ch-chanukah .ch-event-card,
   #ch-chanukah .ch-modules-wrapper.ch-single-night .ch-event-card {
@@ -599,7 +617,6 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
   }
 }
 
-/* Mobile: KEEP FLYER ON RIGHT SIDE (compact, low-scroll) */
 @media (max-width: 649px) {
   #ch-chanukah .ch-modules-wrapper {
     gap: 14px;
@@ -666,7 +683,7 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
   }
 }
 
-/* --- 6. FUTURE LOWER SECTION HOOK (Chanukah Info / Photos) --- */
+/* --- 6. LOWER SECTION (Chanukah Info Hook) --- */
 #ch-chanukah .ch-guide-teaser {
   max-width: 1160px;
   margin: 72px auto 0;
