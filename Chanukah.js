@@ -56,7 +56,6 @@
     },
   ];
 
-  /* Ensure mobile responsive viewport meta tag exists on templateless mini-site */
   function ensureViewport() {
     if (!document.querySelector('meta[name="viewport"]')) {
       const meta = document.createElement("meta");
@@ -66,7 +65,6 @@
     }
   }
 
-  /* Cleanly remove ChabadOne's inline !important top bar */
   function removeChabadOneTopBar() {
     document.querySelectorAll(".cco_templateless_template").forEach((el) => {
       el.remove();
@@ -122,6 +120,7 @@
 
     return `
       <div class="ch-event-card">
+        ${buildFlyerHtml(ev)}
         <div class="ch-event-body">
           ${ev.host ? `<span class="ch-event-host">Hosted by: ${ev.host}</span>` : ""}
           <div class="ch-event-title">${ev.eventName || ""}</div>
@@ -132,7 +131,6 @@
           ${ev.note ? `<div class="ch-event-note">${ev.note}</div>` : ""}
           ${link ? `<div class="ch-btn-wrap"><a class="ch-reserve-btn" href="${link}" target="_blank" rel="noopener">More Information &rarr;</a></div>` : ""}
         </div>
-        ${buildFlyerHtml(ev)}
       </div>
     `;
   }
