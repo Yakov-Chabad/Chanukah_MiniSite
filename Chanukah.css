@@ -1,46 +1,62 @@
-@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Raleway:wght@400;500;600;700&family=Signika:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Raleway:wght@400;500;600;700&family=Signika:wght@500;600;700&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
 
-/* --- ChabadOne Chrome Resets --- */
-.breadcrumbs {
-  display: none !important;
-}
+/* --- Full-bleed Midnight Canvas Overrides for ChabadOne Mini-Site --- */
+html,
+body,
+#content,
+#BodyContainer,
+.body_wrapper,
+.body_wrapper.co_body,
+#co_content_container,
+#co_body_container,
+#cco_body,
+.content.js-content,
 .article-body {
-  padding-top: 0 !important;
-}
-.body_wrapper.co_body {
-  width: 100% !important;
-  padding: 0 !important;
-}
-.no-hero-image #co_ads_container,
-.no-hero-image #co_body_container,
-.no-hero-image .co_local_menu {
-  padding-top: 0 !important;
-}
-.content .co_body {
+  background-color: #06132e !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
+  padding-top: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
-/* --- Scoped Tokens (chanukahlivenj.com palette + St. Louis fonts) --- */
+.breadcrumbs,
+.article-header,
+.page-tools-sidebar {
+  display: none !important;
+}
+
+/* Fallback CSS hide for ChabadOne's default "Back to main site" bar */
+body > div:has(> a[href*="TheChabadCenter.org"]):not(#ch-chanukah),
+body > div:has(> a[href*="thechabadcenter.org"]):not(#ch-chanukah) {
+  display: none !important;
+}
+
+/* --- Scoped Design Tokens --- */
 #ch-chanukah {
+  --ch-bg: #06132e;
   --ch-midnight: #071846;
-  --ch-primary: #0e3167;
-  --ch-secondary: #134480;
+  --ch-navy: #0e2552;
+  --ch-navy-hover: #122e64;
+  --ch-blue: #134480;
   --ch-horizon: #195b9a;
   --ch-gold: #ffe69a;
-  --ch-gold-ink: #b88b28;
-  --ch-card-bg: #eef3f8;
-  --ch-text: #173764;
-  --ch-muted: #466183;
+  --ch-gold-hover: #fff1c7;
+  --ch-white: #ffffff;
+  --ch-muted: #b5c7e0;
+  --ch-border: rgba(255, 230, 154, 0.15);
   --ch-font-display: "Signika", sans-serif;
-  --ch-font-title: "EB Garamond", Georgia, serif;
+  --ch-font-serif: "EB Garamond", Georgia, serif;
   --ch-font-sans: "Raleway", "Helvetica Neue", Arial, sans-serif;
 
+  background-color: var(--ch-bg);
+  color: var(--ch-white);
   font-family: var(--ch-font-sans);
-  color: var(--ch-text);
-  padding-bottom: 70px;
+  min-height: 100vh;
+  padding-bottom: 90px;
   text-align: left;
+  -webkit-font-smoothing: antialiased;
 }
 
 #ch-chanukah *,
@@ -49,222 +65,300 @@
   box-sizing: border-box;
 }
 
-/* --- 1. HERO (Exact St. Louis curved shape + winter navy overlay) --- */
-#ch-chanukah #ch-hero {
-  padding: 100px 20px;
-  position: relative;
-  z-index: 0;
-  border-bottom-right-radius: 50vw;
-}
-
-#ch-chanukah #ch-hero::before {
-  /* Swap this URL for your own uploaded winter/Chanukah photo */
-  background-image: url("https://chabadstl.org/media/images/1328/Xomh13286063.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  content: "";
-  filter: grayscale(100%);
-  display: block;
-  position: absolute;
-  z-index: -2;
+/* --- 1. TOP NAVIGATION BAR --- */
+#ch-chanukah .ch-nav {
+  position: sticky;
   top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  border-bottom-right-radius: 50vw;
+  z-index: 1000;
+  background: rgba(6, 19, 46, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 230, 154, 0.14);
 }
 
-#ch-chanukah #ch-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(1.5px 1.5px at 10% 20%, rgba(250, 255, 224, 0.5) 50%, transparent 51%),
-    radial-gradient(1px 1px at 28% 36%, rgba(250, 255, 224, 0.4) 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 56% 18%, rgba(250, 255, 224, 0.45) 50%, transparent 51%),
-    radial-gradient(1px 1px at 78% 30%, rgba(250, 255, 224, 0.45) 50%, transparent 51%),
-    linear-gradient(135deg, rgba(7, 24, 70, 0.88) 0%, rgba(14, 49, 103, 0.82) 55%, rgba(25, 91, 154, 0.76) 100%);
-  z-index: -1;
-  border-bottom-right-radius: 50vw;
+#ch-chanukah .ch-nav-inner {
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-#ch-chanukah #ch-hero img.ch-holiday-img {
-  position: absolute;
-  bottom: -20px;
-  width: 24vw;
-  max-width: 160px;
-  height: auto;
-  right: 14px;
-  pointer-events: none;
-}
-
-html body.cco_body #ch-chanukah #ch-hero h2,
-#ch-chanukah #ch-hero h2 {
+html body.cco_body #ch-chanukah a.ch-nav-brand,
+#ch-chanukah a.ch-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ch-white);
   font-family: var(--ch-font-display);
-  color: #ffffff;
-  font-size: 50px;
-  font-weight: 500;
-  max-width: 550px;
-  line-height: 1;
-  margin: 0 0 10px 0;
-}
-
-html body.cco_body #ch-chanukah #ch-hero h5,
-#ch-chanukah #ch-hero h5 {
-  font-family: var(--ch-font-title);
-  color: #ffffff;
-  font-size: 25px;
-  font-weight: 400;
-  line-height: 1.2;
-  margin: 0;
-}
-
-#ch-chanukah #ch-hero h5 strong {
-  font-family: var(--ch-font-title);
+  font-size: 20px;
   font-weight: 600;
-  color: #ffffff;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
 }
 
-#ch-chanukah #ch-hero h5 em {
-  font-family: var(--ch-font-title);
-  font-weight: 400;
-  font-style: italic;
+#ch-chanukah .ch-nav-brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ch-gold);
+  display: inline-block;
+}
+
+#ch-chanukah .ch-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+html body.cco_body #ch-chanukah .ch-nav-links a,
+#ch-chanukah .ch-nav-links a {
+  color: rgba(255, 255, 255, 0.86);
+  text-decoration: none;
+  font-family: var(--ch-font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+html body.cco_body #ch-chanukah .ch-nav-links a:hover,
+#ch-chanukah .ch-nav-links a:hover {
   color: var(--ch-gold);
 }
 
-@media (min-width: 650px) {
-  #ch-chanukah #ch-hero {
-    padding: 100px 0;
-    border-bottom-right-radius: 430px;
-    max-width: 75vw;
-    height: 400px;
+html body.cco_body #ch-chanukah a.ch-nav-mainsite,
+#ch-chanukah a.ch-nav-mainsite {
+  color: var(--ch-gold);
+  border: 1px solid rgba(255, 230, 154, 0.35);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+html body.cco_body #ch-chanukah a.ch-nav-mainsite:hover,
+#ch-chanukah a.ch-nav-mainsite:hover {
+  background: rgba(255, 230, 154, 0.12);
+  color: var(--ch-white);
+}
+
+#ch-chanukah .ch-nav-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255, 230, 154, 0.35);
+  color: var(--ch-gold);
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 860px) {
+  #ch-chanukah .ch-nav-inner {
+    padding: 0 16px;
+    height: 60px;
   }
-  #ch-chanukah #ch-hero::before {
-    width: 75vw;
-    height: 400px;
-    border-bottom-right-radius: 430px;
+  #ch-chanukah .ch-nav-toggle {
+    display: inline-flex;
   }
-  #ch-chanukah #ch-hero::after {
-    border-bottom-right-radius: 430px;
+  #ch-chanukah .ch-nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: #071846;
+    border-bottom: 1px solid rgba(255, 230, 154, 0.2);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 10px 20px 18px;
   }
-  #ch-chanukah #ch-hero .ch-hero-content {
-    margin-left: max(30px, calc(50vw - 617px));
+  #ch-chanukah .ch-nav-links.ch-nav-open {
+    display: flex;
   }
-  html body.cco_body #ch-chanukah #ch-hero h2,
-  #ch-chanukah #ch-hero h2 {
-    font-size: 90px;
+  html body.cco_body #ch-chanukah .ch-nav-links a,
+  #ch-chanukah .ch-nav-links a {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
-  html body.cco_body #ch-chanukah #ch-hero h5,
-  #ch-chanukah #ch-hero h5 {
-    font-size: 40px;
-  }
-  #ch-chanukah #ch-hero img.ch-holiday-img {
-    width: auto;
-    max-width: none;
-    height: 370px;
-    top: 50px;
-    bottom: auto;
-    right: -120px;
+  html body.cco_body #ch-chanukah a.ch-nav-mainsite,
+  #ch-chanukah a.ch-nav-mainsite {
+    margin-top: 12px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 230, 154, 0.35);
   }
 }
 
-/* --- 2. INTRO --- */
-#ch-chanukah #ch-intro {
-  max-width: 1200px;
-  margin: 50px auto 30px;
-  padding: 0 20px;
+/* --- 2. REIMAGINED WINTER CHANUKAH HERO --- */
+#ch-chanukah .ch-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 72px 24px 68px;
+  text-align: center;
+  background: linear-gradient(180deg, #071846 0%, #0e3167 52%, #134480 86%, #06132e 100%);
+  border-bottom: 1px solid rgba(255, 230, 154, 0.12);
 }
 
-html body.cco_body #ch-chanukah #ch-intro h6,
-#ch-chanukah #ch-intro h6 {
-  padding: 0;
-  margin: 0 0 10px 0;
-  color: var(--ch-gold-ink);
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 30px;
-  line-height: 1.25;
+/* Subtle winter night starfield (from chanukahlivenj.com) */
+#ch-chanukah .ch-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 8% 18%, rgba(250, 255, 224, 0.55) 50%, transparent 51%),
+    radial-gradient(1px 1px at 22% 32%, rgba(250, 255, 224, 0.45) 50%, transparent 51%),
+    radial-gradient(2px 2px at 35% 12%, rgba(250, 255, 224, 0.35) 50%, transparent 51%),
+    radial-gradient(1px 1px at 49% 22%, rgba(250, 255, 224, 0.5) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 64% 14%, rgba(250, 255, 224, 0.45) 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 28%, rgba(250, 255, 224, 0.5) 50%, transparent 51%),
+    radial-gradient(2px 2px at 90% 16%, rgba(250, 255, 224, 0.35) 50%, transparent 51%),
+    radial-gradient(1px 1px at 14% 64%, rgba(250, 255, 224, 0.35) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 86% 56%, rgba(250, 255, 224, 0.35) 50%, transparent 51%);
+}
+
+#ch-chanukah .ch-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+#ch-chanukah .ch-hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: rgba(6, 19, 46, 0.55);
+  border: 1px solid rgba(255, 230, 154, 0.28);
+  color: var(--ch-gold);
   font-family: var(--ch-font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
 }
 
-html body.cco_body #ch-chanukah #ch-intro p,
-#ch-chanukah #ch-intro p {
+html body.cco_body #ch-chanukah .ch-hero h1,
+#ch-chanukah .ch-hero h1 {
+  font-family: var(--ch-font-display);
+  color: var(--ch-white);
+  font-size: 62px;
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0 0 14px 0;
+  letter-spacing: -0.5px;
+}
+
+#ch-chanukah .ch-hero-tagline {
+  font-family: var(--ch-font-serif);
+  font-style: italic;
+  font-size: 26px;
+  color: var(--ch-gold);
+  margin: 0 0 18px 0;
+  line-height: 1.25;
+}
+
+html body.cco_body #ch-chanukah .ch-hero-desc,
+#ch-chanukah .ch-hero-desc {
   font-family: var(--ch-font-sans);
   font-size: 16px;
-  line-height: 1.6;
-  color: var(--ch-text);
-  margin: 0;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.86);
+  max-width: 680px;
+  margin: 0 auto 28px;
 }
 
-/* --- 3. LEGEND BAR + FULL-WIDTH RULE --- */
-#ch-chanukah #ch-legend {
-  justify-content: center;
-  max-width: 1250px;
-  width: 100%;
-  margin: auto;
-  background: var(--ch-midnight);
+#ch-chanukah .ch-hero-actions {
   display: flex;
   flex-wrap: wrap;
-  padding: 28px 30px;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
-  color: #ffffff;
+  justify-content: center;
+  gap: 12px;
 }
 
-#ch-chanukah #ch-legend > div {
-  padding: 6px 26px;
-  display: flex;
-  align-items: center;
-  font-family: var(--ch-font-sans);
-  font-size: 15px;
-  font-weight: 500;
-  color: #ffffff;
-}
-
-#ch-chanukah span.ch-legend-icon {
-  background-color: var(--ch-gold);
-  border-radius: 100%;
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+html body.cco_body #ch-chanukah a.ch-btn-gold,
+#ch-chanukah a.ch-btn-gold {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-}
-
-#ch-chanukah span.ch-legend-icon i {
+  gap: 8px;
+  background: var(--ch-gold);
   color: var(--ch-midnight);
+  text-decoration: none;
+  font-family: var(--ch-font-sans);
   font-size: 14px;
+  font-weight: 700;
+  padding: 12px 26px;
+  border-radius: 24px;
+  transition: background-color 0.15s ease;
 }
 
-#ch-chanukah #ch-border-bottom {
-  background: var(--ch-midnight);
-  height: 4px;
-  font-size: 0;
-  line-height: 0;
+html body.cco_body #ch-chanukah a.ch-btn-gold:hover,
+#ch-chanukah a.ch-btn-gold:hover {
+  background: var(--ch-gold-hover);
+  color: var(--ch-midnight);
+}
+
+html body.cco_body #ch-chanukah a.ch-btn-ghost,
+#ch-chanukah a.ch-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(6, 19, 46, 0.35);
+  color: var(--ch-white);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  font-family: var(--ch-font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 11px 24px;
+  border-radius: 24px;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+html body.cco_body #ch-chanukah a.ch-btn-ghost:hover,
+#ch-chanukah a.ch-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--ch-gold);
+  color: var(--ch-white);
 }
 
 @media (max-width: 649px) {
-  html body.cco_body #ch-chanukah #ch-intro h6,
-  #ch-chanukah #ch-intro h6 {
-    font-size: 22px;
+  #ch-chanukah .ch-hero {
+    padding: 46px 18px 44px;
   }
-  #ch-chanukah #ch-legend {
-    padding: 20px;
-    max-width: 95%;
+  html body.cco_body #ch-chanukah .ch-hero h1,
+  #ch-chanukah .ch-hero h1 {
+    font-size: 38px;
   }
-  #ch-chanukah #ch-legend > div {
-    padding: 6px 12px;
+  #ch-chanukah .ch-hero-tagline {
+    font-size: 21px;
+  }
+  html body.cco_body #ch-chanukah .ch-hero-desc,
+  #ch-chanukah .ch-hero-desc {
+    font-size: 15px;
   }
 }
 
-/* --- 4. NIGHT HEADERS --- */
+/* --- 3. NIGHT HEADERS --- */
 #ch-chanukah .ch-location-wrap {
   max-width: 1200px;
-  margin: 40px auto 0;
-  padding: 0 20px;
+  margin: 0 auto;
+  padding: 10px 20px 0;
 }
 
 #ch-chanukah .ch-night-header {
@@ -272,242 +366,347 @@ html body.cco_body #ch-chanukah #ch-intro p,
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 60px;
-  margin-bottom: 20px;
+  gap: 22px;
+  margin: 54px 0 24px;
 }
 
 #ch-chanukah .ch-night-header img.ch-menorah-icon {
-  width: 70px;
+  width: 56px;
   height: auto;
-  margin-right: 36px;
-  position: relative;
-  top: -6px;
-  filter: brightness(0) saturate(100%) invert(14%) sepia(63%) saturate(2250%) hue-rotate(202deg) brightness(92%) contrast(98%);
+  /* Re-tints Chabad.org menorah PNG into warm candlelight gold */
+  filter: brightness(0) saturate(100%) invert(90%) sepia(28%) saturate(700%) hue-rotate(344deg) brightness(105%) contrast(101%);
 }
 
-html body.cco_body #ch-chanukah .ch-night-header h3,
-#ch-chanukah .ch-night-header h3 {
+html body.cco_body #ch-chanukah .ch-night-header h2,
+#ch-chanukah .ch-night-header h2 {
   font-family: var(--ch-font-display);
-  color: var(--ch-gold-ink);
-  font-size: 36px;
-  font-weight: 500;
-  line-height: 1;
+  color: var(--ch-gold);
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.08;
   margin: 0 0 4px 0;
 }
 
 #ch-chanukah .ch-night-header span {
-  font-family: var(--ch-font-title);
+  font-family: var(--ch-font-serif);
   font-style: italic;
-  font-size: 20px;
-  color: var(--ch-secondary);
+  font-size: 21px;
+  color: rgba(255, 230, 154, 0.85);
 }
 
 @media (max-width: 649px) {
-  #ch-chanukah .ch-night-header img.ch-menorah-icon {
-    width: 54px;
-    margin-right: 16px;
+  #ch-chanukah .ch-location-wrap {
+    padding: 4px 14px 0;
   }
-  html body.cco_body #ch-chanukah .ch-night-header h3,
-  #ch-chanukah .ch-night-header h3 {
+  #ch-chanukah .ch-night-header {
+    margin: 40px 0 18px;
+    gap: 14px;
+  }
+  #ch-chanukah .ch-night-header img.ch-menorah-icon {
+    width: 44px;
+  }
+  html body.cco_body #ch-chanukah .ch-night-header h2,
+  #ch-chanukah .ch-night-header h2 {
     font-size: 28px;
   }
+  #ch-chanukah .ch-night-header span {
+    font-size: 18px;
+  }
 }
 
-/* --- 5. EVENT CARDS (St. Louis geometry + Venice flush-left flyer) --- */
+/* --- 4. EVENT GRID (2-col desktop, centered lone card on single-event nights) --- */
 #ch-chanukah .ch-modules-wrapper {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px 30px;
-}
-
-#ch-chanukah .ch-event-card {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+/* --- 5. EVENT CARDS (Text left, Flyer RIGHT on both desktop & mobile) --- */
+#ch-chanukah .ch-event-card {
+  flex: 0 1 calc(50% - 12px);
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
   align-items: stretch;
-  background-color: var(--ch-card-bg);
-  border-top-left-radius: 30px;
-  border-bottom-right-radius: 30px;
+  background-color: var(--ch-navy);
+  border: 1px solid var(--ch-border);
+  border-top-left-radius: 26px;
+  border-bottom-right-radius: 26px;
   overflow: hidden;
-  line-height: 1.45;
+  transition: background-color 0.16s ease, border-color 0.16s ease;
 }
 
-#ch-chanukah .ch-event-flyer {
-  flex: 0 0 215px;
-  background-color: var(--ch-midnight);
-  cursor: pointer;
-  overflow: hidden;
+#ch-chanukah .ch-event-card:hover {
+  background-color: var(--ch-navy-hover);
+  border-color: rgba(255, 230, 154, 0.30);
 }
 
-#ch-chanukah .ch-event-flyer img {
-  width: 100%;
-  height: 100%;
-  min-height: 230px;
-  object-fit: cover;
-  display: block;
-}
-
-#ch-chanukah .ch-event-flyer.ch-contain img {
-  object-fit: contain;
-  padding: 6px;
+/* Single event on a night: centered at exact single-card desktop width */
+#ch-chanukah .ch-modules-wrapper.ch-single-night .ch-event-card {
+  flex: 0 1 600px;
 }
 
 #ch-chanukah .ch-event-body {
   flex: 1 1 auto;
   min-width: 0;
-  padding: 28px 30px;
+  padding: 24px 24px 24px 26px;
   display: flex;
   flex-direction: column;
-}
-
-#ch-chanukah .ch-event-title {
-  color: var(--ch-primary);
-  font-family: var(--ch-font-sans);
-  font-weight: 700;
-  font-size: 22px;
-  line-height: 1.25;
-  margin-bottom: 4px;
 }
 
 #ch-chanukah .ch-event-host {
   font-family: var(--ch-font-sans);
   font-style: italic;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--ch-muted);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   display: block;
 }
 
-#ch-chanukah .ch-event-icons {
-  margin-top: 6px;
-}
-
-#ch-chanukah .ch-fa-type-icon {
-  color: #ffffff;
-  background: var(--ch-secondary);
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 6px;
-  font-size: 14px;
+#ch-chanukah .ch-event-title {
+  color: var(--ch-white);
+  font-family: var(--ch-font-display);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.2;
+  margin-bottom: 14px;
 }
 
 #ch-chanukah .ch-event-details {
-  margin-top: 18px;
   font-family: var(--ch-font-sans);
-  font-size: 15px;
-  color: var(--ch-text);
-  line-height: 1.5;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.90);
+  line-height: 1.45;
 }
 
 #ch-chanukah .ch-detail-line {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin-bottom: 6px;
+  margin-bottom: 7px;
 }
 
 #ch-chanukah .ch-detail-line i {
-  color: var(--ch-gold-ink);
-  width: 16px;
+  color: var(--ch-gold);
+  width: 15px;
   text-align: center;
-  margin-top: 4px;
+  margin-top: 3px;
   flex-shrink: 0;
+  font-size: 13px;
+}
+
+#ch-chanukah .ch-event-note {
+  font-size: 13px;
+  color: var(--ch-muted);
+  margin-top: 6px;
+  line-height: 1.4;
 }
 
 #ch-chanukah .ch-btn-wrap {
   margin-top: auto;
-  padding-top: 18px;
+  padding-top: 16px;
 }
 
 html body.cco_body #ch-chanukah a.ch-reserve-btn,
 #ch-chanukah a.ch-reserve-btn {
-  background: var(--ch-primary);
-  color: var(--ch-gold);
+  background: var(--ch-midnight);
+  color: var(--ch-white);
+  border: 1px solid rgba(255, 230, 154, 0.32);
   text-decoration: none;
-  padding: 8px 25px;
+  padding: 8px 20px;
   display: inline-block;
   border-radius: 20px;
   font-family: var(--ch-font-sans);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
 #ch-chanukah a.ch-reserve-btn:hover {
-  background: var(--ch-horizon);
-  color: #ffffff;
+  background: var(--ch-gold);
+  color: var(--ch-midnight);
+  border-color: var(--ch-gold);
   text-decoration: none;
 }
 
-/* Optional dark-card mode: add class="ch-dark-cards" to #ch-chanukah */
-#ch-chanukah.ch-dark-cards .ch-event-card {
-  background: linear-gradient(145deg, #071846 0%, #0e3167 100%);
-}
-#ch-chanukah.ch-dark-cards .ch-event-title {
-  color: #ffffff;
-}
-#ch-chanukah.ch-dark-cards .ch-event-host {
-  color: rgba(255, 255, 255, 0.72);
-}
-#ch-chanukah.ch-dark-cards .ch-event-details {
-  color: rgba(255, 255, 255, 0.90);
-}
-#ch-chanukah.ch-dark-cards .ch-detail-line i {
-  color: var(--ch-gold);
-}
-#ch-chanukah.ch-dark-cards .ch-fa-type-icon {
-  background: rgba(255, 230, 154, 0.16);
-  color: var(--ch-gold);
-}
-html body.cco_body #ch-chanukah.ch-dark-cards a.ch-reserve-btn,
-#ch-chanukah.ch-dark-cards a.ch-reserve-btn {
-  background: var(--ch-gold);
-  color: var(--ch-midnight);
-}
-html body.cco_body #ch-chanukah.ch-dark-cards a.ch-reserve-btn:hover,
-#ch-chanukah.ch-dark-cards a.ch-reserve-btn:hover {
-  background: #fff0c2;
-  color: var(--ch-midnight);
+/* Right-side Flyer Pane (handles mixed aspect ratios cleanly) */
+#ch-chanukah .ch-event-flyer {
+  flex: 0 0 190px;
+  background-color: #071430;
+  border-left: 1px solid rgba(255, 230, 154, 0.10);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
+#ch-chanukah .ch-event-flyer img {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Use flyerFit: "contain" in Chanukah.js for wide/tall flyers with edge text */
+#ch-chanukah .ch-event-flyer.ch-contain {
+  padding: 8px;
+}
+#ch-chanukah .ch-event-flyer.ch-contain img {
+  min-height: 0;
+  object-fit: contain;
+}
+
+/* Minimalist "Flyer Coming Soon" placeholder */
+#ch-chanukah .ch-flyer-placeholder {
+  flex: 0 0 190px;
+  background: rgba(6, 19, 46, 0.55);
+  border-left: 1px solid rgba(255, 230, 154, 0.10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px 12px;
+  color: rgba(255, 230, 154, 0.65);
+}
+
+#ch-chanukah .ch-flyer-placeholder i {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: var(--ch-gold);
+  opacity: 0.75;
+}
+
+#ch-chanukah .ch-flyer-placeholder span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1.35;
+}
+
+/* Tablet: 1 column wide */
 @media (max-width: 980px) {
-  #ch-chanukah .ch-modules-wrapper {
-    grid-template-columns: 1fr;
+  #ch-chanukah .ch-event-card,
+  #ch-chanukah .ch-modules-wrapper.ch-single-night .ch-event-card {
+    flex: 1 1 100%;
     max-width: 680px;
-    margin: 0 auto;
   }
 }
 
-@media (max-width: 580px) {
+/* Mobile: KEEP FLYER ON RIGHT SIDE (compact, low-scroll) */
+@media (max-width: 649px) {
+  #ch-chanukah .ch-modules-wrapper {
+    gap: 14px;
+  }
   #ch-chanukah .ch-event-card {
-    flex-direction: column;
-  }
-  #ch-chanukah .ch-event-flyer {
-    flex: none;
-    width: 100%;
-    max-height: 340px;
-  }
-  #ch-chanukah .ch-event-flyer img {
-    min-height: 0;
-    max-height: 340px;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
   #ch-chanukah .ch-event-body {
-    padding: 24px;
+    padding: 15px 12px 15px 15px;
+  }
+  #ch-chanukah .ch-event-host {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  #ch-chanukah .ch-event-title {
+    font-size: 17px;
+    margin-bottom: 9px;
+  }
+  #ch-chanukah .ch-event-details {
+    font-size: 12.5px;
+    line-height: 1.38;
+  }
+  #ch-chanukah .ch-detail-line {
+    gap: 6px;
+    margin-bottom: 5px;
+  }
+  #ch-chanukah .ch-detail-line i {
+    font-size: 11.5px;
+    width: 13px;
+    margin-top: 2px;
+  }
+  #ch-chanukah .ch-event-note {
+    font-size: 12px;
+  }
+  #ch-chanukah .ch-btn-wrap {
+    padding-top: 11px;
+  }
+  html body.cco_body #ch-chanukah a.ch-reserve-btn,
+  #ch-chanukah a.ch-reserve-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+  #ch-chanukah .ch-event-flyer,
+  #ch-chanukah .ch-flyer-placeholder {
+    flex: 0 0 114px;
+  }
+  #ch-chanukah .ch-event-flyer img {
+    min-height: 150px;
+  }
+  #ch-chanukah .ch-flyer-placeholder i {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  #ch-chanukah .ch-flyer-placeholder span {
+    font-size: 9.5px;
   }
 }
 
-/* --- 6. FLYER LIGHTBOX --- */
+@media (max-width: 360px) {
+  #ch-chanukah .ch-event-flyer,
+  #ch-chanukah .ch-flyer-placeholder {
+    flex: 0 0 96px;
+  }
+}
+
+/* --- 6. FUTURE LOWER SECTION HOOK (Chanukah Info / Photos) --- */
+#ch-chanukah .ch-guide-teaser {
+  max-width: 1160px;
+  margin: 72px auto 0;
+  padding: 36px 28px;
+  background: rgba(14, 37, 82, 0.55);
+  border: 1px solid var(--ch-border);
+  border-radius: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+html body.cco_body #ch-chanukah .ch-guide-teaser h3,
+#ch-chanukah .ch-guide-teaser h3 {
+  font-family: var(--ch-font-display);
+  color: var(--ch-gold);
+  font-size: 26px;
+  margin: 0 0 6px 0;
+}
+
+html body.cco_body #ch-chanukah .ch-guide-teaser p,
+#ch-chanukah .ch-guide-teaser p {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  max-width: 640px;
+}
+
+/* --- 7. FLYER LIGHTBOX --- */
 #ch-lightbox {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: rgba(7, 24, 70, 0.88);
+  background: rgba(4, 12, 30, 0.92);
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 20px;
 }
 #ch-lightbox.ch-open {
   display: flex;
@@ -523,18 +722,19 @@ html body.cco_body #ch-chanukah.ch-dark-cards a.ch-reserve-btn:hover,
   max-height: 86vh;
   width: auto;
   height: auto;
+  border-radius: 6px;
 }
 #ch-lightbox-close {
   position: absolute;
   top: -14px;
   right: -14px;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 100%;
   border: 0;
   background: #ffe69a;
   color: #071846;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
