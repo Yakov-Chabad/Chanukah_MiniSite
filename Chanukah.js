@@ -11,8 +11,8 @@
   };
 
   /* EDIT YOUR 2026 EVENTS HERE
-     - flyer: URL to image, "coming-soon" for placeholder, or "" to omit flyer pane
-     - flyerFit: "cover" (default, fills cleanly) or "contain" (shows full uncropped flyer)
+     - flyer: image URL, "coming-soon" for placeholder, or "" for no flyer pane
+     - flyerFit: "cover" (fills frame cleanly) or "contain" (shows full uncropped flyer)
      - isoStart: ISO date/time for Google SEO Event structured data */
   const EVENTS = [
     {
@@ -56,26 +56,23 @@
     },
   ];
 
-  /* Hide ChabadOne's legacy top return strip safely (only outside #ch-chanukah) */
-  function hideChabadOneTopBar() {
-    const links = document.querySelectorAll('a[href*="TheChabadCenter.org"], a[href*="thechabadcenter.org"]');
-    links.forEach((a) => {
-      if (a.closest("#ch-chanukah")) return;
-      if (a.textContent && a.textContent.toLowerCase().indexOf("back to") !== -1) {
-        let bar = a.parentElement;
-        while (bar && bar.parentElement && bar.parentElement !== document.body && bar.offsetHeight < 65) {
-          bar = bar.parentElement;
-        }
-        if (bar && !bar.contains(document.getElementById("ch-chanukah"))) {
-          bar.style.setProperty("display", "none", "important");
-        } else {
-          a.style.setProperty("display", "none", "important");
-        }
-      }
+  /* Ensure mobile responsive viewport meta tag exists on templateless mini-site */
+  function ensureViewport() {
+    if (!document.querySelector('meta[name="viewport"]')) {
+      const meta = document.createElement("meta");
+      meta.name = "viewport";
+      meta.content = "width=device-width, initial-scale=1.0";
+      document.head.appendChild(meta);
+    }
+  }
+
+  /* Cleanly remove ChabadOne's inline !important top bar */
+  function removeChabadOneTopBar() {
+    document.querySelectorAll(".cco_templateless_template").forEach((el) => {
+      el.remove();
     });
   }
 
-  /* Mobile nav hamburger toggle */
   function initNav() {
     const btn = document.getElementById("ch-nav-toggle");
     const menu = document.getElementById("ch-nav-links");
@@ -184,7 +181,6 @@
       .join("");
   }
 
-  /* Inject Google SEO JSON-LD Event Schema automatically */
   function injectEventSchema() {
     const schemaItems = EVENTS.filter((ev) => ev.isoStart).map((ev) => ({
       "@context": "https://schema.org",
@@ -250,7 +246,8 @@
   }
 
   function init() {
-    hideChabadOneTopBar();
+    ensureViewport();
+    removeChabadOneTopBar();
     initNav();
     renderDirectory();
     initLightbox();
