@@ -12,7 +12,7 @@
 
   /* EDIT YOUR 2026 EVENTS HERE
      - flyer: image URL, "coming-soon" for placeholder, or "" for no flyer pane
-     - flyerFit: "cover" (fills frame cleanly) or "contain" (shows full uncropped flyer)
+     - flyerFit: "contain" (default, framed & uncropped) or "cover" (edge-to-edge bleed)
      - isoStart: ISO date/time for Google SEO Event structured data */
   const EVENTS = [
     {
@@ -26,7 +26,7 @@
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
       flyer: "coming-soon",
-      flyerFit: "cover",
+      flyerFit: "contain",
     },
     {
       date: "Sunday, Dec. 6",
@@ -39,7 +39,7 @@
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
       flyer: "https://w2.chabad.org/media/images/1347/gpyW13474120.jpg",
-      flyerFit: "cover",
+      flyerFit: "contain",
     },
     {
       date: "Monday, Dec. 7",
@@ -52,7 +52,7 @@
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
       flyer: "coming-soon",
-      flyerFit: "cover",
+      flyerFit: "contain",
     },
   ];
 
@@ -104,9 +104,9 @@
         </div>
       `;
     }
-    const fitClass = ev.flyerFit === "contain" ? " ch-contain" : "";
+    const coverClass = ev.flyerFit === "cover" ? " ch-cover" : "";
     return `
-      <div class="ch-event-flyer${fitClass} js-ch-flyer" data-src="${ev.flyer}" title="Click to enlarge flyer">
+      <div class="ch-event-flyer${coverClass} js-ch-flyer" data-src="${ev.flyer}" title="Click to enlarge flyer">
         <img src="${ev.flyer}" alt="${ev.eventName || "Chanukah Event"} Flyer" loading="lazy" />
       </div>
     `;
