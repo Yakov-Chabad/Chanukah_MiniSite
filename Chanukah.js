@@ -10,112 +10,132 @@
     8: "Eighth",
   };
 
-  const CATEGORIES = [
-    { key: "lighting", icon: "fa-fire", label: "Public Menorah Lighting" },
-    { key: "family", icon: "fa-child", label: "Young Families" },
-    { key: "adults", icon: "fa-user-tie", label: "Young Adults" },
-    { key: "community", icon: "fa-users", label: "Community" },
-    { key: "students", icon: "fa-user-graduate", label: "College Students" },
-  ];
-
-  // EDIT YOUR EVENTS HERE (or swap for a Google Sheet fetch later)
+  /* EDIT YOUR 2026 EVENTS HERE
+     - flyer: URL to image, "coming-soon" for placeholder, or "" to omit flyer pane
+     - flyerFit: "cover" (default, fills cleanly) or "contain" (shows full uncropped flyer)
+     - isoStart: ISO date/time for Google SEO Event structured data */
   const EVENTS = [
     {
-      date: "Sunday, December 6",
+      date: "Sunday, Dec. 6",
       night: 3,
-      eventName: "Grand Car Menorah Parade & Lighting",
-      time: "4:30 PM",
-      location: "1925 Kresson Rd, Cherry Hill, NJ",
-      host: "Chabad of Cherry Hill",
-      link: "https://example.com/rsvp-parade",
-      flyer: "https://w2.chabad.org/media/images/1347/gpyW13474120.jpg",
-      flyerFit: "cover", // use "contain" for tall flyers with text near top/bottom edges
-      lighting: true,
-      family: true,
-      adults: false,
-      community: true,
-      students: false,
+      isoStart: "2026-12-06T15:15:00-05:00",
+      eventName: "Car Menorah Parade",
+      time: "Lineup 3:15 PM, Parade 4:00 PM",
+      location: "Starts at Chabad, 1925 Kresson Rd, Cherry Hill, NJ 08003",
+      note: "Route: Chabad to Barclay.",
+      host: "Chabad of Camden & Burlington Counties",
+      link: "https://www.thechabadcenter.org",
+      flyer: "coming-soon",
+      flyerFit: "cover",
     },
     {
-      date: "Sunday, December 6",
+      date: "Sunday, Dec. 6",
       night: 3,
-      eventName: "Chanukah at Barclay Farms",
-      time: "5:30 PM",
-      location: "Barclay Farms Shopping Center, Cherry Hill, NJ",
-      host: "Chabad of Cherry Hill",
-      link: "https://example.com/rsvp-barclay",
+      isoStart: "2026-12-06T16:45:00-05:00",
+      eventName: "Grand Menorah Lighting at Barclay Farms",
+      time: "4:45 PM",
+      location: "Barclay Farms Shopping Center, Route 70, Cherry Hill, NJ",
+      note: "Hot latkes, donuts, music & chocolate gelt.",
+      host: "Chabad of Camden & Burlington Counties",
+      link: "https://www.thechabadcenter.org",
       flyer: "https://w2.chabad.org/media/images/1347/gpyW13474120.jpg",
       flyerFit: "cover",
-      lighting: true,
-      family: true,
-      adults: false,
-      community: true,
-      students: false,
     },
     {
-      date: "Monday, December 7",
+      date: "Monday, Dec. 7",
       night: 4,
+      isoStart: "2026-12-07T17:00:00-05:00",
       eventName: "Chanukah on Ice",
-      time: "5:00 PM - 7:00 PM",
+      time: "5:00 PM – 7:00 PM",
       location: "Flyers Skate Zone, Voorhees, NJ",
-      host: "Chabad Lubavitch of Camden & Burlington Counties",
-      link: "https://example.com/rsvp-ice",
-      flyer: "", // Leave blank for a classic St. Louis text-only card
-      lighting: true,
-      family: true,
-      adults: false,
-      community: true,
-      students: false,
+      note: "",
+      host: "Chabad of Camden & Burlington Counties",
+      link: "https://www.thechabadcenter.org",
+      flyer: "coming-soon",
+      flyerFit: "cover",
     },
   ];
+
+  /* Hide ChabadOne's legacy top return strip safely (only outside #ch-chanukah) */
+  function hideChabadOneTopBar() {
+    const links = document.querySelectorAll('a[href*="TheChabadCenter.org"], a[href*="thechabadcenter.org"]');
+    links.forEach((a) => {
+      if (a.closest("#ch-chanukah")) return;
+      if (a.textContent && a.textContent.toLowerCase().indexOf("back to") !== -1) {
+        let bar = a.parentElement;
+        while (bar && bar.parentElement && bar.parentElement !== document.body && bar.offsetHeight < 65) {
+          bar = bar.parentElement;
+        }
+        if (bar && !bar.contains(document.getElementById("ch-chanukah"))) {
+          bar.style.setProperty("display", "none", "important");
+        } else {
+          a.style.setProperty("display", "none", "important");
+        }
+      }
+    });
+  }
+
+  /* Mobile nav hamburger toggle */
+  function initNav() {
+    const btn = document.getElementById("ch-nav-toggle");
+    const menu = document.getElementById("ch-nav-links");
+    if (!btn || !menu) return;
+    btn.addEventListener("click", () => {
+      const open = menu.classList.toggle("ch-nav-open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    menu.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => {
+        menu.classList.remove("ch-nav-open");
+        btn.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
 
   function formatLocation(loc) {
     if (!loc) return "";
     return loc
       .replace(/,/g, "<br />")
-      .replace(/<br \/>\s*(NJ|PA|NY|MO)\b/g, ", $1");
+      .replace(/<br \/>\s*(NJ|PA|NY)\b/g, ", $1");
   }
 
-  function renderLegend() {
-    const legendEl = document.getElementById("ch-legend");
-    if (!legendEl) return;
-    legendEl.innerHTML = CATEGORIES.map(
-      (c) =>
-        `<div><span class="ch-legend-icon"><i class="fas ${c.icon}"></i></span> ${c.label}</div>`
-    ).join("");
+  function buildFlyerHtml(ev) {
+    if (!ev.flyer) return "";
+    if (ev.flyer === "coming-soon") {
+      return `
+        <div class="ch-flyer-placeholder" aria-label="Flyer coming soon">
+          <i class="fas fa-menorah"></i>
+          <span>Flyer<br />Coming Soon</span>
+        </div>
+      `;
+    }
+    const fitClass = ev.flyerFit === "contain" ? " ch-contain" : "";
+    return `
+      <div class="ch-event-flyer${fitClass} js-ch-flyer" data-src="${ev.flyer}" title="Click to enlarge flyer">
+        <img src="${ev.flyer}" alt="${ev.eventName || "Chanukah Event"} Flyer" loading="lazy" />
+      </div>
+    `;
   }
 
   function buildCard(ev) {
     let link = (ev.link || "").trim();
-    if (link && !link.startsWith("http") && !link.startsWith("/")) {
+    if (link && !link.startsWith("http") && !link.startsWith("/") && !link.startsWith("#")) {
       link = "https://" + link;
     }
 
-    const icons = CATEGORIES.filter((c) => ev[c.key])
-      .map(
-        (c) =>
-          `<span class="ch-fa-type-icon" title="${c.label}"><i class="fas ${c.icon}"></i></span>`
-      )
-      .join("");
-
-    const fitClass = ev.flyerFit === "contain" ? " ch-contain" : "";
-    const flyerHtml = ev.flyer
-      ? `<div class="ch-event-flyer${fitClass} js-ch-flyer" data-src="${ev.flyer}"><img src="${ev.flyer}" alt="${ev.eventName || "Event Flyer"}" loading="lazy" /></div>`
-      : "";
-
     return `
       <div class="ch-event-card">
-        ${flyerHtml}
         <div class="ch-event-body">
+          ${ev.host ? `<span class="ch-event-host">Hosted by: ${ev.host}</span>` : ""}
           <div class="ch-event-title">${ev.eventName || ""}</div>
-          ${ev.host ? `<span class="ch-event-host">Hosted By: ${ev.host}</span>` : ""}
-          ${icons ? `<div class="ch-event-icons">${icons}</div>` : ""}
           <div class="ch-event-details">
             ${ev.location ? `<div class="ch-detail-line"><i class="fas fa-map-marker-alt"></i><span>${formatLocation(ev.location)}</span></div>` : ""}
-            ${ev.date ? `<div class="ch-detail-line"><i class="far fa-calendar-alt"></i><span>${ev.date}${ev.time ? ", " + ev.time : ""}</span></div>` : ""}
+            ${ev.date ? `<div class="ch-detail-line"><i class="far fa-clock"></i><span>${ev.date}${ev.time ? " &middot; " + ev.time : ""}</span></div>` : ""}
           </div>
-          ${link ? `<div class="ch-btn-wrap"><a class="ch-reserve-btn" href="${link}" target="_blank" rel="noopener">More Info &rarr;</a></div>` : ""}
+          ${ev.note ? `<div class="ch-event-note">${ev.note}</div>` : ""}
+          ${link ? `<div class="ch-btn-wrap"><a class="ch-reserve-btn" href="${link}" target="_blank" rel="noopener">More Information &rarr;</a></div>` : ""}
         </div>
+        ${buildFlyerHtml(ev)}
       </div>
     `;
   }
@@ -146,21 +166,50 @@
           grp.night && NIGHT_MAP[grp.night]
             ? `<span>${NIGHT_MAP[grp.night]} Night of Chanukah</span>`
             : "";
+        const singleClass = grp.items.length === 1 ? " ch-single-night" : "";
 
         return `
           <div class="ch-night-header">
             ${menorahUrl ? `<img class="ch-menorah-icon" src="${menorahUrl}" alt="" />` : ""}
             <div>
-              <h3>${grp.date}</h3>
+              <h2>${grp.date}</h2>
               ${nightLabel}
             </div>
           </div>
-          <div class="ch-modules-wrapper">
+          <div class="ch-modules-wrapper${singleClass}">
             ${grp.items.map(buildCard).join("")}
           </div>
         `;
       })
       .join("");
+  }
+
+  /* Inject Google SEO JSON-LD Event Schema automatically */
+  function injectEventSchema() {
+    const schemaItems = EVENTS.filter((ev) => ev.isoStart).map((ev) => ({
+      "@context": "https://schema.org",
+      "@type": "Event",
+      name: ev.eventName,
+      startDate: ev.isoStart,
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      eventStatus: "https://schema.org/EventScheduled",
+      location: {
+        "@type": "Place",
+        name: ev.location || "Cherry Hill, NJ",
+        address: ev.location || "Cherry Hill, NJ",
+      },
+      organizer: {
+        "@type": "Organization",
+        name: ev.host || "Chabad of Camden & Burlington Counties",
+        url: "https://www.thechabadcenter.org",
+      },
+    }));
+
+    if (!schemaItems.length) return;
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.text = JSON.stringify(schemaItems);
+    document.head.appendChild(script);
   }
 
   function initLightbox() {
@@ -170,7 +219,7 @@
       box.id = "ch-lightbox";
       box.setAttribute("aria-hidden", "true");
       box.innerHTML =
-        '<div id="ch-lightbox-inner"><button id="ch-lightbox-close" type="button" aria-label="Close">&times;</button><img id="ch-lightbox-img" alt="Event Flyer" src="" /></div>';
+        '<div id="ch-lightbox-inner"><button id="ch-lightbox-close" type="button" aria-label="Close flyer">&times;</button><img id="ch-lightbox-img" alt="Event Flyer" src="" /></div>';
       document.body.appendChild(box);
     }
 
@@ -201,9 +250,11 @@
   }
 
   function init() {
-    renderLegend();
+    hideChabadOneTopBar();
+    initNav();
     renderDirectory();
     initLightbox();
+    injectEventSchema();
   }
 
   if (document.readyState !== "loading") {
