@@ -1006,7 +1006,7 @@ body.section_branch #ch-chanukah .ch-nav {
   z-index: 10000 !important;
 }
 
-/* Seamless Slim Menorah Photo Header (No Gold Line) */
+/* Seamless Slim Menorah Photo Header */
 body.section_branch .master-content-wrapper {
   width: 100% !important;
   max-width: 100% !important;
@@ -1143,9 +1143,9 @@ body.section_branch article.content > .center.small {
   color: #071846;
   border: 0;
   border-radius: 6px;
-  padding: 13px 32px;
+  padding: 14px 36px;
   font-family: "Montserrat", Arial, sans-serif;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.15s ease;
@@ -1167,15 +1167,14 @@ body.section_branch article.content > .center.small {
   color: #ffe69a !important;
 }
 
-/* --- Eventbrite-Style Flat White Modal --- */
+/* --- Eventbrite-Style Fixed-Height Flat White Modal --- */
 body.section_branch #formContainer.ch-wizard-ready {
   display: none;
   position: fixed !important;
   inset: 0 !important;
   z-index: 20000 !important;
   background: rgba(15, 23, 42, 0.72) !important;
-  padding: 20px 12px !important;
-  overflow-y: auto !important;
+  padding: 16px 12px !important;
   align-items: center;
   justify-content: center;
 }
@@ -1187,19 +1186,24 @@ body.section_branch #formContainer.ch-wizard-ready.ch-modal-open {
 body.section_branch #formContainer.ch-wizard-ready form.userform-form {
   position: relative;
   width: 100% !important;
-  max-width: 560px !important;
+  max-width: 580px !important;
+  height: 600px !important;
+  max-height: 88vh !important;
   margin: auto !important;
   background: #ffffff !important;
-  color: #1e293b !important;
+  color: #111827 !important;
   border-radius: 8px !important;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35) !important;
-  overflow: hidden;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
 }
 
-/* Clean White Top Bar (Back Arrow Left, Title Center, X Right) */
+/* Clean White Top Bar */
 .ch-modal-header {
+  flex-shrink: 0;
   display: grid;
-  grid-template-columns: 40px 1fr 40px;
+  grid-template-columns: 36px 1fr 36px;
   align-items: center;
   padding: 16px 18px;
   background: #ffffff;
@@ -1207,15 +1211,15 @@ body.section_branch #formContainer.ch-wizard-ready form.userform-form {
   text-align: center;
 }
 
-.ch-modal-back-top,
 .ch-modal-close {
+  grid-column: 3;
   width: 34px;
   height: 34px;
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: #334155;
-  font-size: 20px;
+  color: #4b5563;
+  font-size: 22px;
   line-height: 1;
   cursor: pointer;
   display: inline-flex;
@@ -1223,10 +1227,13 @@ body.section_branch #formContainer.ch-wizard-ready form.userform-form {
   justify-content: center;
 }
 
-.ch-modal-back-top:hover,
 .ch-modal-close:hover {
-  background: #f1f5f9;
-  color: #0f172a;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.ch-modal-title-wrap {
+  grid-column: 2;
 }
 
 .ch-modal-title {
@@ -1245,11 +1252,13 @@ body.section_branch #formContainer.ch-wizard-ready form.userform-form {
   margin-top: 2px;
 }
 
-/* Modal Body & Compact 2-Column Grid */
+/* Scrollable Modal Body */
 body.section_branch #formContainer.ch-wizard-ready .form-all {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
   width: 100% !important;
   max-width: 100% !important;
-  padding: 20px 24px 16px !important;
+  padding: 22px 24px !important;
   background: #ffffff !important;
   font-family: "Montserrat", Arial, sans-serif !important;
   color: #111827 !important;
@@ -1262,11 +1271,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-section {
   padding: 0 !important;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 14px;
-}
-
-body.section_branch #formContainer.ch-wizard-ready .ch-step-hidden {
-  display: none !important;
+  gap: 14px;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-line {
@@ -1333,7 +1338,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-textarea:focus {
   box-shadow: 0 0 0 1px #071846 !important;
 }
 
-/* Eventbrite-Style Inline Field Errors */
+/* Inline Errors */
 body.section_branch #formContainer.ch-wizard-ready .ch-field-error {
   border-color: #dc2626 !important;
 }
@@ -1346,16 +1351,49 @@ body.section_branch #formContainer.ch-wizard-ready .ch-field-error {
   display: block;
 }
 
-/* Side-by-Side Name Subfields */
-body.section_branch #formContainer.ch-wizard-ready .form-sub-label-container {
+/* Side-by-Side Name Subfields (Outside Tables Only) */
+body.section_branch #formContainer.ch-wizard-ready .form-input > .form-sub-label-container {
   display: inline-block;
   width: calc(50% - 7px);
   vertical-align: top;
   margin-right: 14px;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-sub-label-container:last-child {
+body.section_branch #formContainer.ch-wizard-ready .form-input > .form-sub-label-container:last-child {
   margin-right: 0;
+}
+
+/* Fix Address & Payment Tables (Eliminates Excess Whitespace) */
+body.section_branch #formContainer.ch-wizard-ready .form-address-table,
+body.section_branch #formContainer.ch-wizard-ready .form-creditcard table {
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: separate !important;
+  border-spacing: 0 8px !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-address-table td,
+body.section_branch #formContainer.ch-wizard-ready .form-creditcard td {
+  width: 50% !important;
+  padding: 0 7px 0 0 !important;
+  vertical-align: top !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-address-table td:last-child,
+body.section_branch #formContainer.ch-wizard-ready .form-creditcard td:last-child {
+  padding-right: 0 !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-address-table td[colspan="2"],
+body.section_branch #formContainer.ch-wizard-ready .form-creditcard td[colspan="2"] {
+  width: 100% !important;
+  padding-right: 0 !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready table .form-sub-label-container {
+  display: block !important;
+  width: 100% !important;
+  margin-right: 0 !important;
 }
 
 /* Step 1: Eventbrite Ticket Cards */
@@ -1382,10 +1420,12 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .fo
   font-weight: 600 !important;
   color: #111827 !important;
   width: auto !important;
+  flex: 1;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .form-input {
   width: auto !important;
+  flex-shrink: 0;
 }
 
 .ch-stepper {
@@ -1413,7 +1453,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .fo
 }
 
 .ch-stepper .form-spinner-input {
-  width: 34px !important;
+  width: 32px !important;
   border: 0 !important;
   background: transparent !important;
   text-align: center !important;
@@ -1422,18 +1462,11 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .fo
   padding: 0 !important;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-spinner,
-body.section_branch #formContainer.ch-wizard-ready .form-spinner td {
-  border: 0 !important;
-  background: transparent !important;
-}
-
-body.section_branch #formContainer.ch-wizard-ready .form-spinner-up,
-body.section_branch #formContainer.ch-wizard-ready .form-spinner-down {
+body.section_branch #formContainer.ch-wizard-ready .form-spinner {
   display: none !important;
 }
 
-/* Step 3: Clean Donation Tile Grid (Howell / Venice Style) */
+/* Step 3: Clean Donation Tile Grid */
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-multiple-column,
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-single-column {
   display: flex;
@@ -1465,7 +1498,6 @@ body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-
   font-size: 14px !important;
   font-weight: 700 !important;
   cursor: pointer;
-  transition: all 0.14s ease;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item input[type="radio"]:checked + label {
@@ -1474,12 +1506,21 @@ body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-
   color: #ffe69a !important;
 }
 
-/* Checkboxes */
+/* Clean Checkboxes (Email Opt-In & Volunteer) */
 body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 4px 0;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: #071846;
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item label {
@@ -1487,32 +1528,70 @@ body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item label {
   font-weight: 500 !important;
   color: #374151 !important;
   cursor: pointer;
+  line-height: 1.35;
 }
 
-/* Clean Eventbrite Bottom Footer */
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-optin-compact {
+  margin-top: -6px !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-volunteer-box {
+  background: #f9fafb !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 6px !important;
+  padding: 12px 14px !important;
+}
+
+/* IMPORTANT: Must stay AFTER .ch-ticket-card so hidden steps stay hidden */
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-step-hidden,
+body.section_branch #formContainer.ch-wizard-ready .ch-step-hidden {
+  display: none !important;
+}
+
+/* Pinned Modal Footer with Prominent Back + Primary CTA */
 .ch-modal-footer {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 14px 24px 18px;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 24px 16px;
   border-top: 1px solid #e5e7eb;
   background: #ffffff;
+}
+
+.ch-btn-back {
+  background: #ffffff;
+  color: #374151;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 11px 20px;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ch-btn-back:hover {
+  background: #f3f4f6;
+  color: #111827;
 }
 
 .ch-btn-next,
 body.section_branch #formContainer.ch-wizard-ready .form-submit-button {
   background: #071846 !important;
   background-image: none !important;
-  color: #ffffff !important;
+  color: #ffe69a !important;
   border: 0 !important;
   border-radius: 6px !important;
-  padding: 11px 28px !important;
+  padding: 12px 32px !important;
   font-family: "Montserrat", Arial, sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
   text-shadow: none !important;
-  box-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(7, 24, 70, 0.22) !important;
   cursor: pointer !important;
+  margin-left: auto;
 }
 
 .ch-btn-next:hover,
@@ -1533,10 +1612,12 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
     gap: 20px;
     text-align: center;
   }
-  .ch-open-rsvp-btn,
-  .ch-btn-next,
-  body.section_branch #formContainer.ch-wizard-ready .form-submit-button {
+  .ch-open-rsvp-btn {
     width: 100%;
+  }
+  body.section_branch #formContainer.ch-wizard-ready form.userform-form {
+    height: 92vh !important;
+    max-height: 92vh !important;
   }
   body.section_branch #formContainer.ch-wizard-ready .form-line.ch-half-field {
     width: 100% !important;
