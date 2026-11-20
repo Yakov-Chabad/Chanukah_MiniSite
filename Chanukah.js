@@ -311,7 +311,7 @@
     });
   }
 
-function setupChildPage() {
+  function setupChildPage() {
     if (!document.body.classList.contains("section_branch")) return false;
 
     const sectionId = (window.Co && window.Co.SectionId) ? window.Co.SectionId : "7629102";
