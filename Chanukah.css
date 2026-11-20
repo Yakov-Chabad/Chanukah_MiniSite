@@ -983,7 +983,7 @@ html body.cco_body #ch-chanukah a.ch-learn-card:hover,
   cursor: pointer;
 }
 
-/* --- 8. AUTOMATIC CHILD-PAGE (OPTION B HEADER + DARK-MODE INTEGRATED FORM) --- */
+/* --- 8. AUTOMATIC CHILD-PAGE (OPTION B HEADER + EVENTBRITE LANDING & WHITE MODAL) --- */
 body.section_branch {
   padding-top: 64px !important;
 }
@@ -1063,20 +1063,14 @@ body.section_branch .article-header__subtitle {
   text-shadow: 0 2px 12px rgba(4, 12, 30, 0.85) !important;
 }
 
-/* Integrated Dark-Mode Form Container */
 body.section_branch #ContentBody {
-  max-width: 780px !important;
+  max-width: 960px !important;
   width: calc(100% - 32px) !important;
   margin: 32px auto 68px !important;
-  padding: 36px 38px !important;
-  background-color: #0b1c3e !important;
-  color: #e2e8f0 !important;
-  border: 1px solid rgba(255, 230, 154, 0.18) !important;
-  border-top-left-radius: 24px !important;
-  border-bottom-right-radius: 24px !important;
-  border-top-right-radius: 8px !important;
-  border-bottom-left-radius: 8px !important;
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42) !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
 
 body.section_branch #ContentBody #cco_body,
@@ -1089,160 +1083,444 @@ body.section_branch #ContentBody article.content {
   margin: 0 !important;
 }
 
-body.section_branch .form-all {
+body.section_branch #ContentBody > .content-area-parent .center.small,
+body.section_branch article.content > .center.small {
+  display: none !important;
+}
+
+/* --- Event Landing Card (Shown Before Clicking RSVP) --- */
+.ch-event-landing {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+  background: #0b1c3e;
+  border: 1px solid rgba(255, 230, 154, 0.2);
+  border-top-left-radius: 26px;
+  border-bottom-right-radius: 26px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 32px;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42);
+}
+
+.ch-event-landing.ch-no-flyer {
+  grid-template-columns: 1fr;
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ch-landing-flyer img {
+  width: 100% !important;
+  height: auto !important;
+  border-radius: 12px;
+  display: block;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+.ch-landing-info {
+  color: #e2e8f0;
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+.ch-landing-info h3 {
+  font-family: "EB Garamond", Georgia, serif;
+  color: #ffe69a;
+  font-size: 32px;
+  font-weight: 500;
+  margin: 0 0 14px 0;
+  line-height: 1.15;
+}
+
+.ch-landing-copy {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: 24px;
+}
+
+.ch-landing-copy a {
+  color: #ffe69a !important;
+  text-decoration: underline;
+}
+
+.ch-landing-copy p {
+  margin: 0 0 10px 0;
+}
+
+.ch-open-rsvp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #ffe69a;
+  color: #071846;
+  border: 0;
+  border-radius: 30px;
+  padding: 15px 38px;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(255, 230, 154, 0.25);
+  transition: background-color 0.16s ease, transform 0.16s ease;
+}
+
+.ch-open-rsvp-btn:hover {
+  background: #fff1c7;
+  transform: translateY(-2px);
+}
+
+.ch-landing-back {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 12.5px;
+  color: rgba(179, 196, 222, 0.8) !important;
+  text-decoration: none;
+}
+
+.ch-landing-back:hover {
+  color: #ffe69a !important;
+}
+
+/* --- Bright White Eventbrite-Style Modal Overlay --- */
+body.section_branch #formContainer.ch-wizard-ready {
+  display: none;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 20000 !important;
+  background: rgba(4, 12, 30, 0.82) !important;
+  backdrop-filter: blur(4px);
+  padding: 24px 14px !important;
+  overflow-y: auto !important;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+body.section_branch #formContainer.ch-wizard-ready.ch-modal-open {
+  display: flex !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready form.userform-form {
+  position: relative;
+  width: 100% !important;
+  max-width: 580px !important;
+  margin: auto !important;
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border-radius: 18px !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55) !important;
+  overflow: hidden;
+}
+
+/* Modal Header & Progress Steps */
+.ch-modal-header {
+  background: #071846;
+  color: #ffffff;
+  padding: 20px 24px 16px;
+  position: relative;
+}
+
+.ch-modal-title {
+  font-family: "EB Garamond", Georgia, serif;
+  font-size: 26px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0 36px 12px 0;
+  line-height: 1.15;
+}
+
+.ch-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ch-modal-close:hover {
+  background: #ffe69a;
+  color: #071846;
+}
+
+.ch-step-bar {
+  display: flex;
+  gap: 8px;
+}
+
+.ch-step-pill {
+  flex: 1;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.52);
+  padding-bottom: 6px;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.16);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ch-step-pill.ch-active {
+  color: #ffe69a;
+  border-bottom-color: #ffe69a;
+}
+
+.ch-step-pill.ch-done {
+  color: #ffffff;
+  border-bottom-color: rgba(255, 230, 154, 0.55);
+}
+
+/* Clean White Form Interior */
+body.section_branch #formContainer.ch-wizard-ready .form-all {
   width: 100% !important;
   max-width: 100% !important;
-  margin: 0 auto !important;
+  padding: 24px 26px 12px !important;
+  background: #ffffff !important;
   font-family: "Montserrat", Arial, sans-serif !important;
-  color: #e2e8f0 !important;
-  background: transparent !important;
-}
-
-body.section_branch .form-line {
-  padding: 12px 0 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-  background: transparent !important;
-}
-
-body.section_branch .form-line:last-child {
-  border-bottom: 0 !important;
-}
-
-body.section_branch .form-header-group {
-  border: 0 !important;
-  border-bottom: 1px solid rgba(255, 230, 154, 0.22) !important;
-  padding: 8px 0 10px !important;
-  margin: 10px 0 16px !important;
-  background: transparent !important;
-}
-
-body.section_branch .form-header {
-  font-family: "EB Garamond", Georgia, serif !important;
-  color: #ffe69a !important;
-  font-size: 32px !important;
-  font-weight: 500 !important;
-}
-
-body.section_branch .form-label,
-body.section_branch .form-label-left,
-body.section_branch .form-label-right,
-body.section_branch .form-checkbox-item label,
-body.section_branch .form-radio-item label,
-body.section_branch .form-address-table th {
-  font-family: "Montserrat", Arial, sans-serif !important;
-  font-size: 13.5px !important;
-  font-weight: 500 !important;
-  color: #f1f5f9 !important;
-}
-
-body.section_branch .form-required {
-  color: #ffe69a !important;
-  margin-left: 3px !important;
-}
-
-body.section_branch .form-sub-label {
-  font-size: 11px !important;
-  color: #94a3b8 !important;
-  margin-top: 4px !important;
-}
-
-/* Sleek Dark Inputs & Dropdowns */
-body.section_branch .form-textbox,
-body.section_branch .form-dropdown,
-body.section_branch .form-textarea {
-  max-width: 100% !important;
+  color: #1e293b !important;
   box-sizing: border-box !important;
-  background-color: #06132e !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 230, 154, 0.24) !important;
-  border-radius: 8px !important;
-  padding: 9px 12px !important;
-  font-family: "Montserrat", Arial, sans-serif !important;
-  font-size: 13.5px !important;
-  box-shadow: none !important;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
 }
 
-body.section_branch .form-dropdown option {
-  background-color: #071846 !important;
-  color: #ffffff !important;
-}
-
-body.section_branch .form-textbox:focus,
-body.section_branch .form-dropdown:focus,
-body.section_branch .form-textarea:focus {
-  border-color: #ffe69a !important;
-  outline: none !important;
-  box-shadow: 0 0 0 3px rgba(255, 230, 154, 0.16) !important;
-}
-
-/* Fix Clunky Legacy Number Spinners */
-body.section_branch .form-spinner {
-  border: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-body.section_branch .form-spinner td {
-  border: 0 !important;
-  background: transparent !important;
+body.section_branch #formContainer.ch-wizard-ready .form-section {
+  list-style: none !important;
+  margin: 0 !important;
   padding: 0 !important;
 }
 
-body.section_branch .form-spinner-input {
-  width: 78px !important;
+body.section_branch #formContainer.ch-wizard-ready .ch-step-hidden {
+  display: none !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-line {
+  padding: 10px 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-label,
+body.section_branch #formContainer.ch-wizard-ready .form-label-left,
+body.section_branch #formContainer.ch-wizard-ready .form-label-right {
+  width: 100% !important;
+  float: none !important;
+  display: block !important;
+  text-align: left !important;
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #0f172a !important;
+  margin-bottom: 6px !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-input {
+  display: block !important;
+  width: 100% !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-sub-label {
+  font-size: 11px !important;
+  color: #64748b !important;
+  margin-top: 4px !important;
+  display: block;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-textbox,
+body.section_branch #formContainer.ch-wizard-ready .form-dropdown,
+body.section_branch #formContainer.ch-wizard-ready .form-textarea {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 8px !important;
+  padding: 10px 12px !important;
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-size: 14px !important;
+  box-shadow: none !important;
+  transition: border-color 0.15s ease, background-color 0.15s ease !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-textbox:focus,
+body.section_branch #formContainer.ch-wizard-ready .form-dropdown:focus,
+body.section_branch #formContainer.ch-wizard-ready .form-textarea:focus {
+  background: #ffffff !important;
+  border-color: #071846 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(7, 24, 70, 0.12) !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .ch-field-error {
+  border-color: #dc2626 !important;
+  background: #fef2f2 !important;
+}
+
+/* Clean Side-by-Side Name & Phone Subfields */
+body.section_branch #formContainer.ch-wizard-ready .form-sub-label-container {
+  display: inline-block;
+  width: calc(50% - 6px);
+  vertical-align: top;
+  margin-right: 10px;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-sub-label-container:last-child {
+  margin-right: 0;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-address-table {
+  width: 100% !important;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-address-table .form-sub-label-container {
+  width: 100%;
+  margin-right: 0;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-address-table td {
+  padding-right: 8px;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-address-table td:last-child {
+  padding-right: 0;
+}
+
+/* Modern − [ 0 ] + Guest Steppers (Replaces Ugly Legacy Spinners) */
+.ch-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 4px 6px;
+}
+
+.ch-step-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 0;
+  background: #071846;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ch-step-btn:hover {
+  background: #134480;
+}
+
+.ch-stepper .form-spinner-input {
+  width: 54px !important;
+  border: 0 !important;
+  background: transparent !important;
   text-align: center !important;
-  -moz-appearance: textfield;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  padding: 4px !important;
 }
 
-body.section_branch .form-spinner-up,
-body.section_branch .form-spinner-down {
-  background-color: #132f66 !important;
-  border: 1px solid rgba(255, 230, 154, 0.24) !important;
-  border-radius: 4px !important;
-  cursor: pointer !important;
-  filter: invert(0.88) sepia(0.3) hue-rotate(5deg);
+body.section_branch #formContainer.ch-wizard-ready .form-spinner {
+  border: 0 !important;
+  background: transparent !important;
 }
 
-/* Clean Flat Gold Submit Button (no double borders) */
-body.section_branch .form-submit-button {
-  background: #ffe69a !important;
+body.section_branch #formContainer.ch-wizard-ready .form-spinner-up,
+body.section_branch #formContainer.ch-wizard-ready .form-spinner-down {
+  display: none !important;
+}
+
+/* Checkboxes & Radio Buttons */
+body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item,
+body.section_branch #formContainer.ch-wizard-ready .form-radio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 13.5px;
+  color: #1e293b !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item label,
+body.section_branch #formContainer.ch-wizard-ready .form-radio-item label {
+  color: #1e293b !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+}
+
+/* Modal Footer Navigation */
+.ch-modal-error {
+  display: none;
+  margin: 0 26px 10px;
+  padding: 10px 14px;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.ch-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 26px 22px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.ch-btn-back {
+  background: transparent;
+  color: #475569;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 24px;
+  padding: 10px 20px;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ch-btn-back:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.ch-btn-next,
+body.section_branch #formContainer.ch-wizard-ready .form-submit-button {
+  background: #071846 !important;
   background-image: none !important;
-  color: #071846 !important;
+  color: #ffe69a !important;
   border: 0 !important;
   border-radius: 26px !important;
-  padding: 12px 40px !important;
+  padding: 12px 28px !important;
   font-family: "Montserrat", Arial, sans-serif !important;
   font-size: 14px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.5px !important;
   text-shadow: none !important;
   box-shadow: none !important;
   cursor: pointer !important;
-  transition: background-color 0.15s ease, transform 0.15s ease !important;
+  margin-left: auto;
 }
 
-body.section_branch .form-submit-button:hover {
-  background: #fff1c7 !important;
-  transform: translateY(-1px) !important;
-}
-
-body.section_branch .form-image,
-body.section_branch #ContentBody img {
-  max-width: 100% !important;
-  height: auto !important;
-  border-radius: 10px;
-}
-
-body.section_branch .form-address-table {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-body.section_branch #ContentBody .center.small {
-  color: rgba(179, 196, 222, 0.65) !important;
-  margin-top: 18px !important;
-  font-size: 12px !important;
+.ch-btn-next:hover,
+body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
+  background: #134480 !important;
 }
 
 @media (max-width: 900px) {
@@ -1251,13 +1529,18 @@ body.section_branch #ContentBody .center.small {
   }
 }
 
-@media (max-width: 649px) {
+@media (max-width: 720px) {
+  .ch-event-landing {
+    grid-template-columns: 1fr;
+    padding: 20px 18px;
+    gap: 20px;
+    text-align: center;
+  }
+  .ch-open-rsvp-btn {
+    width: 100%;
+  }
   body.section_branch .master-content-wrapper {
     padding: 26px 16px 24px !important;
-  }
-  body.section_branch .article-header::before {
-    font-size: 9.5px;
-    letter-spacing: 1.5px;
   }
   body.section_branch .article-header__title {
     font-size: 32px !important;
@@ -1265,24 +1548,10 @@ body.section_branch #ContentBody .center.small {
   body.section_branch .article-header__subtitle {
     font-size: 19px !important;
   }
-  body.section_branch #ContentBody {
-    width: calc(100% - 20px) !important;
-    margin: 18px auto 44px !important;
-    padding: 22px 16px !important;
-    border-top-left-radius: 16px !important;
-    border-bottom-right-radius: 16px !important;
+  body.section_branch #formContainer.ch-wizard-ready .form-all {
+    padding: 18px 18px 10px !important;
   }
-  body.section_branch .form-label,
-  body.section_branch .form-label-left,
-  body.section_branch .form-label-right {
-    width: 100% !important;
-    float: none !important;
-    display: block !important;
-    text-align: left !important;
-    margin-bottom: 6px !important;
-  }
-  body.section_branch .form-input {
-    display: block !important;
-    width: 100% !important;
+  .ch-modal-footer {
+    padding: 14px 18px 18px;
   }
 }
