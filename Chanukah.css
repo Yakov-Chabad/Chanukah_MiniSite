@@ -1555,3 +1555,52 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
     padding: 14px 18px 18px;
   }
 }
+/* --- 9. REGULAR CHILD WEBPAGES (NON-FORMS) --- */
+body.section_branch:not(:has(#formContainer)) #ContentBody {
+  max-width: 860px !important;
+  background-color: #0b1c3e !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 230, 154, 0.18) !important;
+  border-top-left-radius: 24px !important;
+  border-bottom-right-radius: 24px !important;
+  border-top-right-radius: 8px !important;
+  border-bottom-left-radius: 8px !important;
+  padding: 36px 40px !important;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42) !important;
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+}
+
+body.section_branch:not(:has(#formContainer)) #ContentBody h2,
+body.section_branch:not(:has(#formContainer)) #ContentBody h3 {
+  font-family: "EB Garamond", Georgia, serif !important;
+  color: #ffe69a !important;
+  font-weight: 500 !important;
+  margin: 24px 0 10px 0 !important;
+}
+
+body.section_branch:not(:has(#formContainer)) #ContentBody p,
+body.section_branch:not(:has(#formContainer)) #ContentBody li {
+  color: rgba(255, 255, 255, 0.88) !important;
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+}
+
+body.section_branch:not(:has(#formContainer)) #ContentBody a {
+  color: #ffe69a !important;
+  text-decoration: underline;
+}
+
+body.section_branch:not(:has(#formContainer)) #ContentBody img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 10px;
+}
+
+@media (max-width: 649px) {
+  body.section_branch:not(:has(#formContainer)) #ContentBody {
+    padding: 24px 18px !important;
+  }
+}
