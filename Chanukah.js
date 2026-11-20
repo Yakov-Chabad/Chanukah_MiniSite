@@ -311,7 +311,7 @@
     });
   }
 
-  function initEventModalWizard() {
+   function initEventModalWizard() {
     const formContainer = document.getElementById("formContainer");
     const form = formContainer ? formContainer.querySelector("form.userform-form") : null;
     const ul = form ? form.querySelector("ul.form-section") : null;
