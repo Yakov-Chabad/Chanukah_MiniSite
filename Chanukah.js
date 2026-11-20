@@ -311,21 +311,6 @@
     });
   }
 
-  function init() {
-    ensureViewport();
-    removeChabadOneTopBar();
-    initNav();
-    renderDirectory();
-    initLightbox();
-    injectEventSchema();
-  }
-
-  if (document.readyState !== "loading") {
-    init();
-  } else {
-    document.addEventListener("DOMContentLoaded", init);
-  }
-})();
 function setupChildPage() {
     if (!document.body.classList.contains("section_branch")) return false;
 
