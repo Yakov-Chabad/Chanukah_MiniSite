@@ -10,10 +10,6 @@
     8: "Eighth",
   };
 
-  /* 2026 CHANUKAH EVENTS
-     - flyer: image URL, "coming-soon" for placeholder, or "" for no flyer pane
-     - flyerFit: "contain" (default, framed & uncropped) or "cover" (edge-to-edge bleed)
-     - isoStart: ISO date/time for Google SEO Event structured data */
   const EVENTS = [
     {
       date: "Saturday, Dec. 5",
@@ -26,7 +22,6 @@
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
       flyer: "coming-soon",
-      flyerFit: "contain",
     },
     {
       date: "Sunday, Dec. 6",
@@ -39,7 +34,6 @@
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
       flyer: "coming-soon",
-      flyerFit: "contain",
     },
     {
       date: "Sunday, Dec. 6",
@@ -52,7 +46,6 @@
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
       flyer: "coming-soon",
-      flyerFit: "contain",
     },
     {
       date: "Monday, Dec. 7",
@@ -62,10 +55,9 @@
       time: "5:30 PM – 7:30 PM",
       location: "Main Street, Medford, 16 N Main St, Medford, NJ 08055",
       note: "",
-      host: "Chabad of Camden & Burlington Counties",
+      host: "Chabad of Medford",
       link: "https://www.thechabadcenter.org",
       flyer: "coming-soon",
-      flyerFit: "contain",
     },
     {
       date: "Tuesday, Dec. 8",
@@ -78,7 +70,6 @@
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
       flyer: "coming-soon",
-      flyerFit: "contain",
     },
     {
       date: "Tuesday, Dec. 8",
@@ -91,7 +82,6 @@
       host: "Chabad of Cherry Hill West",
       link: "https://ChabadCherryHillWest.org",
       flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/westside.jpg",
-      flyerFit: "contain",
     },
     {
       date: "Wednesday, Dec. 9",
@@ -104,7 +94,6 @@
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
       flyer: "coming-soon",
-      flyerFit: "contain",
     },
     {
       date: "Wednesday, Dec. 9",
@@ -117,7 +106,6 @@
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
       flyer: "coming-soon",
-      flyerFit: "contain",
     },
     {
       date: "Thursday, Dec. 10",
@@ -130,7 +118,6 @@
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
       flyer: "coming-soon",
-      flyerFit: "contain",
     },
   ];
 
@@ -182,9 +169,8 @@
         </div>
       `;
     }
-    const coverClass = ev.flyerFit === "cover" ? " ch-cover" : "";
     return `
-      <div class="ch-event-flyer${coverClass} js-ch-flyer" data-src="${ev.flyer}" title="Click to enlarge flyer">
+      <div class="ch-event-flyer js-ch-flyer" data-src="${ev.flyer}" title="Click to enlarge flyer">
         <img src="${ev.flyer}" alt="${ev.eventName || "Chanukah Event"} Flyer" loading="lazy" />
       </div>
     `;
@@ -200,13 +186,13 @@
       <div class="ch-event-card">
         ${buildFlyerHtml(ev)}
         <div class="ch-event-body">
-          ${ev.host ? `<span class="ch-event-host">Hosted by: ${ev.host}</span>` : ""}
           <div class="ch-event-title">${ev.eventName || ""}</div>
           <div class="ch-event-details">
             ${ev.location ? `<div class="ch-detail-line"><i class="fas fa-map-marker-alt"></i><span>${formatLocation(ev.location)}</span></div>` : ""}
             ${ev.date ? `<div class="ch-detail-line"><i class="far fa-clock"></i><span>${ev.date}${ev.time ? " &middot; " + ev.time : ""}</span></div>` : ""}
           </div>
           ${ev.note ? `<div class="ch-event-note">${ev.note}</div>` : ""}
+          ${ev.host ? `<span class="ch-event-host">Hosted by: ${ev.host}</span>` : ""}
           ${link ? `<div class="ch-btn-wrap"><a class="ch-reserve-btn" href="${link}" target="_blank" rel="noopener">More Information &rarr;</a></div>` : ""}
         </div>
       </div>
