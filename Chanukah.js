@@ -311,6 +311,259 @@
     });
   }
 
+  function initEventModalWizard() {
+    const formContainer = document.getElementById("formContainer");
+    const form = formContainer ? formContainer.querySelector("form.userform-form") : null;
+    const ul = form ? form.querySelector("ul.form-section") : null;
+    if (!formContainer || !form || !ul) return;
+
+    const items = Array.from(ul.children).filter((el) => el.tagName === "LI");
+    const landingParts = { flyerSrc: "", htmlBlocks: [] };
+    let submitLi = null;
+    let paymentLi = null;
+    const steps = { 1: [], 2: [], 3: [], 4: [] };
+
+    items.forEach((li) => {
+      if (li.style.display === "none" && li.textContent.includes("Should be Empty")) return;
+
+      const img = li.querySelector("img.form-image");
+      const htmlBlock = li.querySelector(".form-html");
+      const isHead = li.querySelector(".form-header-group");
+      const isSubmit = li.querySelector(".form-submit-button");
+      const isPay = li.querySelector(".form-creditcard, .cc-icons, .billing_address");
+
+      if (img && !landingParts.flyerSrc) {
+        landingParts.flyerSrc = img.getAttribute("src");
+        li.classList.add("ch-step-hidden");
+        return;
+      }
+      if (htmlBlock && steps[1].length === 0 && steps[2].length === 0) {
+        landingParts.htmlBlocks.push(htmlBlock.innerHTML);
+        li.classList.add("ch-step-hidden");
+        return;
+      }
+      if (isHead) {
+        li.classList.add("ch-step-hidden");
+        return;
+      }
+      if (isSubmit) {
+        submitLi = li;
+        li.classList.add("ch-step-hidden");
+        return;
+      }
+      if (isPay) {
+        paymentLi = li;
+        steps[4].push(li);
+        return;
+      }
+
+      const labelText = (li.querySelector("label") ? li.querySelector("label").textContent : "").toLowerCase();
+      const isSpinner = !!li.querySelector(".form-spinner-input, [data-type='input-spinner']");
+      const isSupport =
+        !!li.querySelector("#total_amount, .form-radio-other") ||
+        /help|donat|contribut|sponsor|support|total/.test(labelText);
+
+      if (isSpinner || /adult|child|guest|attend|ticket/.test(labelText)) {
+        steps[1].push(li);
+      } else if (isSupport) {
+        steps[3].push(li);
+      } else {
+        steps[2].push(li);
+      }
+    });
+
+    // Upgrade legacy spinners to clean − / + steppers
+    ul.querySelectorAll(".form-spinner-input, [data-type='input-spinner']").forEach((input) => {
+      if (input.closest(".ch-stepper")) return;
+      const wrap = document.createElement("div");
+      wrap.className = "ch-stepper";
+      const minus = document.createElement("button");
+      minus.type = "button";
+      minus.className = "ch-step-btn";
+      minus.textContent = "−";
+      const plus = document.createElement("button");
+      plus.type = "button";
+      plus.className = "ch-step-btn";
+      plus.textContent = "+";
+
+      input.parentNode.insertBefore(wrap, input);
+      wrap.appendChild(minus);
+      wrap.appendChild(input);
+      wrap.appendChild(plus);
+      if (!input.value) input.value = "0";
+
+      minus.addEventListener("click", () => {
+        const val = Math.max(0, (parseInt(input.value, 10) || 0) - 1);
+        input.value = val;
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      plus.addEventListener("click", () => {
+        const val = (parseInt(input.value, 10) || 0) + 1;
+        input.value = val;
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
+
+    // Build Event Landing Card above #formContainer
+    const pageTitle = document.querySelector(".article-header__title")
+      ? document.querySelector(".article-header__title").textContent.trim()
+      : "Event Registration";
+    const sectionId = (window.Co && window.Co.SectionId) ? window.Co.SectionId : "7629102";
+
+    const landing = document.createElement("div");
+    landing.className = "ch-event-landing" + (landingParts.flyerSrc ? "" : " ch-no-flyer");
+    landing.innerHTML = `
+      ${landingParts.flyerSrc ? `<div class="ch-landing-flyer"><img src="${landingParts.flyerSrc}" alt="${pageTitle}" /></div>` : ""}
+      <div class="ch-landing-info">
+        <h3>Join Us for ${pageTitle}</h3>
+        <div class="ch-landing-copy">
+          ${landingParts.htmlBlocks.length ? landingParts.htmlBlocks.join("") : "<p>Reserve your spot below — registration takes less than a minute.</p>"}
+        </div>
+        <button type="button" class="ch-open-rsvp-btn" id="ch-open-rsvp">RSVP Here &rarr;</button>
+        <div><a class="ch-landing-back" href="/${sectionId}#events">&larr; Back to All Chanukah Events</a></div>
+      </div>
+    `;
+    formContainer.parentNode.insertBefore(landing, formContainer);
+
+    // Build Modal Header & Footer inside the real <form>
+    const activeSteps = [1, 2, 3, 4].filter((n) => steps[n].length > 0);
+    const stepNames = { 1: "1. Guests", 2: "2. Contact", 3: "3. Support", 4: "4. Payment" };
+
+    const header = document.createElement("div");
+    header.className = "ch-modal-header";
+    header.innerHTML = `
+      <div class="ch-modal-title">${pageTitle}</div>
+      <button type="button" class="ch-modal-close" aria-label="Close">&times;</button>
+      <div class="ch-step-bar">
+        ${activeSteps.map((n) => `<div class="ch-step-pill" data-step="${n}">${stepNames[n]}</div>`).join("")}
+      </div>
+    `;
+    form.insertBefore(header, form.firstChild);
+
+    const errBox = document.createElement("div");
+    errBox.className = "ch-modal-error";
+    form.appendChild(errBox);
+
+    const footer = document.createElement("div");
+    footer.className = "ch-modal-footer";
+    footer.innerHTML = `
+      <button type="button" class="ch-btn-back">&larr; Back</button>
+      <button type="button" class="ch-btn-next">Next &rarr;</button>
+    `;
+    const realSubmit = submitLi ? submitLi.querySelector(".form-submit-button") : null;
+    if (realSubmit) {
+      realSubmit.textContent = "Complete Registration";
+      footer.appendChild(realSubmit);
+    }
+    form.appendChild(footer);
+
+    formContainer.classList.add("ch-wizard-ready");
+
+    let currentIdx = 0;
+    const backBtn = footer.querySelector(".ch-btn-back");
+    const nextBtn = footer.querySelector(".ch-btn-next");
+
+    function needsPayment() {
+      if (!paymentLi) return false;
+      const checkedDonate = steps[3].some((li) =>
+        Array.from(li.querySelectorAll("input:checked")).some((inp) =>
+          /donat|18|54|180|360/i.test(inp.value)
+        )
+      );
+      return checkedDonate || paymentLi.style.display !== "none";
+    }
+
+    function renderStep() {
+      errBox.style.display = "none";
+      const stepNum = activeSteps[currentIdx];
+
+      [1, 2, 3, 4].forEach((n) => {
+        steps[n].forEach((li) => {
+          li.classList.toggle("ch-step-hidden", n !== stepNum);
+        });
+      });
+
+      header.querySelectorAll(".ch-step-pill").forEach((pill) => {
+        const n = parseInt(pill.getAttribute("data-step"), 10);
+        pill.classList.toggle("ch-active", n === stepNum);
+        pill.classList.toggle("ch-done", activeSteps.indexOf(n) < currentIdx);
+      });
+
+      backBtn.style.visibility = currentIdx === 0 ? "hidden" : "visible";
+
+      const isLast =
+        currentIdx === activeSteps.length - 1 ||
+        (stepNum === 3 && !needsPayment());
+
+      if (isLast) {
+        nextBtn.style.display = "none";
+        if (realSubmit) realSubmit.style.display = "inline-block";
+      } else {
+        nextBtn.style.display = "inline-block";
+        nextBtn.textContent = stepNum === 3 ? "Continue to Payment →" : "Next →";
+        if (realSubmit) realSubmit.style.display = "none";
+      }
+    }
+
+    function validateCurrentStep() {
+      const stepNum = activeSteps[currentIdx];
+      let valid = true;
+      steps[stepNum].forEach((li) => {
+        if (li.style.display === "none") return;
+        li.querySelectorAll("input.validate\\[required\\], input[class*='validate[required'], select[class*='validate[required']").forEach((inp) => {
+          if (inp.disabled || inp.offsetParent === null) return;
+          const empty = !inp.value.trim();
+          inp.classList.toggle("ch-field-error", empty);
+          if (empty) valid = false;
+        });
+      });
+      if (!valid) {
+        errBox.textContent = "Please fill in the required fields highlighted above.";
+        errBox.style.display = "block";
+      }
+      return valid;
+    }
+
+    // Re-evaluate Step 3 button whenever user checks/unchecks donation
+    form.addEventListener("change", () => {
+      if (activeSteps[currentIdx] === 3) setTimeout(renderStep, 60);
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (!validateCurrentStep()) return;
+      if (currentIdx < activeSteps.length - 1) {
+        currentIdx++;
+        renderStep();
+        formContainer.scrollTop = 0;
+      }
+    });
+
+    backBtn.addEventListener("click", () => {
+      if (currentIdx > 0) {
+        currentIdx--;
+        renderStep();
+        formContainer.scrollTop = 0;
+      }
+    });
+
+    document.getElementById("ch-open-rsvp").addEventListener("click", () => {
+      currentIdx = 0;
+      renderStep();
+      formContainer.classList.add("ch-modal-open");
+      document.body.style.overflow = "hidden";
+    });
+
+    function closeModal() {
+      formContainer.classList.remove("ch-modal-open");
+      document.body.style.overflow = "";
+    }
+
+    header.querySelector(".ch-modal-close").addEventListener("click", closeModal);
+    formContainer.addEventListener("click", (e) => {
+      if (e.target === formContainer) closeModal();
+    });
+  }
+
   function setupChildPage() {
     if (!document.body.classList.contains("section_branch")) return false;
 
@@ -322,6 +575,7 @@
       a.setAttribute("href", hash === "#top" ? homeBase : homeBase + hash);
     });
 
+    initEventModalWizard();
     return true;
   }
 
