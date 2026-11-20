@@ -983,7 +983,7 @@ html body.cco_body #ch-chanukah a.ch-learn-card:hover,
   cursor: pointer;
 }
 
-/* --- 8. AUTOMATIC CHILD-PAGE (OPTION B HEADER + EVENTBRITE LANDING & WHITE MODAL) --- */
+/* --- 8. AUTOMATIC CHILD-PAGE (SEAMLESS HERO + EVENTBRITE WHITE MODAL) --- */
 body.section_branch {
   padding-top: 64px !important;
 }
@@ -1006,19 +1006,19 @@ body.section_branch #ch-chanukah .ch-nav {
   z-index: 10000 !important;
 }
 
-/* Option B: Slim Menorah Photo Header Strip */
+/* Seamless Slim Menorah Photo Header (No Gold Line) */
 body.section_branch .master-content-wrapper {
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;
-  padding: 40px 20px 36px !important;
-  background-color: #0b1f47 !important;
+  padding: 40px 20px 38px !important;
+  background-color: #06132e !important;
   background-image:
-    linear-gradient(180deg, rgba(6, 19, 46, 0.72) 0%, rgba(9, 28, 66, 0.78) 60%, rgba(6, 19, 46, 0.96) 100%),
+    linear-gradient(180deg, rgba(6, 19, 46, 0.7) 0%, rgba(9, 28, 66, 0.78) 65%, #06132e 100%),
     url("https://yakov-chabad.github.io/Chanukah_MiniSite/hero.jpg") !important;
   background-size: cover !important;
   background-position: center 22% !important;
-  border-bottom: 1px solid rgba(255, 230, 154, 0.16) !important;
+  border-bottom: 0 !important;
 }
 
 body.section_branch .article-header {
@@ -1064,9 +1064,9 @@ body.section_branch .article-header__subtitle {
 }
 
 body.section_branch #ContentBody {
-  max-width: 960px !important;
+  max-width: 940px !important;
   width: calc(100% - 32px) !important;
-  margin: 32px auto 68px !important;
+  margin: 24px auto 68px !important;
   padding: 0 !important;
   background: transparent !important;
   border: 0 !important;
@@ -1088,25 +1088,21 @@ body.section_branch article.content > .center.small {
   display: none !important;
 }
 
-/* --- Event Landing Card (Shown Before Clicking RSVP) --- */
+/* --- Event Landing Card --- */
 .ch-event-landing {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
   gap: 32px;
   align-items: center;
   background: #0b1c3e;
-  border: 1px solid rgba(255, 230, 154, 0.2);
-  border-top-left-radius: 26px;
-  border-bottom-right-radius: 26px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  padding: 32px;
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42);
+  border: 1px solid rgba(255, 230, 154, 0.18);
+  border-radius: 14px;
+  padding: 28px;
 }
 
 .ch-event-landing.ch-no-flyer {
   grid-template-columns: 1fr;
-  max-width: 620px;
+  max-width: 600px;
   margin: 0 auto;
   text-align: center;
 }
@@ -1114,9 +1110,8 @@ body.section_branch article.content > .center.small {
 .ch-landing-flyer img {
   width: 100% !important;
   height: auto !important;
-  border-radius: 12px;
+  border-radius: 8px;
   display: block;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
 }
 
 .ch-landing-info {
@@ -1129,55 +1124,42 @@ body.section_branch article.content > .center.small {
   color: #ffe69a;
   font-size: 32px;
   font-weight: 500;
-  margin: 0 0 14px 0;
+  margin: 0 0 12px 0;
   line-height: 1.15;
 }
 
 .ch-landing-copy {
   font-size: 14.5px;
-  line-height: 1.65;
+  line-height: 1.6;
   color: rgba(255, 255, 255, 0.88);
-  margin-bottom: 24px;
-}
-
-.ch-landing-copy a {
-  color: #ffe69a !important;
-  text-decoration: underline;
-}
-
-.ch-landing-copy p {
-  margin: 0 0 10px 0;
+  margin-bottom: 22px;
 }
 
 .ch-open-rsvp-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   background: #ffe69a;
   color: #071846;
   border: 0;
-  border-radius: 30px;
-  padding: 15px 38px;
+  border-radius: 6px;
+  padding: 13px 32px;
   font-family: "Montserrat", Arial, sans-serif;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 700;
-  letter-spacing: 0.4px;
   cursor: pointer;
-  box-shadow: 0 8px 22px rgba(255, 230, 154, 0.25);
-  transition: background-color 0.16s ease, transform 0.16s ease;
+  transition: background-color 0.15s ease;
 }
 
 .ch-open-rsvp-btn:hover {
   background: #fff1c7;
-  transform: translateY(-2px);
 }
 
 .ch-landing-back {
   display: inline-block;
-  margin-top: 18px;
+  margin-top: 16px;
   font-size: 12.5px;
-  color: rgba(179, 196, 222, 0.8) !important;
+  color: rgba(179, 196, 222, 0.78) !important;
   text-decoration: none;
 }
 
@@ -1185,17 +1167,16 @@ body.section_branch article.content > .center.small {
   color: #ffe69a !important;
 }
 
-/* --- Bright White Eventbrite-Style Modal Overlay --- */
+/* --- Eventbrite-Style Flat White Modal --- */
 body.section_branch #formContainer.ch-wizard-ready {
   display: none;
   position: fixed !important;
   inset: 0 !important;
   z-index: 20000 !important;
-  background: rgba(4, 12, 30, 0.82) !important;
-  backdrop-filter: blur(4px);
-  padding: 24px 14px !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  padding: 20px 12px !important;
   overflow-y: auto !important;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
 }
 
@@ -1206,87 +1187,72 @@ body.section_branch #formContainer.ch-wizard-ready.ch-modal-open {
 body.section_branch #formContainer.ch-wizard-ready form.userform-form {
   position: relative;
   width: 100% !important;
-  max-width: 580px !important;
+  max-width: 560px !important;
   margin: auto !important;
   background: #ffffff !important;
   color: #1e293b !important;
-  border-radius: 18px !important;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35) !important;
   overflow: hidden;
 }
 
-/* Modal Header & Progress Steps */
+/* Clean White Top Bar (Back Arrow Left, Title Center, X Right) */
 .ch-modal-header {
-  background: #071846;
-  color: #ffffff;
-  padding: 20px 24px 16px;
-  position: relative;
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  padding: 16px 18px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.ch-modal-back-top,
+.ch-modal-close {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #334155;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ch-modal-back-top:hover,
+.ch-modal-close:hover {
+  background: #f1f5f9;
+  color: #0f172a;
 }
 
 .ch-modal-title {
-  font-family: "EB Garamond", Georgia, serif;
-  font-size: 26px;
-  font-weight: 500;
-  color: #ffffff;
-  margin: 0 36px 12px 0;
-  line-height: 1.15;
-}
-
-.ch-modal-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 0;
-  background: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.ch-modal-close:hover {
-  background: #ffe69a;
-  color: #071846;
-}
-
-.ch-step-bar {
-  display: flex;
-  gap: 8px;
-}
-
-.ch-step-pill {
-  flex: 1;
   font-family: "Montserrat", Arial, sans-serif;
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.52);
-  padding-bottom: 6px;
-  border-bottom: 3px solid rgba(255, 255, 255, 0.16);
-  text-align: center;
-  white-space: nowrap;
+  color: #111827;
+  margin: 0;
+  line-height: 1.25;
 }
 
-.ch-step-pill.ch-active {
-  color: #ffe69a;
-  border-bottom-color: #ffe69a;
+.ch-modal-sub {
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
 }
 
-.ch-step-pill.ch-done {
-  color: #ffffff;
-  border-bottom-color: rgba(255, 230, 154, 0.55);
-}
-
-/* Clean White Form Interior */
+/* Modal Body & Compact 2-Column Grid */
 body.section_branch #formContainer.ch-wizard-ready .form-all {
   width: 100% !important;
   max-width: 100% !important;
-  padding: 24px 26px 12px !important;
+  padding: 20px 24px 16px !important;
   background: #ffffff !important;
   font-family: "Montserrat", Arial, sans-serif !important;
-  color: #1e293b !important;
+  color: #111827 !important;
   box-sizing: border-box !important;
 }
 
@@ -1294,6 +1260,9 @@ body.section_branch #formContainer.ch-wizard-ready .form-section {
   list-style: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 14px;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .ch-step-hidden {
@@ -1301,10 +1270,16 @@ body.section_branch #formContainer.ch-wizard-ready .ch-step-hidden {
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-line {
-  padding: 10px 0 !important;
+  width: 100% !important;
+  padding: 0 !important;
   margin: 0 !important;
   border: 0 !important;
   background: transparent !important;
+  box-sizing: border-box !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-half-field {
+  width: calc(50% - 7px) !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-label,
@@ -1315,10 +1290,10 @@ body.section_branch #formContainer.ch-wizard-ready .form-label-right {
   display: block !important;
   text-align: left !important;
   font-family: "Montserrat", Arial, sans-serif !important;
-  font-size: 13px !important;
+  font-size: 12.5px !important;
   font-weight: 600 !important;
-  color: #0f172a !important;
-  margin-bottom: 6px !important;
+  color: #374151 !important;
+  margin-bottom: 5px !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-input {
@@ -1328,112 +1303,127 @@ body.section_branch #formContainer.ch-wizard-ready .form-input {
 
 body.section_branch #formContainer.ch-wizard-ready .form-sub-label {
   font-size: 11px !important;
-  color: #64748b !important;
-  margin-top: 4px !important;
+  color: #6b7280 !important;
+  margin-top: 3px !important;
   display: block;
 }
 
+/* Flat Crisp Inputs */
 body.section_branch #formContainer.ch-wizard-ready .form-textbox,
 body.section_branch #formContainer.ch-wizard-ready .form-dropdown,
 body.section_branch #formContainer.ch-wizard-ready .form-textarea {
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
-  background: #f8fafc !important;
-  color: #0f172a !important;
-  border: 1.5px solid #cbd5e1 !important;
-  border-radius: 8px !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 4px !important;
   padding: 10px 12px !important;
   font-family: "Montserrat", Arial, sans-serif !important;
-  font-size: 14px !important;
+  font-size: 13.5px !important;
   box-shadow: none !important;
-  transition: border-color 0.15s ease, background-color 0.15s ease !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-textbox:focus,
 body.section_branch #formContainer.ch-wizard-ready .form-dropdown:focus,
 body.section_branch #formContainer.ch-wizard-ready .form-textarea:focus {
-  background: #ffffff !important;
   border-color: #071846 !important;
   outline: none !important;
-  box-shadow: 0 0 0 3px rgba(7, 24, 70, 0.12) !important;
+  box-shadow: 0 0 0 1px #071846 !important;
 }
 
+/* Eventbrite-Style Inline Field Errors */
 body.section_branch #formContainer.ch-wizard-ready .ch-field-error {
   border-color: #dc2626 !important;
-  background: #fef2f2 !important;
 }
 
-/* Clean Side-by-Side Name & Phone Subfields */
+.ch-inline-err {
+  color: #dc2626;
+  font-size: 11.5px;
+  font-weight: 500;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Side-by-Side Name Subfields */
 body.section_branch #formContainer.ch-wizard-ready .form-sub-label-container {
   display: inline-block;
-  width: calc(50% - 6px);
+  width: calc(50% - 7px);
   vertical-align: top;
-  margin-right: 10px;
+  margin-right: 14px;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-sub-label-container:last-child {
   margin-right: 0;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-address-table {
-  width: 100% !important;
-  border-collapse: separate;
-  border-spacing: 0 8px;
+/* Step 1: Eventbrite Ticket Cards */
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+  padding: 16px 18px !important;
+  background: #ffffff !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-address-table .form-sub-label-container {
-  width: 100%;
-  margin-right: 0;
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card.ch-ticket-active {
+  border-color: #071846 !important;
+  box-shadow: 0 0 0 1px #071846 !important;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-address-table td {
-  padding-right: 8px;
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .form-label {
+  margin: 0 !important;
+  font-size: 14.5px !important;
+  font-weight: 600 !important;
+  color: #111827 !important;
+  width: auto !important;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-address-table td:last-child {
-  padding-right: 0;
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .form-input {
+  width: auto !important;
 }
 
-/* Modern − [ 0 ] + Guest Steppers (Replaces Ugly Legacy Spinners) */
 .ch-stepper {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: #f8fafc;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 4px 6px;
 }
 
 .ch-step-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
   border: 0;
   background: #071846;
   color: #ffffff;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
   cursor: pointer;
 }
 
-.ch-step-btn:hover {
-  background: #134480;
+.ch-step-btn.ch-muted-btn {
+  background: #e5e7eb;
+  color: #9ca3af;
 }
 
 .ch-stepper .form-spinner-input {
-  width: 54px !important;
+  width: 34px !important;
   border: 0 !important;
   background: transparent !important;
   text-align: center !important;
-  font-size: 16px !important;
-  font-weight: 700 !important;
-  padding: 4px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  padding: 0 !important;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-spinner {
+body.section_branch #formContainer.ch-wizard-ready .form-spinner,
+body.section_branch #formContainer.ch-wizard-ready .form-spinner td {
   border: 0 !important;
   background: transparent !important;
 }
@@ -1443,79 +1433,86 @@ body.section_branch #formContainer.ch-wizard-ready .form-spinner-down {
   display: none !important;
 }
 
-/* Checkboxes & Radio Buttons */
-body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item,
-body.section_branch #formContainer.ch-wizard-ready .form-radio-item {
+/* Step 3: Clean Donation Tile Grid (Howell / Venice Style) */
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-multiple-column,
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-single-column {
   display: flex;
-  align-items: flex-start;
+  flex-wrap: wrap;
   gap: 8px;
-  padding: 6px 0;
-  font-size: 13.5px;
-  color: #1e293b !important;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item label,
-body.section_branch #formContainer.ch-wizard-ready .form-radio-item label {
-  color: #1e293b !important;
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 78px;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #071846 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item input[type="radio"]:checked + label {
+  background: #071846;
+  border-color: #071846;
+  color: #ffe69a !important;
+}
+
+/* Checkboxes */
+body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item label {
+  font-size: 13px !important;
   font-weight: 500 !important;
+  color: #374151 !important;
   cursor: pointer;
 }
 
-/* Modal Footer Navigation */
-.ch-modal-error {
-  display: none;
-  margin: 0 26px 10px;
-  padding: 10px 14px;
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  font-size: 12.5px;
-  font-weight: 600;
-}
-
+/* Clean Eventbrite Bottom Footer */
 .ch-modal-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 16px 26px 22px;
-  border-top: 1px solid #e2e8f0;
-  background: #f8fafc;
-}
-
-.ch-btn-back {
-  background: transparent;
-  color: #475569;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 24px;
-  padding: 10px 20px;
-  font-family: "Montserrat", Arial, sans-serif;
-  font-size: 13.5px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.ch-btn-back:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+  justify-content: flex-end;
+  padding: 14px 24px 18px;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
 }
 
 .ch-btn-next,
 body.section_branch #formContainer.ch-wizard-ready .form-submit-button {
   background: #071846 !important;
   background-image: none !important;
-  color: #ffe69a !important;
+  color: #ffffff !important;
   border: 0 !important;
-  border-radius: 26px !important;
-  padding: 12px 28px !important;
+  border-radius: 6px !important;
+  padding: 11px 28px !important;
   font-family: "Montserrat", Arial, sans-serif !important;
   font-size: 14px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   text-shadow: none !important;
   box-shadow: none !important;
   cursor: pointer !important;
-  margin-left: auto;
 }
 
 .ch-btn-next:hover,
@@ -1529,15 +1526,20 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 649px) {
   .ch-event-landing {
     grid-template-columns: 1fr;
     padding: 20px 18px;
     gap: 20px;
     text-align: center;
   }
-  .ch-open-rsvp-btn {
+  .ch-open-rsvp-btn,
+  .ch-btn-next,
+  body.section_branch #formContainer.ch-wizard-ready .form-submit-button {
     width: 100%;
+  }
+  body.section_branch #formContainer.ch-wizard-ready .form-line.ch-half-field {
+    width: 100% !important;
   }
   body.section_branch .master-content-wrapper {
     padding: 26px 16px 24px !important;
@@ -1547,12 +1549,6 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
   }
   body.section_branch .article-header__subtitle {
     font-size: 19px !important;
-  }
-  body.section_branch #formContainer.ch-wizard-ready .form-all {
-    padding: 18px 18px 10px !important;
-  }
-  .ch-modal-footer {
-    padding: 14px 18px 18px;
   }
 }
 /* --- 9. REGULAR CHILD WEBPAGES (NON-FORMS) --- */
