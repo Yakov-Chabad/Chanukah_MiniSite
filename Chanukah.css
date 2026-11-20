@@ -679,11 +679,69 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
   }
 }
 
-/* --- 6. VENICE-STYLE "LEARN MORE ABOUT CHANUKAH" TILES --- */
+/* --- 6A. STANDALONE "REQUEST A MENORAH" SECTION --- */
+#ch-chanukah .ch-menorah-section {
+  max-width: 1120px;
+  margin: 76px auto 0;
+  padding: 0 20px;
+}
+
+#ch-chanukah .ch-menorah-box {
+  background: var(--ch-navy);
+  border-top-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+  padding: 36px 34px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+html body.cco_body #ch-chanukah .ch-menorah-box h2,
+#ch-chanukah .ch-menorah-box h2 {
+  font-family: var(--ch-font-serif);
+  color: var(--ch-gold);
+  font-size: 32px;
+  font-weight: 500;
+  margin: 0 0 6px 0;
+}
+
+html body.cco_body #ch-chanukah .ch-menorah-box p,
+#ch-chanukah .ch-menorah-box p {
+  font-family: var(--ch-font-sans);
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  max-width: 620px;
+  line-height: 1.55;
+}
+
+html body.cco_body #ch-chanukah a.ch-btn-gold,
+#ch-chanukah a.ch-btn-gold {
+  display: inline-block;
+  background: var(--ch-gold);
+  color: var(--ch-midnight);
+  text-decoration: none;
+  font-family: var(--ch-font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 26px;
+  border-radius: 24px;
+  transition: background-color 0.15s ease;
+}
+
+html body.cco_body #ch-chanukah a.ch-btn-gold:hover,
+#ch-chanukah a.ch-btn-gold:hover {
+  background: var(--ch-gold-hover);
+  color: var(--ch-midnight);
+}
+
+/* --- 6B. "LEARN MORE ABOUT CHANUKAH" TILES (Clean EB Garamond, no subtitles) --- */
 #ch-chanukah .ch-learn-section {
   max-width: 1120px;
-  margin: 84px auto 0;
-  padding: 56px 20px 0;
+  margin: 72px auto 0;
+  padding: 52px 20px 0;
   border-top: 1px solid rgba(255, 230, 154, 0.14);
   text-align: center;
 }
@@ -718,54 +776,41 @@ html body.cco_body #ch-chanukah a.ch-learn-card,
   text-align: center;
   text-decoration: none;
   background-color: var(--ch-navy);
-  border: 1px solid rgba(255, 230, 154, 0.16);
+  border: 1px solid rgba(255, 230, 154, 0.14);
   border-radius: 14px;
-  padding: 32px 22px 28px;
+  padding: 32px 22px;
   transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
 }
 
 html body.cco_body #ch-chanukah a.ch-learn-card:hover,
 #ch-chanukah a.ch-learn-card:hover {
   background-color: var(--ch-navy-hover);
-  border-color: rgba(255, 230, 154, 0.45);
+  border-color: rgba(255, 230, 154, 0.42);
   transform: translateY(-2px);
 }
 
-/* CSS FontAwesome icons (zero empty <i> tags so ChabadOne Tidy never breaks them) */
 #ch-chanukah a.ch-learn-card::before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
-  font-size: 26px;
+  font-size: 25px;
   color: var(--ch-gold);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   line-height: 1;
 }
 
+#ch-chanukah a.ch-ico-basics::before { content: "\f06d"; }  /* flame */
 #ch-chanukah a.ch-ico-howto::before { content: "\f676"; }   /* menorah */
 #ch-chanukah a.ch-ico-kids::before { content: "\f1ae"; }    /* child */
 #ch-chanukah a.ch-ico-story::before { content: "\f518"; }   /* book-open */
 #ch-chanukah a.ch-ico-recipes::before { content: "\f2e7"; } /* utensils */
 #ch-chanukah a.ch-ico-media::before { content: "\f144"; }   /* play-circle */
-#ch-chanukah a.ch-ico-menorah::before { content: "\f06d"; } /* fire / flame */
 
 #ch-chanukah .ch-learn-title {
-  font-family: var(--ch-font-sans);
-  font-size: 14.5px;
-  font-weight: 700;
-  letter-spacing: 0.9px;
-  text-transform: uppercase;
-  color: var(--ch-white);
-  line-height: 1.35;
-  margin-bottom: 8px;
-}
-
-#ch-chanukah .ch-learn-sub {
-  font-family: var(--ch-font-sans);
-  font-size: 11px;
+  font-family: var(--ch-font-serif);
+  font-size: 23px;
   font-weight: 500;
-  letter-spacing: 1.1px;
-  text-transform: uppercase;
-  color: var(--ch-muted);
+  color: var(--ch-white);
+  line-height: 1.25;
 }
 
 #ch-chanukah .ch-seo-note {
@@ -784,8 +829,21 @@ html body.cco_body #ch-chanukah a.ch-learn-card:hover,
 }
 
 @media (max-width: 520px) {
+  #ch-chanukah .ch-menorah-section {
+    margin-top: 52px;
+    padding: 0 14px;
+  }
+  #ch-chanukah .ch-menorah-box {
+    padding: 26px 20px;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  html body.cco_body #ch-chanukah .ch-menorah-box h2,
+  #ch-chanukah .ch-menorah-box h2 {
+    font-size: 26px;
+  }
   #ch-chanukah .ch-learn-section {
-    margin-top: 60px;
+    margin-top: 52px;
     padding: 40px 14px 0;
   }
   html body.cco_body #ch-chanukah .ch-learn-section h2,
@@ -795,60 +853,13 @@ html body.cco_body #ch-chanukah a.ch-learn-card:hover,
   }
   html body.cco_body #ch-chanukah a.ch-learn-card,
   #ch-chanukah a.ch-learn-card {
-    padding: 24px 14px 20px;
+    padding: 24px 14px;
   }
   #ch-chanukah a.ch-learn-card::before {
-    font-size: 22px;
-    margin-bottom: 12px;
+    font-size: 21px;
+    margin-bottom: 10px;
   }
   #ch-chanukah .ch-learn-title {
-    font-size: 12.5px;
-    letter-spacing: 0.5px;
+    font-size: 19px;
   }
-  #ch-chanukah .ch-learn-sub {
-    font-size: 10px;
-  }
-}
-
-/* --- 7. FLYER LIGHTBOX --- */
-#ch-lightbox {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: rgba(4, 12, 30, 0.92);
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-#ch-lightbox.ch-open {
-  display: flex;
-}
-#ch-lightbox-inner {
-  position: relative;
-  max-width: 92vw;
-  max-height: 90vh;
-}
-#ch-lightbox-img {
-  display: block;
-  max-width: 92vw;
-  max-height: 86vh;
-  width: auto;
-  height: auto;
-  border-radius: 6px;
-}
-#ch-lightbox-close {
-  position: absolute;
-  top: -14px;
-  right: -14px;
-  width: 36px;
-  height: 36px;
-  border-radius: 100%;
-  border: 0;
-  background: #ffe69a;
-  color: #071846;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1;
-  cursor: pointer;
 }
