@@ -185,15 +185,19 @@
     return `
       <div class="ch-event-card">
         ${buildFlyerHtml(ev)}
-        <div class="ch-event-body">
+        <div class="ch-event-main">
           <div class="ch-event-title">${ev.eventName || ""}</div>
           <div class="ch-event-details">
             ${ev.location ? `<div class="ch-detail-line"><i class="fas fa-map-marker-alt"></i><span>${formatLocation(ev.location)}</span></div>` : ""}
             ${ev.date ? `<div class="ch-detail-line"><i class="far fa-clock"></i><span>${ev.date}${ev.time ? " &middot; " + ev.time : ""}</span></div>` : ""}
           </div>
+        </div>
+        <div class="ch-event-footer">
           ${ev.note ? `<div class="ch-event-note">${ev.note}</div>` : ""}
-          ${ev.host ? `<span class="ch-event-host">Hosted by: ${ev.host}</span>` : ""}
-          ${link ? `<div class="ch-btn-wrap"><a class="ch-reserve-btn" href="${link}" target="_blank" rel="noopener">More Information &rarr;</a></div>` : ""}
+          <div class="ch-footer-row">
+            ${ev.host ? `<span class="ch-event-host">Hosted by: ${ev.host}</span>` : ""}
+            ${link ? `<a class="ch-reserve-btn" href="${link}" target="_blank" rel="noopener">More Information &rarr;</a>` : ""}
+          </div>
         </div>
       </div>
     `;
