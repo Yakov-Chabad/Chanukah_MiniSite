@@ -1,3 +1,988 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@400;500;600;700&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
+
+/* --- Full-bleed Midnight Canvas Overrides for ChabadOne Mini-Site --- */
+html,
+body,
+.cco_templatelates_content,
+#co_content_container,
+.body_wrapper,
+.body_wrapper.co_body,
+#co_body_container,
+#BodyContainer {
+  background-color: #06132e !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.breadcrumbs,
+.article-header,
+.page-tools-sidebar,
+.cco_templatelates_content .bh {
+  display: none !important;
+}
+
+/* Blend ChabadOne's bottom footer into the dark theme */
+#BodyContainer .g960.footer {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 34px 20px 44px !important;
+  background-color: #040d21 !important;
+  color: rgba(255, 255, 255, 0.68) !important;
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-size: 13px !important;
+  text-align: center !important;
+}
+
+#BodyContainer .g960.footer .poweredby {
+  margin-bottom: 0 !important;
+}
+
+#BodyContainer .g960.footer .footer-title {
+  color: #ffe69a !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  display: block;
+  margin-bottom: 4px;
+}
+
+#BodyContainer .g960.footer a {
+  color: #ffe69a !important;
+  text-decoration: underline;
+}
+
+/* --- Scoped Design Tokens --- */
+#ch-chanukah {
+  --ch-bg: #06132e;
+  --ch-midnight: #071846;
+  --ch-navy: #0e2552;
+  --ch-navy-hover: #132f66;
+  --ch-blue: #134480;
+  --ch-gold: #ffe69a;
+  --ch-gold-hover: #fff1c7;
+  --ch-white: #ffffff;
+  --ch-muted: #b3c4de;
+  --ch-font-serif: "EB Garamond", Georgia, serif;
+  --ch-font-sans: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+
+  background-color: var(--ch-bg);
+  color: var(--ch-white);
+  font-family: var(--ch-font-sans);
+  min-height: 100vh;
+  padding-bottom: 40px;
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+
+#ch-chanukah *,
+#ch-chanukah *::before,
+#ch-chanukah *::after {
+  box-sizing: border-box;
+}
+
+/* --- 1. FULL-WIDTH 3-ZONE TOP NAVIGATION BAR --- */
+#ch-chanukah .ch-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background: #071638;
+}
+
+#ch-chanukah .ch-nav-inner {
+  position: relative;
+  width: 100%;
+  padding: 0 28px;
+  height: 64px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+#ch-chanukah .ch-nav-left {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+}
+
+html body.cco_body #ch-chanukah a.ch-nav-logo,
+#ch-chanukah a.ch-nav-logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  height: 46px;
+  overflow: hidden;
+}
+
+#ch-chanukah .ch-nav-logo img {
+  height: 58px;
+  width: auto;
+  display: block;
+}
+
+#ch-chanukah .ch-nav-logo img.ch-logo-auto-invert {
+  filter: invert(1) hue-rotate(180deg) brightness(1.08) contrast(1.05);
+  mix-blend-mode: screen;
+}
+
+#ch-chanukah .ch-nav-links {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+html body.cco_body #ch-chanukah .ch-nav-links a,
+#ch-chanukah .ch-nav-links a {
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  font-family: var(--ch-font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+html body.cco_body #ch-chanukah .ch-nav-links a:hover,
+#ch-chanukah .ch-nav-links a:hover {
+  color: var(--ch-gold);
+}
+
+#ch-chanukah .ch-nav-right {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#ch-chanukah .ch-nav-bh {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+  margin-top: -12px;
+}
+
+#ch-chanukah .ch-nav-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  color: var(--ch-gold);
+  width: 36px;
+  height: 32px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  #ch-chanukah .ch-nav-inner {
+    padding: 0 14px;
+    height: 56px;
+    grid-template-columns: 1fr auto;
+  }
+  #ch-chanukah .ch-nav-logo {
+    height: 38px;
+  }
+  #ch-chanukah .ch-nav-logo img {
+    height: 46px;
+  }
+  #ch-chanukah .ch-nav-right {
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1px;
+  }
+  #ch-chanukah .ch-nav-bh {
+    margin-top: 0;
+    align-self: flex-end;
+    font-size: 10px;
+    line-height: 1;
+    padding-right: 4px;
+  }
+  #ch-chanukah .ch-nav-toggle {
+    display: inline-flex;
+    height: 26px;
+    font-size: 21px;
+  }
+  #ch-chanukah .ch-nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    justify-self: stretch;
+    z-index: 1001;
+    background: #071638;
+    border-top: 1px solid rgba(255, 230, 154, 0.14);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 4px 20px 14px;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.55);
+  }
+  #ch-chanukah .ch-nav-links.ch-nav-open {
+    display: flex;
+  }
+  html body.cco_body #ch-chanukah .ch-nav-links a,
+  #ch-chanukah .ch-nav-links a {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  html body.cco_body #ch-chanukah .ch-nav-links a:last-child,
+  #ch-chanukah .ch-nav-links a:last-child {
+    border-bottom: 0;
+  }
+}
+
+/* --- 2. HERO --- */
+#ch-chanukah .ch-hero {
+  position: relative;
+  width: 100%;
+  min-height: 490px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #0b1f47;
+  background-image:
+    linear-gradient(180deg, rgba(6, 19, 46, 0.56) 0%, rgba(9, 28, 66, 0.65) 48%, rgba(11, 31, 71, 0.94) 100%),
+    url("https://yakov-chabad.github.io/Chanukah_MiniSite/hero.jpg");
+  background-size: cover;
+  background-position: center 5%;
+  background-repeat: no-repeat;
+}
+
+#ch-chanukah .ch-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 104px 24px 96px;
+}
+
+#ch-chanukah .ch-hero-eyebrow {
+  font-family: var(--ch-font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: rgba(255, 230, 154, 0.78);
+  margin: -14px 0 18px 0;
+  text-shadow: 0 2px 10px rgba(4, 12, 30, 0.85);
+}
+
+html body.cco_body #ch-chanukah .ch-hero h1,
+#ch-chanukah .ch-hero h1 {
+  font-family: var(--ch-font-serif);
+  color: var(--ch-white);
+  font-size: 88px;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.5px;
+  margin: 0 0 16px 0;
+  text-shadow: 0 4px 24px rgba(4, 12, 30, 0.85);
+}
+
+#ch-chanukah .ch-hero-sub {
+  font-family: var(--ch-font-serif);
+  font-size: 32px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.25;
+  margin: 0 0 12px 0;
+  text-shadow: 0 3px 18px rgba(4, 12, 30, 0.9);
+}
+
+#ch-chanukah .ch-hero-sub em {
+  font-style: italic;
+  color: var(--ch-gold);
+}
+
+#ch-chanukah .ch-hero-date {
+  font-family: var(--ch-font-serif);
+  font-style: italic;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--ch-gold);
+  line-height: 1.2;
+  margin: 0;
+  text-shadow: 0 2px 14px rgba(4, 12, 30, 0.9);
+}
+
+@media (max-width: 649px) {
+  #ch-chanukah .ch-hero {
+    min-height: 235px;
+  }
+  #ch-chanukah .ch-hero-inner {
+    padding: 40px 16px 36px;
+  }
+  #ch-chanukah .ch-hero-eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 1.6px;
+    margin: -6px 0 10px 0;
+  }
+  html body.cco_body #ch-chanukah .ch-hero h1,
+  #ch-chanukah .ch-hero h1 {
+    font-size: 52px;
+    margin-bottom: 8px;
+  }
+  #ch-chanukah .ch-hero-sub {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  #ch-chanukah .ch-hero-date {
+    font-size: 17px;
+  }
+}
+
+/* --- 3. INTEGRATED "SEE OUR EVENTS" HEADING --- */
+#ch-chanukah .ch-events-banner {
+  width: 100%;
+  padding: 36px 20px 4px;
+  text-align: center;
+}
+
+html body.cco_body #ch-chanukah .ch-events-banner h2,
+#ch-chanukah .ch-events-banner h2 {
+  font-family: var(--ch-font-serif);
+  color: var(--ch-white);
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.1;
+  margin: 0 0 6px 0;
+}
+
+#ch-chanukah .ch-events-banner h2 em {
+  font-style: italic;
+  color: var(--ch-gold);
+}
+
+#ch-chanukah .ch-events-banner-sub {
+  font-family: var(--ch-font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(179, 196, 222, 0.78);
+  margin: 0;
+}
+
+@media (max-width: 649px) {
+  #ch-chanukah .ch-events-banner {
+    padding: 24px 16px 2px;
+  }
+  html body.cco_body #ch-chanukah .ch-events-banner h2,
+  #ch-chanukah .ch-events-banner h2 {
+    font-size: 30px;
+  }
+  #ch-chanukah .ch-events-banner-sub {
+    font-size: 9.5px;
+    letter-spacing: 1.3px;
+  }
+}
+
+/* --- 4. NIGHT HEADERS --- */
+#ch-chanukah .ch-location-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+#ch-chanukah .ch-night-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+  margin: 46px 0 20px;
+}
+
+#ch-chanukah #ch-directory > .ch-night-header:first-child {
+  margin-top: 26px;
+}
+
+#ch-chanukah .ch-night-header img.ch-menorah-icon {
+  width: 50px;
+  height: auto;
+  filter: brightness(0) saturate(100%) invert(90%) sepia(28%) saturate(700%) hue-rotate(344deg) brightness(105%) contrast(101%);
+}
+
+html body.cco_body #ch-chanukah .ch-night-header h2,
+#ch-chanukah .ch-night-header h2 {
+  font-family: var(--ch-font-serif);
+  color: var(--ch-gold);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.05;
+  margin: 0 0 2px 0;
+}
+
+#ch-chanukah .ch-night-header span {
+  font-family: var(--ch-font-serif);
+  font-style: italic;
+  font-size: 19px;
+  color: rgba(255, 230, 154, 0.85);
+}
+
+@media (max-width: 649px) {
+  #ch-chanukah .ch-location-wrap {
+    padding: 0 14px;
+  }
+  #ch-chanukah .ch-night-header {
+    margin: 32px 0 14px;
+    gap: 12px;
+  }
+  #ch-chanukah #ch-directory > .ch-night-header:first-child {
+    margin-top: 18px;
+  }
+  #ch-chanukah .ch-night-header img.ch-menorah-icon {
+    width: 38px;
+  }
+  html body.cco_body #ch-chanukah .ch-night-header h2,
+  #ch-chanukah .ch-night-header h2 {
+    font-size: 27px;
+  }
+  #ch-chanukah .ch-night-header span {
+    font-size: 16.5px;
+  }
+}
+
+/* --- 5. EVENT CARDS (Unified Desktop Inset Flyer + Compact Option 3 Mobile) --- */
+#ch-chanukah .ch-modules-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 22px;
+}
+
+#ch-chanukah .ch-event-card {
+  flex: 0 1 calc(50% - 11px);
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 162px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "flyer main"
+    "flyer footer";
+  background-color: var(--ch-navy);
+  border: 1px solid rgba(255, 230, 154, 0.20);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
+  border-top-left-radius: 22px;
+  border-bottom-right-radius: 22px;
+  overflow: hidden;
+  transition: background-color 0.16s ease, border-color 0.16s ease;
+}
+
+#ch-chanukah .ch-event-card:hover {
+  background-color: var(--ch-navy-hover);
+  border-color: rgba(255, 230, 154, 0.36);
+}
+
+#ch-chanukah .ch-modules-wrapper.ch-single-night .ch-event-card {
+  flex: 0 1 590px;
+}
+
+#ch-chanukah .ch-event-flyer {
+  grid-area: flyer;
+  padding: 14px 0 14px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#ch-chanukah .ch-event-flyer img {
+  width: 100%;
+  height: auto;
+  max-height: 230px;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+}
+
+#ch-chanukah .ch-flyer-placeholder {
+  grid-area: flyer;
+  margin: 14px 0 14px 14px;
+  min-height: 150px;
+  background: rgba(6, 19, 46, 0.45);
+  border: 1px solid rgba(255, 230, 154, 0.12);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px 10px;
+  color: rgba(255, 230, 154, 0.62);
+}
+
+#ch-chanukah .ch-flyer-placeholder i {
+  font-size: 20px;
+  margin-bottom: 7px;
+  color: var(--ch-gold);
+  opacity: 0.7;
+}
+
+#ch-chanukah .ch-flyer-placeholder span {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  line-height: 1.35;
+}
+
+#ch-chanukah .ch-event-main {
+  grid-area: main;
+  padding: 16px 20px 0 18px;
+  min-width: 0;
+}
+
+#ch-chanukah .ch-event-title {
+  color: var(--ch-white);
+  font-family: var(--ch-font-sans);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.22;
+  margin-bottom: 8px;
+}
+
+#ch-chanukah .ch-event-details {
+  font-family: var(--ch-font-sans);
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.42;
+}
+
+#ch-chanukah .ch-detail-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin-bottom: 4px;
+}
+
+#ch-chanukah .ch-detail-line i {
+  color: var(--ch-gold);
+  width: 14px;
+  text-align: center;
+  margin-top: 2px;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+#ch-chanukah .ch-event-footer {
+  grid-area: footer;
+  padding: 4px 20px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+#ch-chanukah .ch-event-note {
+  font-size: 12px;
+  color: var(--ch-muted);
+  margin-top: 2px;
+  line-height: 1.36;
+}
+
+#ch-chanukah .ch-footer-row {
+  margin-top: auto;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+#ch-chanukah .ch-event-host {
+  font-family: var(--ch-font-sans);
+  font-style: italic;
+  font-size: 11.5px;
+  color: rgba(179, 196, 222, 0.82);
+  display: block;
+}
+
+html body.cco_body #ch-chanukah a.ch-reserve-btn,
+#ch-chanukah a.ch-reserve-btn {
+  background: var(--ch-midnight);
+  color: var(--ch-white);
+  border: 1px solid rgba(255, 230, 154, 0.25);
+  text-decoration: none;
+  padding: 7px 16px;
+  display: inline-block;
+  border-radius: 18px;
+  font-family: var(--ch-font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
+#ch-chanukah a.ch-reserve-btn:hover {
+  background: var(--ch-gold);
+  color: var(--ch-midnight);
+  border-color: var(--ch-gold);
+  text-decoration: none;
+}
+
+@media (max-width: 980px) {
+  #ch-chanukah .ch-event-card,
+  #ch-chanukah .ch-modules-wrapper.ch-single-night .ch-event-card {
+    flex: 1 1 100%;
+    max-width: 660px;
+  }
+}
+
+@media (max-width: 649px) {
+  #ch-chanukah .ch-modules-wrapper {
+    gap: 14px;
+  }
+  #ch-chanukah .ch-event-card {
+    grid-template-columns: 92px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "flyer main"
+      "footer footer";
+    border-top-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border: 1px solid rgba(255, 230, 154, 0.24);
+  }
+  #ch-chanukah .ch-event-flyer {
+    padding: 10px 0 10px 10px;
+    align-items: center;
+  }
+  #ch-chanukah .ch-event-flyer img {
+    max-height: 122px;
+    border-radius: 7px;
+  }
+  #ch-chanukah .ch-flyer-placeholder {
+    margin: 10px 0 10px 10px;
+    min-height: 92px;
+    padding: 8px 6px;
+    border-radius: 7px;
+  }
+  #ch-chanukah .ch-flyer-placeholder i {
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  #ch-chanukah .ch-flyer-placeholder span {
+    font-size: 8px;
+  }
+  #ch-chanukah .ch-event-main {
+    padding: 10px 12px 10px 10px;
+  }
+  #ch-chanukah .ch-event-title {
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+  #ch-chanukah .ch-event-details {
+    font-size: 11.5px;
+    line-height: 1.32;
+  }
+  #ch-chanukah .ch-detail-line {
+    gap: 6px;
+    margin-bottom: 3px;
+  }
+  #ch-chanukah .ch-detail-line i {
+    font-size: 10.5px;
+    width: 12px;
+    margin-top: 2px;
+  }
+  #ch-chanukah .ch-event-footer {
+    padding: 8px 12px 10px;
+    border-top: 1px solid rgba(255, 230, 154, 0.12);
+    background: rgba(6, 19, 46, 0.22);
+  }
+  #ch-chanukah .ch-event-note {
+    font-size: 11px;
+    line-height: 1.32;
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
+  #ch-chanukah .ch-footer-row {
+    padding-top: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  #ch-chanukah .ch-event-host {
+    font-size: 10px;
+    line-height: 1.25;
+  }
+  html body.cco_body #ch-chanukah a.ch-reserve-btn,
+  #ch-chanukah a.ch-reserve-btn {
+    padding: 5px 12px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+}
+
+/* --- 6A. SLEEK "NEED A MENORAH?" SECTION --- */
+#ch-chanukah .ch-menorah-section {
+  width: 100%;
+  margin-top: 64px;
+  padding: 32px 20px;
+  background: #091a3d;
+  border-top: 1px solid rgba(255, 230, 154, 0.16);
+  border-bottom: 1px solid rgba(255, 230, 154, 0.12);
+}
+
+#ch-chanukah .ch-menorah-box {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+html body.cco_body #ch-chanukah .ch-menorah-box h2,
+#ch-chanukah .ch-menorah-box h2 {
+  font-family: var(--ch-font-serif);
+  color: var(--ch-gold);
+  font-size: 28px;
+  font-weight: 500;
+  margin: 0 0 4px 0;
+  line-height: 1.15;
+}
+
+html body.cco_body #ch-chanukah .ch-menorah-box p,
+#ch-chanukah .ch-menorah-box p {
+  font-family: var(--ch-font-sans);
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 0;
+  max-width: 520px;
+  line-height: 1.5;
+}
+
+html body.cco_body #ch-chanukah a.ch-btn-gold,
+#ch-chanukah a.ch-btn-gold {
+  display: inline-block;
+  background: var(--ch-gold);
+  color: var(--ch-midnight);
+  text-decoration: none;
+  font-family: var(--ch-font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 22px;
+  border-radius: 22px;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+
+html body.cco_body #ch-chanukah a.ch-btn-gold:hover,
+#ch-chanukah a.ch-btn-gold:hover {
+  background: var(--ch-gold-hover);
+  color: var(--ch-midnight);
+}
+
+/* --- 6B. COMPACT "LEARN MORE ABOUT CHANUKAH" TILES --- */
+#ch-chanukah .ch-learn-section {
+  max-width: 820px;
+  margin: 54px auto 0;
+  padding: 0 20px;
+  text-align: center;
+}
+
+html body.cco_body #ch-chanukah .ch-learn-section h2,
+#ch-chanukah .ch-learn-section h2 {
+  font-family: var(--ch-font-serif);
+  color: var(--ch-white);
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 28px 0;
+}
+
+#ch-chanukah .ch-learn-section h2 em {
+  font-style: italic;
+  color: var(--ch-gold);
+}
+
+#ch-chanukah .ch-learn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+html body.cco_body #ch-chanukah a.ch-learn-card,
+#ch-chanukah a.ch-learn-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--ch-navy);
+  border: 1px solid rgba(255, 230, 154, 0.14);
+  border-radius: 12px;
+  padding: 24px 16px;
+  min-height: 124px;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+html body.cco_body #ch-chanukah a.ch-learn-card:hover,
+#ch-chanukah a.ch-learn-card:hover {
+  background-color: var(--ch-navy-hover);
+  border-color: rgba(255, 230, 154, 0.42);
+  transform: translateY(-2px);
+}
+
+#ch-chanukah a.ch-learn-card::before {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 11px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+#ch-chanukah a.ch-ico-basics::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%23FFE69A' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5h8M13 5v4l-4.5 5.5A7.5 7.5 0 0 0 14.3 27h3.4a7.5 7.5 0 0 0 5.8-12.5L19 9V5'/%3E%3Cpath d='M20 9.5c3.2 0 5 1.8 5 4.2s-1.8 4.3-4.3 4.3'/%3E%3C/svg%3E");
+}
+
+#ch-chanukah a.ch-ico-howto::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%23FFE69A' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 4v23M10.5 27h11M13 27l3-3 3 3'/%3E%3Cpath d='M3 7l13 13L29 7'/%3E%3Cpath d='M6.5 7l9.5 9.5L25.5 7'/%3E%3Cpath d='M10 7l6 6 6-6'/%3E%3Cpath d='M13 7l3 3 3-3'/%3E%3C/svg%3E");
+}
+
+#ch-chanukah a.ch-ico-kids::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%23FFE69A' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 4v5M13.5 4h5'/%3E%3Cpath d='M9.5 9h13v10L16 28l-6.5-9V9z'/%3E%3Cpath d='M9.5 19h13'/%3E%3C/svg%3E");
+}
+
+#ch-chanukah a.ch-ico-story::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%23FFE69A' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 8a3 3 0 0 1 3-3h9v20H7a3 3 0 0 0-3 3V8z'/%3E%3Cpath d='M28 8a3 3 0 0 0-3-3h-9v20h9a3 3 0 0 1 3 3V8z'/%3E%3Cpath d='M8 10h4M8 14h4M20 10h4M20 14h4'/%3E%3C/svg%3E");
+}
+
+#ch-chanukah a.ch-ico-recipes::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%23FFE69A' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 22h24M6 22a10 10 0 0 1 20 0M16 12v-2M14 10h4'/%3E%3C/svg%3E");
+}
+
+#ch-chanukah a.ch-ico-media::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%23FFE69A' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='16' cy='16' r='11'/%3E%3Cpolygon points='13.5 11.5 21 16 13.5 20.5 13.5 11.5'/%3E%3C/svg%3E");
+}
+
+#ch-chanukah .ch-learn-title {
+  font-family: var(--ch-font-serif);
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--ch-white);
+  line-height: 1.2;
+}
+
+#ch-chanukah .ch-seo-note {
+  margin: 68px auto 0;
+  padding: 0 20px;
+  max-width: 720px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(179, 196, 222, 0.34);
+}
+
+@media (max-width: 680px) {
+  #ch-chanukah .ch-menorah-section {
+    margin-top: 44px;
+    padding: 26px 16px;
+  }
+  #ch-chanukah .ch-menorah-box {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  html body.cco_body #ch-chanukah .ch-menorah-box h2,
+  #ch-chanukah .ch-menorah-box h2 {
+    font-size: 25px;
+  }
+  #ch-chanukah .ch-learn-section {
+    margin-top: 42px;
+    padding: 0 14px;
+  }
+  html body.cco_body #ch-chanukah .ch-learn-section h2,
+  #ch-chanukah .ch-learn-section h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+  #ch-chanukah .ch-learn-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  html body.cco_body #ch-chanukah a.ch-learn-card,
+  #ch-chanukah a.ch-learn-card {
+    padding: 20px 12px;
+    min-height: 106px;
+  }
+  #ch-chanukah a.ch-learn-card::before {
+    width: 26px;
+    height: 26px;
+    margin-bottom: 9px;
+  }
+  #ch-chanukah .ch-learn-title {
+    font-size: 18px;
+  }
+}
+
+/* --- 7. FLYER LIGHTBOX --- */
+#ch-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(4, 12, 30, 0.92);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#ch-lightbox.ch-open {
+  display: flex;
+}
+#ch-lightbox-inner {
+  position: relative;
+  max-width: 92vw;
+  max-height: 90vh;
+}
+#ch-lightbox-img {
+  display: block;
+  max-width: 92vw;
+  max-height: 86vh;
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+}
+#ch-lightbox-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 100%;
+  border: 0;
+  background: #ffe69a;
+  color: #071846;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
 /* --- 8. AUTOMATIC CHILD-PAGE (OPTION B HEADER + DARK-MODE INTEGRATED FORM) --- */
 body.section_branch {
   padding-top: 64px !important;
