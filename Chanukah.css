@@ -275,13 +275,13 @@ html body.cco_body #ch-chanukah .ch-nav-links a:hover,
 
 #ch-chanukah .ch-hero-eyebrow {
   font-family: var(--ch-font-sans);
-  font-size: 12.5px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 500;
   letter-spacing: 2.4px;
   text-transform: uppercase;
-  color: var(--ch-gold);
-  margin: 0 0 10px 0;
-  text-shadow: 0 2px 12px rgba(4, 12, 30, 0.9);
+  color: rgba(255, 230, 154, 0.78);
+  margin: -14px 0 18px 0;
+  text-shadow: 0 2px 10px rgba(4, 12, 30, 0.85);
 }
 
 html body.cco_body #ch-chanukah .ch-hero h1,
@@ -460,7 +460,7 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
   }
 }
 
-/* --- 5. COMPACT EVENT CARDS (Uncropped full-width flyer + clear separation) --- */
+/* --- 5. EVENT CARDS (Unified Desktop Inset Flyer + Compact Option 3 Mobile) --- */
 #ch-chanukah .ch-modules-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -471,10 +471,12 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
 #ch-chanukah .ch-event-card {
   flex: 0 1 calc(50% - 11px);
   min-width: 0;
-  min-height: 145px;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: 162px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "flyer main"
+    "flyer footer";
   background-color: var(--ch-navy);
   border: 1px solid rgba(255, 230, 154, 0.20);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
@@ -493,28 +495,32 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
   flex: 0 1 590px;
 }
 
-/* Flyer pane: fills width cleanly without chopping off poster edges */
+/* Unified inset flyer — zero mismatched dark column edges */
 #ch-chanukah .ch-event-flyer {
-  flex: 0 0 165px;
-  background-color: #08183a;
+  grid-area: flyer;
+  padding: 14px 0 14px 14px;
   cursor: pointer;
-  overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
 #ch-chanukah .ch-event-flyer img {
   width: 100%;
   height: auto;
-  max-height: 235px;
+  max-height: 230px;
   object-fit: contain;
+  border-radius: 10px;
   display: block;
 }
 
 #ch-chanukah .ch-flyer-placeholder {
-  flex: 0 0 165px;
-  background: #08183a;
+  grid-area: flyer;
+  margin: 14px 0 14px 14px;
+  min-height: 150px;
+  background: rgba(6, 19, 46, 0.45);
+  border: 1px solid rgba(255, 230, 154, 0.12);
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -539,12 +545,10 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
   line-height: 1.35;
 }
 
-#ch-chanukah .ch-event-body {
-  flex: 1 1 auto;
+#ch-chanukah .ch-event-main {
+  grid-area: main;
+  padding: 16px 20px 0 18px;
   min-width: 0;
-  padding: 16px 20px 16px 18px;
-  display: flex;
-  flex-direction: column;
 }
 
 #ch-chanukah .ch-event-title {
@@ -579,11 +583,29 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
   font-size: 12px;
 }
 
+#ch-chanukah .ch-event-footer {
+  grid-area: footer;
+  padding: 4px 20px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
 #ch-chanukah .ch-event-note {
   font-size: 12px;
   color: var(--ch-muted);
-  margin-top: 4px;
+  margin-top: 2px;
   line-height: 1.36;
+}
+
+#ch-chanukah .ch-footer-row {
+  margin-top: auto;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 #ch-chanukah .ch-event-host {
@@ -591,13 +613,7 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
   font-style: italic;
   font-size: 11.5px;
   color: rgba(179, 196, 222, 0.82);
-  margin-top: 6px;
   display: block;
-}
-
-#ch-chanukah .ch-btn-wrap {
-  margin-top: auto;
-  padding-top: 10px;
 }
 
 html body.cco_body #ch-chanukah a.ch-reserve-btn,
@@ -612,6 +628,7 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn,
   font-family: var(--ch-font-sans);
   font-size: 12px;
   font-weight: 600;
+  white-space: nowrap;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
@@ -631,32 +648,44 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
   }
 }
 
+/* Mobile: Option 3 — Top-row flyer + full-width compact footer */
 @media (max-width: 649px) {
   #ch-chanukah .ch-modules-wrapper {
-    gap: 16px;
+    gap: 14px;
   }
   #ch-chanukah .ch-event-card {
-    min-height: 118px;
+    grid-template-columns: 92px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "flyer main"
+      "footer footer";
     border-top-left-radius: 16px;
     border-bottom-right-radius: 16px;
     border: 1px solid rgba(255, 230, 154, 0.24);
   }
-  #ch-chanukah .ch-event-flyer,
-  #ch-chanukah .ch-flyer-placeholder {
-    flex: 0 0 110px;
+  #ch-chanukah .ch-event-flyer {
+    padding: 10px 0 10px 10px;
+    align-items: center;
   }
   #ch-chanukah .ch-event-flyer img {
-    max-height: 180px;
+    max-height: 122px;
+    border-radius: 7px;
+  }
+  #ch-chanukah .ch-flyer-placeholder {
+    margin: 10px 0 10px 10px;
+    min-height: 92px;
+    padding: 8px 6px;
+    border-radius: 7px;
   }
   #ch-chanukah .ch-flyer-placeholder i {
-    font-size: 16px;
-    margin-bottom: 5px;
+    font-size: 15px;
+    margin-bottom: 4px;
   }
   #ch-chanukah .ch-flyer-placeholder span {
-    font-size: 8.5px;
+    font-size: 8px;
   }
-  #ch-chanukah .ch-event-body {
-    padding: 11px 12px 11px 12px;
+  #ch-chanukah .ch-event-main {
+    padding: 10px 12px 10px 10px;
   }
   #ch-chanukah .ch-event-title {
     font-size: 15px;
@@ -675,28 +704,33 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
     width: 12px;
     margin-top: 2px;
   }
+  #ch-chanukah .ch-event-footer {
+    padding: 8px 12px 10px;
+    border-top: 1px solid rgba(255, 230, 154, 0.12);
+    background: rgba(6, 19, 46, 0.22);
+  }
   #ch-chanukah .ch-event-note {
-    font-size: 10.5px;
-    line-height: 1.3;
+    font-size: 11px;
+    line-height: 1.32;
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
+  #ch-chanukah .ch-footer-row {
+    padding-top: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
   }
   #ch-chanukah .ch-event-host {
     font-size: 10px;
-    margin-top: 5px;
-  }
-  #ch-chanukah .ch-btn-wrap {
-    padding-top: 8px;
+    line-height: 1.25;
   }
   html body.cco_body #ch-chanukah a.ch-reserve-btn,
   #ch-chanukah a.ch-reserve-btn {
     padding: 5px 12px;
     font-size: 11px;
-  }
-}
-
-@media (max-width: 360px) {
-  #ch-chanukah .ch-event-flyer,
-  #ch-chanukah .ch-flyer-placeholder {
-    flex: 0 0 92px;
+    flex-shrink: 0;
   }
 }
 
