@@ -1518,12 +1518,6 @@ body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-single
   align-items: stretch;
 }
 
-/* Hide ChabadOne's invisible clearfix spacers so they don't create empty grid cells */
-  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-multiple-column > :not(.form-radio-item),
-  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-single-column > :not(.form-radio-item) {
-    display: none !important;
-  }
-
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item {
   margin: 0 !important;
   padding: 0 !important;
@@ -1915,6 +1909,7 @@ body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-error-
     gap: 8px !important;
   }
 
+  
   body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item {
     width: 100% !important;
     margin: 0 !important;
@@ -1956,6 +1951,12 @@ body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-error-
     padding: 10px 12px !important;
   }
 
+  /* Hide ChabadOne's invisible clearfix spacers so they don't create empty grid cells */
+  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-multiple-column > :not(.form-radio-item),
+  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-single-column > :not(.form-radio-item) {
+    display: none !important;
+  }
+  
   /* Footer: Keep Back & Register Cleanly Side-by-Side (No Overlap) */
   body.section_branch #formContainer.ch-wizard-ready .ch-modal-footer,
   body.section_branch #formContainer.ch-wizard-ready .ch-modal-footer.ch-final-step {
