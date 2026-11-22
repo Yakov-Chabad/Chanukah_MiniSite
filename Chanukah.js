@@ -435,7 +435,7 @@ function initEventModalWizard() {
       volAnchor.insertAdjacentElement("afterend", volunteerLi);
     }
 
-    // Keep "Other" donation input always clickable & allow resetting back to 0/blank
+    // Keep "Other" donation input clickable, non-negative (>= 0), and error-free on empty blur
     ul.querySelectorAll(".form-radio-other-input").forEach((otherInput) => {
       const radioItem = otherInput.closest(".form-radio-item");
       const radio = radioItem ? radioItem.querySelector("input[type='radio']") : null;
@@ -447,7 +447,13 @@ function initEventModalWizard() {
           otherInput.removeAttribute("disabled");
         }
         otherInput.readOnly = false;
-        otherInput.removeAttribute("min");
+        otherInput.setAttribute("min", "0");
+      }
+
+      function clearDonateError() {
+        if (!donateLi) return;
+        donateLi.classList.remove("form-line-error");
+        donateLi.querySelectorAll(".form-error-message").forEach((el) => el.remove());
       }
 
       unlockOther();
@@ -463,23 +469,51 @@ function initEventModalWizard() {
         }
       }).observe(otherInput, { attributes: true, attributeFilter: ["disabled"] });
 
-      function selectOtherRadio() {
-        unlockOther();
-        if (!radio.checked) {
-          radio.checked = true;
-          radio.dispatchEvent(new Event("click", { bubbles: true }));
-          radio.dispatchEvent(new Event("change", { bubbles: true }));
-        }
+      // Clear "Other" text if user clicks a preset tier
+      if (donateLi) {
+        donateLi.querySelectorAll("input[type='radio']").forEach((r) => {
+          if (r !== radio) {
+            r.addEventListener("change", () => {
+              if (r.checked) {
+                otherInput.value = "";
+                clearDonateError();
+              }
+            });
+          }
+        });
       }
 
-      otherInput.addEventListener("mousedown", selectOtherRadio);
-      otherInput.addEventListener("focus", selectOtherRadio);
+      // Block minus sign & scientific notation
+      otherInput.addEventListener("keydown", (e) => {
+        if (["-", "e", "E", "+"].includes(e.key)) {
+          e.preventDefault();
+        }
+      });
+
+      otherInput.addEventListener("focus", () => {
+        unlockOther();
+        if (/^other$/i.test((otherInput.value || "").trim())) {
+          otherInput.value = "";
+        }
+        clearDonateError();
+      });
 
       otherInput.addEventListener("input", () => {
         unlockOther();
-        const num = parseFloat(String(otherInput.value).replace(/[^0-9.]/g, "")) || 0;
+        if (otherInput.value.includes("-")) {
+          otherInput.value = otherInput.value.replace(/-/g, "");
+        }
+        const num = parseFloat(otherInput.value) || 0;
+        if (num < 0) {
+          otherInput.value = "0";
+        }
         if (num > 0) {
-          selectOtherRadio();
+          if (!radio.checked) {
+            radio.checked = true;
+            radio.dispatchEvent(new Event("click", { bubbles: true }));
+            radio.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+          clearDonateError();
         }
         otherInput.dispatchEvent(new Event("keyup", { bubbles: true }));
         otherInput.dispatchEvent(new Event("change", { bubbles: true }));
@@ -487,27 +521,32 @@ function initEventModalWizard() {
       });
 
       otherInput.addEventListener("blur", () => {
-        const num = parseFloat(String(otherInput.value).replace(/[^0-9.]/g, "")) || 0;
-        if (radio.checked && num <= 0) {
+        const num = parseFloat(otherInput.value) || 0;
+        if (num <= 0) {
           otherInput.value = "";
-          const noThanks = donateLi
-            ? Array.from(donateLi.querySelectorAll("input[type='radio']")).find((r) =>
-                /no thanks|none|^0$/i.test((r.value || "").trim())
-              )
-            : null;
-          if (noThanks) {
-            noThanks.checked = true;
-            noThanks.dispatchEvent(new Event("click", { bubbles: true }));
-            noThanks.dispatchEvent(new Event("change", { bubbles: true }));
-          } else {
-            radio.checked = false;
-            radio.dispatchEvent(new Event("change", { bubbles: true }));
+          if (radio.checked) {
+            const noThanks = donateLi
+              ? Array.from(donateLi.querySelectorAll("input[type='radio']")).find((r) =>
+                  /no thanks|none|^0$/i.test((r.value || "").trim())
+                )
+              : null;
+            if (noThanks) {
+              noThanks.checked = true;
+              noThanks.dispatchEvent(new Event("click", { bubbles: true }));
+              noThanks.dispatchEvent(new Event("change", { bubbles: true }));
+            } else {
+              radio.checked = false;
+              radio.dispatchEvent(new Event("change", { bubbles: true }));
+            }
           }
-          setTimeout(renderStep, 40);
+          setTimeout(() => {
+            clearDonateError();
+            renderStep();
+          }, 50);
         }
       });
     });
-
+  
     // Tight Stepper: keep real <input> outside .ch-stepper so zero extra gap can appear
     ul.querySelectorAll(".form-spinner-input, [data-type='input-spinner']").forEach((input) => {
       if (input.dataset.chStepperReady) return;
