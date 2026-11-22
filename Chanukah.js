@@ -21,7 +21,7 @@
       note: "",
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org/tools/events/register_cdo/eventid/24399",
-      flyer: "coming-soon",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Chanukah_on_Ice_2026.png",
     },
     {
       date: "Sunday, Dec. 6",
@@ -33,7 +33,7 @@
       note: "Route: Chabad to Barclay Farms.",
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org/7632249",
-      flyer: "coming-soon",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Menorah_Motorcade.png",
     },
     {
       date: "Sunday, Dec. 6",
@@ -45,7 +45,7 @@
       note: "",
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org/7632233",
-      flyer: "coming-soon",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Chanukah-Fest.png",
     },
     {
       date: "Monday, Dec. 7",
@@ -57,7 +57,7 @@
       note: "",
       host: "Chabad of Medford",
       link: "https://www.chabadmedford.org/Walk",
-      flyer: "coming-soon",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Medford_Chanukah_2026.png",
     },
     {
       date: "Tuesday, Dec. 8",
@@ -69,7 +69,7 @@
       note: "",
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
-      flyer: "coming-soon",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Haddonfield_Chanukah_2026.png",
     },
     {
       date: "Tuesday, Dec. 8",
@@ -93,7 +93,7 @@
       note: "",
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
-      flyer: "coming-soon",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Collingswood_Chanukah_2026.png",
     },
     {
       date: "Wednesday, Dec. 9",
@@ -105,7 +105,7 @@
       note: "",
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
-      flyer: "coming-soon",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Hainesport_Chanukah_2026.png",
     },
     {
       date: "Thursday, Dec. 10",
@@ -117,7 +117,7 @@
       note: "",
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org",
-      flyer: "coming-soon",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Moorestown_Chanukah_2026.png",
     },
   ];
 
