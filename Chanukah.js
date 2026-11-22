@@ -435,22 +435,36 @@ function initEventModalWizard() {
       volAnchor.insertAdjacentElement("afterend", volunteerLi);
     }
 
-    // Make "Other" donation input reliably clickable and synced to its radio
+  // Keep "Other" donation input always clickable (overrides ChabadOne's disabled="")
     ul.querySelectorAll(".form-radio-other-input").forEach((otherInput) => {
       const radioItem = otherInput.closest(".form-radio-item");
       const radio = radioItem ? radioItem.querySelector("input[type='radio']") : null;
       if (!radio) return;
 
-      otherInput.disabled = false;
-      otherInput.readOnly = false;
+      function unlockOther() {
+        if (otherInput.disabled || otherInput.hasAttribute("disabled")) {
+          otherInput.disabled = false;
+          otherInput.removeAttribute("disabled");
+        }
+        otherInput.readOnly = false;
+      }
+
+      unlockOther();
       if (/^other$/i.test((otherInput.value || "").trim())) {
         otherInput.value = "";
       }
       otherInput.placeholder = "Other ($)";
 
-      function activateOther() {
-        otherInput.disabled = false;
-        otherInput.readOnly = false;
+      // Watch for ChabadOne re-adding disabled="" when another tier is clicked
+      new MutationObserver(() => {
+        if (otherInput.disabled || otherInput.hasAttribute("disabled")) {
+          unlockOther();
+          if (!radio.checked) otherInput.value = "";
+        }
+      }).observe(otherInput, { attributes: true, attributeFilter: ["disabled"] });
+
+      function selectOtherRadio() {
+        unlockOther();
         if (!radio.checked) {
           radio.checked = true;
           radio.dispatchEvent(new Event("click", { bubbles: true }));
@@ -458,18 +472,15 @@ function initEventModalWizard() {
         }
       }
 
-      radioItem.addEventListener("mousedown", () => {
-        activateOther();
-        setTimeout(() => otherInput.focus(), 10);
-      });
-      otherInput.addEventListener("focus", activateOther);
+      otherInput.addEventListener("mousedown", selectOtherRadio);
+      otherInput.addEventListener("focus", selectOtherRadio);
       otherInput.addEventListener("input", () => {
-        activateOther();
+        selectOtherRadio();
+        otherInput.dispatchEvent(new Event("keyup", { bubbles: true }));
         otherInput.dispatchEvent(new Event("change", { bubbles: true }));
-        setTimeout(renderStep, 50);
+        setTimeout(renderStep, 60);
       });
     });
-
     // Bulletproof Stepper: visible <span> number synced 1:1 with real hidden <input>
     ul.querySelectorAll(".form-spinner-input, [data-type='input-spinner']").forEach((input) => {
       if (input.closest(".ch-stepper")) return;
