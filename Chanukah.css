@@ -1100,7 +1100,7 @@ body.section_branch article.content > .center.small {
 
 /* --- Event Landing Card (Balanced Proportions) --- */
 body.section_branch #ContentBody {
-  max-width: 940px !important;
+  max-width: 1020px !important;
 }
 
 .ch-event-landing {
