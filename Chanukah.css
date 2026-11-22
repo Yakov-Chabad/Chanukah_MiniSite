@@ -546,6 +546,13 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
   display: block;
 }
 
+/* West Side flyer is extra tall — crop from the bottom so its card matches the others (top text stays visible) */
+#ch-chanukah .ch-event-flyer[data-src*="westside"] img {
+  height: 200px;
+  object-fit: cover;
+  object-position: top;
+}
+
 #ch-chanukah .ch-flyer-placeholder {
   grid-area: flyer;
   margin: 14px 0 14px 14px;
@@ -701,6 +708,11 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
   #ch-chanukah .ch-event-flyer img {
     max-height: 122px;
     border-radius: 7px;
+  }
+  #ch-chanukah .ch-event-flyer[data-src*="westside"] img {
+    height: 122px;
+    object-fit: cover;
+    object-position: top;
   }
   #ch-chanukah .ch-flyer-placeholder {
     margin: 10px 0 10px 10px;
