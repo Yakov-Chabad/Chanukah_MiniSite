@@ -121,6 +121,20 @@
     },
   ];
 
+  // Extra events for Add-to-Calendar only (test pages, NOT in the public listing)
+  const CAL_EXTRA_EVENTS = [
+    {
+      date: "Sunday, Dec. 14",
+      isoStart: "2026-12-14T17:00:00-05:00",
+      eventName: "Mega Event and 18' Menorah Lighting",
+      aliases: ["18ft Menorah Grand Event"],
+      time: "5:00 PM",
+      location: "Barclay Farm Shopping Center, 80 Barclay Farms Shopping Center, Cherry Hill, NJ 08034",
+      note: "",
+      host: "Chabad of Camden & Burlington Counties",
+    },
+  ];
+
   function ensureViewport() {
     if (!document.querySelector('meta[name="viewport"]')) {
       const meta = document.createElement("meta");
@@ -321,13 +335,19 @@ function chFindEventForPage(title) {
   if (!t) return null;
   let best = null;
   let bestLen = 0;
-  EVENTS.forEach((ev) => {
-    const n = chNormalizeTitle(ev.eventName);
+  const checkName = (name, ev) => {
+    const n = chNormalizeTitle(name);
     if (!n) return;
     if (t.includes(n) || n.includes(t)) {
       if (n.length > bestLen) { best = ev; bestLen = n.length; }
     }
-  });
+  };
+  const check = (ev) => {
+    checkName(ev.eventName, ev);
+    (ev.aliases || []).forEach((a) => checkName(a, ev));
+  };
+  EVENTS.forEach(check);
+  CAL_EXTRA_EVENTS.forEach(check);
   return best;
 }
 
