@@ -1218,13 +1218,6 @@ body.section_branch #ContentBody {
   border-radius: 14px;
   text-decoration: none !important;
   color: #ffffff !important;
-  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
-}
-
-.ch-sponsor-band:hover {
-  background: #0d2149;
-  border-color: #ffe69a;
-  transform: translateY(-1px);
 }
 
 .ch-sponsor-band-left {
@@ -1264,7 +1257,7 @@ body.section_branch #ContentBody {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #ffffff;
+  background: #ffe69a;
   color: #071846 !important;
   font-family: "Montserrat", Arial, sans-serif;
   font-size: 14px;
@@ -1272,11 +1265,12 @@ body.section_branch #ContentBody {
   padding: 13px 24px;
   border-radius: 8px;
   white-space: nowrap;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
-.ch-sponsor-band:hover .ch-sponsor-band-cta {
-  background: #ffe69a;
+.ch-sponsor-band-cta:hover {
+  background: #fff1c7;
+  transform: translateY(-1px);
 }
 
 /* --- Subtle Centered Back Link Underneath Everything --- */
