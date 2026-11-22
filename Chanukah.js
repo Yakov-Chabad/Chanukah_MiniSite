@@ -435,7 +435,7 @@ function initEventModalWizard() {
       volAnchor.insertAdjacentElement("afterend", volunteerLi);
     }
 
-  // Keep "Other" donation input always clickable (overrides ChabadOne's disabled="")
+// Keep "Other" donation input always clickable & allow resetting back to 0/blank
     ul.querySelectorAll(".form-radio-other-input").forEach((otherInput) => {
       const radioItem = otherInput.closest(".form-radio-item");
       const radio = radioItem ? radioItem.querySelector("input[type='radio']") : null;
@@ -447,6 +447,7 @@ function initEventModalWizard() {
           otherInput.removeAttribute("disabled");
         }
         otherInput.readOnly = false;
+        otherInput.removeAttribute("min");
       }
 
       unlockOther();
@@ -454,6 +455,58 @@ function initEventModalWizard() {
         otherInput.value = "";
       }
       otherInput.placeholder = "Other ($)";
+
+      new MutationObserver(() => {
+        if (otherInput.disabled || otherInput.hasAttribute("disabled")) {
+          unlockOther();
+          if (!radio.checked) otherInput.value = "";
+        }
+      }).observe(otherInput, { attributes: true, attributeFilter: ["disabled"] });
+
+      function selectOtherRadio() {
+        unlockOther();
+        if (!radio.checked) {
+          radio.checked = true;
+          radio.dispatchEvent(new Event("click", { bubbles: true }));
+          radio.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      }
+
+      otherInput.addEventListener("mousedown", selectOtherRadio);
+      otherInput.addEventListener("focus", selectOtherRadio);
+
+      otherInput.addEventListener("input", () => {
+        unlockOther();
+        const num = parseFloat(String(otherInput.value).replace(/[^0-9.]/g, "")) || 0;
+        if (num > 0) {
+          selectOtherRadio();
+        }
+        otherInput.dispatchEvent(new Event("keyup", { bubbles: true }));
+        otherInput.dispatchEvent(new Event("change", { bubbles: true }));
+        setTimeout(renderStep, 40);
+      });
+
+      otherInput.addEventListener("blur", () => {
+        const num = parseFloat(String(otherInput.value).replace(/[^0-9.]/g, "")) || 0;
+        if (radio.checked && num <= 0) {
+          otherInput.value = "";
+          const noThanks = donateLi
+            ? Array.from(donateLi.querySelectorAll("input[type='radio']")).find((r) =>
+                /no thanks|none|^0$/i.test((r.value || "").trim())
+              )
+            : null;
+          if (noThanks) {
+            noThanks.checked = true;
+            noThanks.dispatchEvent(new Event("click", { bubbles: true }));
+            noThanks.dispatchEvent(new Event("change", { bubbles: true }));
+          } else {
+            radio.checked = false;
+            radio.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+          setTimeout(renderStep, 40);
+        }
+      });
+    });
 
       // Watch for ChabadOne re-adding disabled="" when another tier is clicked
       new MutationObserver(() => {
@@ -481,9 +534,10 @@ function initEventModalWizard() {
         setTimeout(renderStep, 60);
       });
     });
-    // Bulletproof Stepper: visible <span> number synced 1:1 with real hidden <input>
+  // Tight Stepper: keep real <input> outside .ch-stepper so zero extra gap can appear
     ul.querySelectorAll(".form-spinner-input, [data-type='input-spinner']").forEach((input) => {
-      if (input.closest(".ch-stepper")) return;
+      if (input.dataset.chStepperReady) return;
+      input.dataset.chStepperReady = "1";
       const card = input.closest(".ch-ticket-card");
       const formInput = input.closest(".form-input");
       if (!formInput) return;
@@ -506,8 +560,9 @@ function initEventModalWizard() {
 
       wrap.appendChild(minus);
       wrap.appendChild(valDisplay);
-      wrap.appendChild(input);
       wrap.appendChild(plus);
+
+      input.style.setProperty("display", "none", "important");
       formInput.appendChild(wrap);
 
       if (!input.value) input.value = "0";
@@ -596,17 +651,8 @@ function initEventModalWizard() {
     const scrollBody = form.querySelector(".form-all");
 
     // Only returns true if an actual dollar donation > 0 is selected
-    function needsPayment() {
+function needsPayment() {
       if (!paymentLi) return false;
-
-      if (totalLi) {
-        const totalEl = totalLi.querySelector("#total_amount, input[name*='total'], .total_amount, .form-input");
-        if (totalEl) {
-          const raw = totalEl.tagName === "INPUT" ? totalEl.value : totalEl.textContent;
-          const m = String(raw || "").match(/\$?\s*([0-9]+(?:\.[0-9]+)?)/);
-          if (m && parseFloat(m[1]) > 0) return true;
-        }
-      }
 
       if (donateLi) {
         const checked = donateLi.querySelector("input[type='radio']:checked");
@@ -621,9 +667,17 @@ function initEventModalWizard() {
         return parseFloat(val.replace(/[^0-9.]/g, "")) > 0;
       }
 
+      if (totalLi) {
+        const totalEl = totalLi.querySelector("#total_amount, input[name*='total'], .total_amount, .form-input");
+        if (totalEl) {
+          const raw = totalEl.tagName === "INPUT" ? totalEl.value : totalEl.textContent;
+          const m = String(raw || "").match(/\$?\s*([0-9]+(?:\.[0-9]+)?)/);
+          if (m && parseFloat(m[1]) > 0) return true;
+        }
+      }
+
       return false;
     }
-
     function clearInlineErrors() {
       form.querySelectorAll(".ch-inline-err").forEach((el) => el.remove());
       form.querySelectorAll(".ch-field-error").forEach((el) => el.classList.remove("ch-field-error"));
