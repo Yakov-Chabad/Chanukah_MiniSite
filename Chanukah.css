@@ -1227,7 +1227,7 @@ body.section_branch #ContentBody {
   justify-content: space-between;
   gap: 28px;
   margin-top: 22px;
-  padding: 26px 32px;
+  padding: 20px 32px;
   background: #081633;
   border: 1px solid rgba(255, 230, 154, 0.28);
   border-radius: 14px;
@@ -1993,18 +1993,28 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
   .ch-sponsor-band {
     flex-direction: column;
     text-align: center;
-    padding: 22px 18px;
-    gap: 16px;
+    padding: 18px;
+    gap: 14px;
+    border: none;
+    margin-top: 32px;
   }
   .ch-sponsor-band-left {
     text-align: center;
   }
   .ch-sponsor-band-title {
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 600;
   }
   .ch-sponsor-band-cta {
-    width: 100%;
+    width: auto;
+    background: transparent;
+    border: 1px solid #ffe69a;
+    color: #ffe69a !important;
     justify-content: center;
+  }
+  .ch-sponsor-band-cta:hover {
+    background: rgba(255, 230, 154, 0.1);
+    transform: none;
   }
   body.section_branch #formContainer.ch-wizard-ready .form-line.ch-half-field {
     width: 100% !important;
