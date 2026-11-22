@@ -1100,12 +1100,12 @@ body.section_branch article.content > .center.small {
 
 /* --- Event Landing Card (Full-Bleed Flyer Flush to Edges) --- */
 body.section_branch #ContentBody {
-  max-width: 980px !important;
+  max-width: 880px !important;
 }
 
 .ch-event-landing {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: 0;
   align-items: stretch;
   background: #0b1c3e;
@@ -1146,7 +1146,7 @@ body.section_branch #ContentBody {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 32px 36px;
+  padding: 24px 24px;
   color: #e2e8f0;
   font-family: "Montserrat", Arial, sans-serif;
 }
