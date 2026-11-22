@@ -1649,7 +1649,68 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-optin-compact {
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-optin-compact > .form-label {
   display: none !important;
 }
+/* Fix Stepper Gap (Hides the real input regardless of its class) */
+body.section_branch #formContainer.ch-wizard-ready .ch-stepper input {
+  display: none !important;
+}
 
+/* Lock First/Last Name Side-by-Side (Even on Error) + Clean Inline Errors */
+body.section_branch #formContainer.ch-wizard-ready .form-input:has(> .form-sub-label-container) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px 14px !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-input > .form-sub-label-container {
+  flex: 1 1 calc(50% - 7px) !important;
+  min-width: 0 !important;
+  width: auto !important;
+  margin-right: 0 !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-line-error {
+  background: transparent !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-error-message {
+  flex: 1 1 100% !important;
+  width: 100% !important;
+  background: transparent !important;
+  color: #dc2626 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 2px 0 0 0 !important;
+  margin: 0 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-error-message::before,
+body.section_branch #formContainer.ch-wizard-ready .form-error-arrow,
+body.section_branch #formContainer.ch-wizard-ready .form-error-message img {
+  display: none !important;
+}
+
+/* Force Phone (and Email) to Stretch 100% Flush Right */
+body.section_branch #formContainer.ch-wizard-ready .ch-half-field .form-input,
+body.section_branch #formContainer.ch-wizard-ready .ch-half-field .form-sub-label-container,
+body.section_branch #formContainer.ch-wizard-ready .ch-half-field input,
+body.section_branch #formContainer.ch-wizard-ready [data-type="control_phone"] .form-sub-label-container,
+body.section_branch #formContainer.ch-wizard-ready [data-type="control_phone"] input {
+  display: block !important;
+  flex: 1 1 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-right: 0 !important;
+}
+
+/* Remove Total Card (Keep Volunteer Card Below It) */
+body.section_branch #formContainer.ch-wizard-ready .ch-total-line {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 6px 0 2px !important;
+}
 /* IMPORTANT: Must stay AFTER .ch-ticket-card */
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-step-hidden,
 body.section_branch #formContainer.ch-wizard-ready .ch-step-hidden {
