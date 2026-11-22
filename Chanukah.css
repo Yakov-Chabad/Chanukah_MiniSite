@@ -1962,6 +1962,16 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
   .ch-open-rsvp-btn {
     width: 100%;
   }
+  /* Mobile: Move RSVP button above event info */
+  .ch-landing-info {
+    flex-direction: column-reverse;
+  }
+  .ch-rsvp-wrap {
+    margin-bottom: 20px;
+  }
+  .ch-landing-copy {
+    margin-bottom: 0;
+  }
   .ch-sponsor-band {
     flex-direction: column;
     text-align: center;
