@@ -1835,6 +1835,149 @@ body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-error-
   display: none !important;
 }
 
+/* --- MOBILE-ONLY MODAL POLISH (Zero Effect on Desktop) --- */
+@media (max-width: 649px) {
+  body.section_branch #formContainer.ch-wizard-ready {
+    padding: 10px 8px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready form.userform-form {
+    max-height: 92vh !important;
+  }
+
+  /* Compact Header */
+  body.section_branch #formContainer.ch-wizard-ready .ch-modal-header {
+    padding: 12px 14px 10px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .ch-modal-title {
+    font-size: 17px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .ch-modal-step-label {
+    font-size: 12px !important;
+    margin-top: 2px !important;
+  }
+
+  /* Tighter Vertical Spacing for Contact & Payment Steps */
+  body.section_branch #formContainer.ch-wizard-ready .form-all {
+    padding: 14px 16px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .form-section {
+    gap: 8px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .form-label,
+  body.section_branch #formContainer.ch-wizard-ready .form-label-left,
+  body.section_branch #formContainer.ch-wizard-ready .form-label-right {
+    font-size: 12px !important;
+    margin-bottom: 3px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .form-textbox,
+  body.section_branch #formContainer.ch-wizard-ready .form-dropdown,
+  body.section_branch #formContainer.ch-wizard-ready .form-textarea {
+    padding: 8px 10px !important;
+    font-size: 14px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .form-sub-label {
+    font-size: 10.5px !important;
+    margin-top: 2px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .form-input:has(> .form-sub-label-container) {
+    gap: 6px 10px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .form-address-table,
+  body.section_branch #formContainer.ch-wizard-ready .ch-pay-step table {
+    border-spacing: 0 5px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .form-line.ch-optin-compact {
+    margin-top: -2px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Step 3: Clean 3-Column Grid for Donation Options */
+  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-multiple-column,
+  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-single-column {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+    clear: none !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item label {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 10px 6px !important;
+    font-size: 13px !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-other-input {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 39px !important;
+    padding: 8px 6px !important;
+    font-size: 13px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .ch-total-line {
+    min-height: 70px !important;
+    padding: 2px 0 !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .ch-total-line .form-input {
+    font-size: 21px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .form-line.ch-volunteer-section {
+    margin-top: 4px !important;
+    padding: 10px 12px !important;
+  }
+
+  /* Footer: Keep Back & Register Cleanly Side-by-Side (No Overlap) */
+  body.section_branch #formContainer.ch-wizard-ready .ch-modal-footer,
+  body.section_branch #formContainer.ch-wizard-ready .ch-modal-footer.ch-final-step {
+    height: 64px !important;
+    padding: 0 16px !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .ch-modal-footer.ch-final-step .ch-btn-back {
+    position: static !important;
+    left: auto !important;
+    flex-shrink: 0 !important;
+    padding: 8px 4px !important;
+    font-size: 13.5px !important;
+  }
+
+  body.section_branch #formContainer.ch-wizard-ready .ch-btn-next,
+  body.section_branch #formContainer.ch-wizard-ready .form-submit-button {
+    min-width: 0 !important;
+    width: auto !important;
+    flex: 1 1 auto !important;
+    max-width: 210px !important;
+    padding: 11px 20px !important;
+    font-size: 15px !important;
+  }
+}
+
 /* --- 9. REGULAR CHILD WEBPAGES (NON-FORMS) --- */
 body.section_branch:not(:has(#formContainer)) #ContentBody {
   max-width: 860px !important;
