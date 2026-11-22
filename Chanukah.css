@@ -24,6 +24,16 @@ body,
   display: none !important;
 }
 
+/* Prevent ChabadOne mini-site grey top bar from flashing before JS removes it */
+.mini_site_header,
+#co_mini_site_header,
+.back_to_main_site,
+.cco_minisite_header,
+.minisite_top_bar,
+#MiniSiteHeader {
+  display: none !important;
+}
+
 /* Blend ChabadOne's bottom footer into the dark theme */
 #BodyContainer .g960.footer {
   width: 100% !important;
