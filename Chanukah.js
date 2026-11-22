@@ -612,7 +612,7 @@ function initEventModalWizard() {
       ? document.querySelector(".article-header__title").textContent.trim()
       : "Event Registration";
     const sectionId = (window.Co && window.Co.SectionId) ? window.Co.SectionId : "7629102";
-    const SPONSOR_URL = "/7629102#sponsor"; // <-- Replace with your actual sponsorship page URL
+    const SPONSOR_URL = "/7632168";
     const isSponsorPage = /sponsor/i.test(pageTitle);
 
     const landing = document.createElement("div");
