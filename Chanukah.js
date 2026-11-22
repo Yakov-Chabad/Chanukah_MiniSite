@@ -1255,7 +1255,7 @@ function initEventModalWizard() {
     });
 
     if (otherInput && otherRadio) {
-      otherInput.placeholder = "Other $";
+      otherInput.placeholder = "Other";
       const unlock = () => {
         if (otherInput.hasAttribute("disabled")) otherInput.removeAttribute("disabled");
       };
@@ -1369,12 +1369,12 @@ function initEventModalWizard() {
       // A category with no paid rows is a free regular ticket, not a package.
       const isPackage = (item.includedCount > 0 && item.paidCount > 0) || item.includesX > 0;
       if (isPackage) {
-        const meta = item.includesX > 0
-          ? `(${item.rows} of ${item.paidCount > 1 ? item.paidCount * item.includesX : item.includesX} tickets)`
+        const pkgCount = Math.max(1, item.paidCount);
+        const totalIncluded = item.includesX > 0 ? pkgCount * item.includesX : 0;
+        const meta = totalIncluded > 0
+          ? `(${item.rows} of ${totalIncluded} tickets)`
           : `(${item.rows} tickets)`;
-        const left = item.paidCount > 1
-          ? `<strong>${item.paidCount} &times; ${cat}</strong><span class="ch-ev-order-meta">${meta}</span>`
-          : `<strong>${cat}</strong><span class="ch-ev-order-meta">${meta}</span>`;
+        const left = `<strong>${pkgCount} &times;</strong> ${cat}<span class="ch-ev-order-meta">${meta}</span>`;
         rowsHtml += `<div class="ch-ev-order-row"><span>${left}</span><span>$${item.total.toFixed(2)}</span></div>`;
       } else {
         const right = item.total === 0 ? "Included" : `$${item.total.toFixed(2)}`;
@@ -1560,6 +1560,13 @@ function initEventModalWizard() {
     currentStep = step;
     stepLabel.textContent = stepNames[step];
     form.setAttribute("data-ch-step", String(step));
+
+    // Clear any stale .ch-ev-hidden left on the step sections so data-ch-step is the single source of truth
+    [perfEl, secItems, addInfo, summaryEl, resInfo, paymentEl, buttonsEl].forEach((el) => el?.classList.remove("ch-ev-hidden"));
+    if (step === 3) {
+      paymentEl?.classList.remove("ch-ev-hidden");
+      secItems?.classList.remove("ch-ev-hidden");
+    }
 
     if (step === 1 || step === 3) {
       syncOrderSummaries();

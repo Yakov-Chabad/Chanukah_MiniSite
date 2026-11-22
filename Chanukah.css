@@ -2664,37 +2664,42 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   cursor: pointer !important;
 }
 #Performances .additionals_toggle .toggle_options {
-  padding: 12px 34px 12px 14px !important;
+  padding: 12px 30px 12px 12px !important;
   position: relative !important;
   height: auto !important;
 }
 #Performances .additionals_toggle .toggle_options:not([style*="display: none"]) {
   display: grid !important;
-  grid-template-columns: 110px auto !important;
-  gap: 10px 10px !important;
+  grid-template-columns: minmax(0, 1fr) 90px auto !important;
+  gap: 8px !important;
   align-items: end !important;
-  justify-content: start !important;
 }
 #Performances .additionals_toggle .toggle_options > .inline_block {
   display: block !important;
+  min-width: 0 !important;
+  width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
-  width: 100% !important;
 }
+/* Make sure first-child does NOT span full width on desktop */
 #Performances .additionals_toggle .toggle_options > .inline_block:first-child {
-  grid-column: 1 / -1 !important;
+  grid-column: auto !important;
 }
 #Performances .additionals_toggle .toggle_options > .inline_block:has([id*="priceInfo"]) {
   grid-column: 1 / -1 !important;
   font-size: 11.5px !important;
   color: #6b7280 !important;
 }
-#Performances .additionals_toggle .toggle_options .reservation_input_select {
-  width: 100% !important;
-  max-width: 100% !important;
-}
+#Performances .additionals_toggle .toggle_options .reservation_input_select,
 #Performances .additionals_toggle .toggle_options select[id*="quantityOfAttendees"] {
   width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+#Performances .additionals_toggle .toggle_options button.add_attendee {
+  white-space: nowrap !important;
+  height: 40px !important;
+  padding: 0 14px !important;
 }
 #Performances .additionals_toggle .toggle_options .cancel {
   position: absolute !important;
@@ -2966,8 +2971,21 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   color: #ffffff !important;
 }
 #AdditionalInformation .form-radio-item:has(.form-radio-other-input) > span {
+  position: relative !important;
   display: block !important;
   width: 100% !important;
+}
+#AdditionalInformation .form-radio-item:has(.form-radio-other-input) > span::before {
+  content: "$" !important;
+  position: absolute !important;
+  left: 10px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #6b7280 !important;
+  pointer-events: none !important;
+  z-index: 3 !important;
 }
 #AdditionalInformation .form-radio-item:has(.form-radio-other-input) br {
   display: none !important;
@@ -2975,12 +2993,12 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #AdditionalInformation .form-radio-other-input {
   width: 100% !important;
   height: 40px !important;
-  padding: 0 8px !important;
+  padding: 0 8px 0 22px !important;
   border: 1px solid #d1d5db !important;
   border-radius: 6px !important;
   font-size: 13px !important;
   font-weight: 600 !important;
-  text-align: center !important;
+  text-align: left !important;
 }
 #AdditionalInformation .form-radio-item input[type="radio"]:checked ~ span .form-radio-other-input {
   border-color: #071846 !important;
@@ -3336,6 +3354,15 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   display: none !important;
 }
 
+/* Step 4: force #Payment and #CreditCard visible (ChabadOne must not hide card inputs when payment is required) */
+#RegisterSinglePage[data-ch-step="3"] #SecondaryFormItems,
+#RegisterSinglePage[data-ch-step="3"] #Payment {
+  display: block !important;
+}
+#RegisterSinglePage[data-ch-step="3"] #CreditCard {
+  display: grid !important;
+}
+
 /* Mobile Polish */
 @media (max-width: 900px) {
   body:has(#RegisterSinglePage) {
@@ -3377,5 +3404,14 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   #RegisterSinglePage .ch-modal-footer {
     height: 62px !important;
     padding: 0 16px !important;
+  }
+  #Performances .additionals_toggle .toggle_options:not([style*="display: none"]) {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  #Performances .additionals_toggle .toggle_options > .inline_block:first-child {
+    grid-column: 1 / -1 !important;
+  }
+  #Performances .additionals_toggle .toggle_options button.add_attendee {
+    width: 100% !important;
   }
 }
