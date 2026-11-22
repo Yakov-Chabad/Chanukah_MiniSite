@@ -2306,25 +2306,54 @@ body.section_branch.ch-is-receipt #ContentBody {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
-  padding: 12px 16px 48px !important;
-  max-width: 620px !important;
+  padding: 12px 12px 44px !important;
+  max-width: 600px !important;
 }
 
-body.section_branch.ch-is-receipt .print_icon,
-body.section_branch.ch-is-receipt .article-tools,
-body.section_branch.ch-is-receipt a[href*="javascript:window.print"],
-body.section_branch.ch-is-receipt a[onclick*="print"] {
-  display: none !important;
+/* Fix invisible white intro text inside white receipt card */
+body.section_branch.ch-is-receipt #ContentBody .ch-receipt-card p {
+  color: #374151 !important;
+  margin: 0 0 16px 0 !important;
 }
 
-body.section_branch:not(:has(#formContainer)) #ContentBody .ch-receipt-card a,
 body.section_branch.ch-is-receipt #ContentBody .ch-receipt-card a {
   color: #071846 !important;
   text-decoration: underline !important;
 }
 
-body.section_branch:not(:has(#formContainer)) #ContentBody .ch-receipt-card a[style*="background:#071846"],
 body.section_branch.ch-is-receipt #ContentBody .ch-receipt-card a[style*="background:#071846"] {
   color: #ffe69a !important;
   text-decoration: none !important;
+}
+
+/* --- Mobile-Only Centered Nav Home Link (Hidden on Desktop) --- */
+.ch-nav-mobile-home {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .ch-nav,
+  .ch-nav-inner {
+    position: relative !important;
+  }
+
+  .ch-nav-mobile-home {
+    display: inline-block !important;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Montserrat", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #ffe69a !important;
+    text-decoration: none !important;
+    white-space: nowrap;
+    z-index: 5;
+  }
+
+  .ch-nav-mobile-home:hover {
+    color: #ffffff !important;
+  }
 }

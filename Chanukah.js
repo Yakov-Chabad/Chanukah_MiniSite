@@ -927,8 +927,46 @@ function initEventModalWizard() {
   }
 
   function initReceiptPage() {
-    if (!document.querySelector(".ch-receipt-card") || document.getElementById("formContainer")) return;
+    if (document.getElementById("formContainer")) return;
+    const bodyEl = document.getElementById("ContentBody");
+    if (!bodyEl) return;
+
+    const card =
+      bodyEl.querySelector(".ch-receipt-card") ||
+      Array.from(bodyEl.querySelectorAll("div")).find(
+        (d) =>
+          /registration confirmed/i.test(d.textContent) &&
+          /your rsvp summary/i.test(d.textContent) &&
+          d.querySelector("table")
+      );
+    if (!card) return;
+
+    card.classList.add("ch-receipt-card");
     document.body.classList.add("ch-is-receipt");
+
+    // Hide ChabadOne's "Print" link/icon above the receipt
+    bodyEl.querySelectorAll("a, div, span").forEach((el) => {
+      if (!card.contains(el) && /^print$/i.test((el.textContent || "").trim())) {
+        el.style.setProperty("display", "none", "important");
+      }
+    });
+
+    // Remove stray empty <br> tags ChabadOne injects around receipt HTML
+    bodyEl.querySelectorAll("br").forEach((br) => {
+      if (!card.contains(br)) br.remove();
+    });
+  }
+
+  function initMobileNavHome() {
+    const navWrap = document.querySelector(".ch-nav-inner") || document.querySelector(".ch-nav");
+    if (!navWrap || navWrap.querySelector(".ch-nav-mobile-home")) return;
+
+    const sectionId = (window.Co && window.Co.SectionId) ? window.Co.SectionId : "7629102";
+    const link = document.createElement("a");
+    link.className = "ch-nav-mobile-home";
+    link.href = "/" + sectionId;
+    link.textContent = "Chanukah 2026";
+    navWrap.appendChild(link);
   }
 
   function setupChildPage() {
@@ -952,6 +990,7 @@ function initEventModalWizard() {
     removeChabadOneTopBar();
     const isChild = setupChildPage();
     initNav();
+    initMobileNavHome();
     if (!isChild) {
       renderDirectory();
       initLightbox();
