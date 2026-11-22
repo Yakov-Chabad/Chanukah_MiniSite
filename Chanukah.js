@@ -311,16 +311,30 @@
     });
   }
 
-   function initEventModalWizard() {
+  function initEventModalWizard() {
     const formContainer = document.getElementById("formContainer");
     const form = formContainer ? formContainer.querySelector("form.userform-form") : null;
     const ul = form ? form.querySelector("ul.form-section") : null;
     if (!formContainer || !form || !ul) return;
 
+    // Fix browser Back-button "Please Wait..." stuck submit button
+    window.addEventListener("pageshow", () => {
+      form.querySelectorAll(".form-submit-button").forEach((btn) => {
+        btn.disabled = false;
+        if (/please wait/i.test(btn.textContent || btn.value || "")) {
+          btn.textContent = "Register";
+          if (btn.value) btn.value = "Register";
+        }
+      });
+    });
+
     const items = Array.from(ul.children).filter((el) => el.tagName === "LI");
     const landingParts = { flyerSrc: "", htmlBlocks: [] };
     let submitLi = null;
     let paymentLi = null;
+    let emailLi = null;
+    let phoneLi = null;
+    let optInLi = null;
     const steps = { 1: [], 2: [], 3: [], 4: [] };
 
     items.forEach((li) => {
@@ -353,37 +367,77 @@
       }
       if (isPay) {
         paymentLi = li;
+        li.classList.add("ch-pay-step");
         steps[4].push(li);
         return;
       }
 
+      const fullText = li.textContent.toLowerCase();
       const labelText = (li.querySelector("label") ? li.querySelector("label").textContent : "").toLowerCase();
       const isSpinner = !!li.querySelector(".form-spinner-input, [data-type='input-spinner']");
-      const isVolunteerOnly = /volunteer/.test(labelText) && !/donat|contribut|sponsor/.test(labelText);
+      const isVolunteer = /volunteer/.test(fullText) && !/donat|contribut|sponsor/.test(fullText);
+      const isOptIn = /receive news|updates by email|opt.?in/.test(fullText);
+      const isTotal = !!li.querySelector("#total_amount, [id*='total_amount']") || /^total\b/.test(labelText.trim());
       const isDonate =
-        !isVolunteerOnly &&
-        (!!li.querySelector("#total_amount, .form-radio-other") ||
-          /donat|contribut|sponsor|support|total|gift/.test(labelText));
+        !isOptIn &&
+        (isTotal ||
+          !!li.querySelector(".form-radio-other") ||
+          /donat|contribut|sponsor|support|gift/.test(labelText));
 
       if (isSpinner || /adult|child|guest|attend|ticket/.test(labelText)) {
         li.classList.add("ch-ticket-card");
         steps[1].push(li);
-      } else if (isDonate) {
-        if (li.querySelector("input[type='radio']")) li.classList.add("ch-donate-tiles");
+      } else if (isDonate || isVolunteer) {
+        if (isTotal) li.classList.add("ch-total-line");
+        else if (isVolunteer) li.classList.add("ch-volunteer-section");
+        else if (li.querySelector("input[type='radio']")) li.classList.add("ch-donate-tiles");
         steps[3].push(li);
       } else {
-        // Put Email & Phone side-by-side on Step 2
-        if (/email|e-mail|phone|mobile|cell/.test(labelText)) {
+        if (/email|e-mail/.test(labelText) && !isOptIn) {
           li.classList.add("ch-half-field");
+          emailLi = li;
+        } else if (/phone|mobile|cell/.test(labelText)) {
+          li.classList.add("ch-half-field");
+          phoneLi = li;
+        } else if (isOptIn) {
+          li.classList.add("ch-optin-compact");
+          optInLi = li;
         }
         steps[2].push(li);
       }
     });
 
-    // Upgrade spinners to Eventbrite-style ticket steppers
+    // Force Email + Phone on same row, and Email Opt-In directly underneath
+    if (emailLi && phoneLi && emailLi.parentNode === ul) {
+      emailLi.insertAdjacentElement("afterend", phoneLi);
+    }
+    const optAnchor = phoneLi || emailLi;
+    if (optInLi && optAnchor && optAnchor.parentNode === ul) {
+      optAnchor.insertAdjacentElement("afterend", optInLi);
+    }
+
+    // Make "Other" donation text box auto-select its hidden radio button
+    ul.querySelectorAll(".form-radio-other-input").forEach((otherInput) => {
+      const radioItem = otherInput.closest(".form-radio-item");
+      const radio = radioItem ? radioItem.querySelector("input[type='radio']") : null;
+      if (!radio) return;
+      ["focus", "click", "input"].forEach((evt) => {
+        otherInput.addEventListener(evt, () => {
+          if (!radio.checked) {
+            radio.checked = true;
+            radio.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        });
+      });
+    });
+
+    // Upgrade spinners to clean − [ 0 ] + steppers
     ul.querySelectorAll(".form-spinner-input, [data-type='input-spinner']").forEach((input) => {
       if (input.closest(".ch-stepper")) return;
       const card = input.closest(".ch-ticket-card");
+      const formInput = input.closest(".form-input");
+      if (!formInput) return;
+
       const wrap = document.createElement("div");
       wrap.className = "ch-stepper";
       const minus = document.createElement("button");
@@ -395,10 +449,10 @@
       plus.className = "ch-step-btn";
       plus.textContent = "+";
 
-      input.parentNode.insertBefore(wrap, input);
       wrap.appendChild(minus);
       wrap.appendChild(input);
       wrap.appendChild(plus);
+      formInput.appendChild(wrap);
       if (!input.value) input.value = "0";
 
       function syncCard() {
@@ -424,9 +478,6 @@
     const pageTitle = document.querySelector(".article-header__title")
       ? document.querySelector(".article-header__title").textContent.trim()
       : "Event Registration";
-    const pageSub = document.querySelector(".article-header__subtitle")
-      ? document.querySelector(".article-header__subtitle").textContent.trim()
-      : "";
     const sectionId = (window.Co && window.Co.SectionId) ? window.Co.SectionId : "7629102";
 
     const landing = document.createElement("div");
@@ -444,24 +495,33 @@
     `;
     formContainer.parentNode.insertBefore(landing, formContainer);
 
-    // Eventbrite-Style White Modal Header (Back Arrow Top-Left, Title Center, X Top-Right)
+    // Modal Header with Dynamic Step Name
     const activeSteps = [1, 2, 3, 4].filter((n) => steps[n].length > 0);
+    const stepTitles = {
+      1: "Select Guests",
+      2: "Your Information",
+      3: "Support & Volunteer",
+      4: "Payment Details",
+    };
+
     const header = document.createElement("div");
     header.className = "ch-modal-header";
     header.innerHTML = `
-      <button type="button" class="ch-modal-back-top" aria-label="Back">&larr;</button>
-      <div>
+      <div class="ch-modal-title-wrap">
         <div class="ch-modal-title">${pageTitle}</div>
-        ${pageSub ? `<div class="ch-modal-sub">${pageSub}</div>` : ""}
+        <div class="ch-modal-step-label" id="ch-step-label"></div>
       </div>
       <button type="button" class="ch-modal-close" aria-label="Close">&times;</button>
     `;
     form.insertBefore(header, form.firstChild);
 
-    // Clean Bottom Footer (Single Primary Action Button)
+    // Pinned Footer (Back + Next on Same Line, Register Centered)
     const footer = document.createElement("div");
     footer.className = "ch-modal-footer";
-    footer.innerHTML = `<button type="button" class="ch-btn-next">Continue</button>`;
+    footer.innerHTML = `
+      <button type="button" class="ch-btn-back">&larr; Back</button>
+      <button type="button" class="ch-btn-next">Next</button>
+    `;
     const realSubmit = submitLi ? submitLi.querySelector(".form-submit-button") : null;
     if (realSubmit) {
       realSubmit.textContent = "Register";
@@ -472,10 +532,11 @@
     formContainer.classList.add("ch-wizard-ready");
 
     let currentIdx = 0;
-    const backBtn = header.querySelector(".ch-modal-back-top");
+    const backBtn = footer.querySelector(".ch-btn-back");
     const nextBtn = footer.querySelector(".ch-btn-next");
+    const stepLabel = header.querySelector("#ch-step-label");
+    const scrollBody = form.querySelector(".form-all");
 
-    // Accurate Payment Check: only true if a real dollar amount > 0 or donate box is checked
     function needsPayment() {
       if (!paymentLi) return false;
       const totalInp = form.querySelector("#total_amount, input[name*='total']");
@@ -486,7 +547,7 @@
         Array.from(li.querySelectorAll("input:checked")).some((inp) => {
           const val = (inp.value || "").toLowerCase();
           if (/no thanks|volunteer|none|^0$/.test(val)) return false;
-          return /donat|sponsor|\$|[1-9]/.test(val);
+          return /donat|sponsor|\$|[1-9]|other/.test(val);
         })
       );
     }
@@ -506,20 +567,25 @@
         });
       });
 
+      if (stepLabel) stepLabel.textContent = stepTitles[stepNum] || "";
       backBtn.style.visibility = currentIdx === 0 ? "hidden" : "visible";
 
       const isLast =
         currentIdx === activeSteps.length - 1 ||
         (stepNum === 3 && !needsPayment());
 
+      footer.classList.toggle("ch-final-step", isLast);
+
       if (isLast) {
         nextBtn.style.display = "none";
         if (realSubmit) realSubmit.style.display = "inline-block";
       } else {
         nextBtn.style.display = "inline-block";
-        nextBtn.textContent = stepNum === 3 ? "Continue to Payment" : "Continue";
+        nextBtn.textContent = "Next";
         if (realSubmit) realSubmit.style.display = "none";
       }
+
+      if (scrollBody) scrollBody.scrollTop = 0;
     }
 
     function validateCurrentStep() {
@@ -550,6 +616,9 @@
         const err = e.target.parentNode.querySelector(".ch-inline-err");
         if (err) err.remove();
       }
+      if (activeSteps[currentIdx] === 3 && e.target.classList.contains("form-radio-other-input")) {
+        setTimeout(renderStep, 50);
+      }
     });
 
     form.addEventListener("change", () => {
@@ -561,7 +630,6 @@
       if (currentIdx < activeSteps.length - 1) {
         currentIdx++;
         renderStep();
-        formContainer.scrollTop = 0;
       }
     });
 
@@ -569,7 +637,6 @@
       if (currentIdx > 0) {
         currentIdx--;
         renderStep();
-        formContainer.scrollTop = 0;
       }
     });
 
