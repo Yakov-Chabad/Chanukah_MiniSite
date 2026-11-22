@@ -1,6 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@400;500;600;700&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
 
+/* Hide ChabadOne's default black "Back to Chabad of..." top bar before JS loads (prevents flash) */
+.cco_templateless_template,
+.mini_site_header,
+#co_mini_site_header,
+.back_to_main_site,
+.cco_minisite_header,
+.minisite_top_bar,
+#MiniSiteHeader {
+  display: none !important;
+}
+
 /* --- Full-bleed Midnight Canvas Overrides for ChabadOne Mini-Site --- */
 html,
 body,
@@ -21,16 +32,6 @@ body,
 .article-header,
 .page-tools-sidebar,
 .cco_templatelates_content .bh {
-  display: none !important;
-}
-
-/* Prevent ChabadOne mini-site grey top bar from flashing before JS removes it */
-.mini_site_header,
-#co_mini_site_header,
-.back_to_main_site,
-.cco_minisite_header,
-.minisite_top_bar,
-#MiniSiteHeader {
   display: none !important;
 }
 
