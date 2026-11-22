@@ -435,7 +435,7 @@ function initEventModalWizard() {
       volAnchor.insertAdjacentElement("afterend", volunteerLi);
     }
 
-// Keep "Other" donation input always clickable & allow resetting back to 0/blank
+    // Keep "Other" donation input always clickable & allow resetting back to 0/blank
     ul.querySelectorAll(".form-radio-other-input").forEach((otherInput) => {
       const radioItem = otherInput.closest(".form-radio-item");
       const radio = radioItem ? radioItem.querySelector("input[type='radio']") : null;
@@ -508,33 +508,7 @@ function initEventModalWizard() {
       });
     });
 
-      // Watch for ChabadOne re-adding disabled="" when another tier is clicked
-      new MutationObserver(() => {
-        if (otherInput.disabled || otherInput.hasAttribute("disabled")) {
-          unlockOther();
-          if (!radio.checked) otherInput.value = "";
-        }
-      }).observe(otherInput, { attributes: true, attributeFilter: ["disabled"] });
-
-      function selectOtherRadio() {
-        unlockOther();
-        if (!radio.checked) {
-          radio.checked = true;
-          radio.dispatchEvent(new Event("click", { bubbles: true }));
-          radio.dispatchEvent(new Event("change", { bubbles: true }));
-        }
-      }
-
-      otherInput.addEventListener("mousedown", selectOtherRadio);
-      otherInput.addEventListener("focus", selectOtherRadio);
-      otherInput.addEventListener("input", () => {
-        selectOtherRadio();
-        otherInput.dispatchEvent(new Event("keyup", { bubbles: true }));
-        otherInput.dispatchEvent(new Event("change", { bubbles: true }));
-        setTimeout(renderStep, 60);
-      });
-    });
-  // Tight Stepper: keep real <input> outside .ch-stepper so zero extra gap can appear
+    // Tight Stepper: keep real <input> outside .ch-stepper so zero extra gap can appear
     ul.querySelectorAll(".form-spinner-input, [data-type='input-spinner']").forEach((input) => {
       if (input.dataset.chStepperReady) return;
       input.dataset.chStepperReady = "1";
@@ -650,8 +624,7 @@ function initEventModalWizard() {
     const stepLabel = header.querySelector("#ch-step-label");
     const scrollBody = form.querySelector(".form-all");
 
-    // Only returns true if an actual dollar donation > 0 is selected
-function needsPayment() {
+    function needsPayment() {
       if (!paymentLi) return false;
 
       if (donateLi) {
@@ -678,6 +651,7 @@ function needsPayment() {
 
       return false;
     }
+
     function clearInlineErrors() {
       form.querySelectorAll(".ch-inline-err").forEach((el) => el.remove());
       form.querySelectorAll(".ch-field-error").forEach((el) => el.classList.remove("ch-field-error"));
