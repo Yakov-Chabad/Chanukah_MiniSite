@@ -210,7 +210,7 @@
           ${ev.note ? `<div class="ch-event-note">${ev.note}</div>` : ""}
           <div class="ch-footer-row">
             ${ev.host ? `<span class="ch-event-host">Hosted by: ${ev.host}</span>` : ""}
-            ${link ? `<a class="ch-reserve-btn" href="${link}" target="_blank" rel="noopener">More Information &rarr;</a>` : ""}
+            ${link ? `<a class="ch-reserve-btn" href="${link}">More Information &rarr;</a>` : ""}
           </div>
         </div>
       </div>

@@ -480,6 +480,7 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
 }
 
 #ch-chanukah .ch-event-card {
+  position: relative;
   flex: 0 1 calc(50% - 11px);
   min-width: 0;
   display: grid;
@@ -497,9 +498,28 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
   transition: background-color 0.16s ease, border-color 0.16s ease;
 }
 
-#ch-chanukah .ch-event-card:hover {
+#ch-chanukah .ch-event-card:has(a) {
+  cursor: pointer;
+}
+
+#ch-chanukah .ch-event-card:has(a):hover {
   background-color: var(--ch-navy-hover);
   border-color: rgba(255, 230, 154, 0.36);
+}
+
+/* Stretched link: the Info/RSVP button covers the whole card */
+#ch-chanukah a.ch-reserve-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Keep the flyer lightbox (and any future secondary link) clickable above the stretched link */
+#ch-chanukah .ch-event-card .ch-event-flyer,
+#ch-chanukah .ch-event-card a:not(.ch-reserve-btn) {
+  position: relative;
+  z-index: 2;
 }
 
 #ch-chanukah .ch-modules-wrapper.ch-single-night .ch-event-card {
