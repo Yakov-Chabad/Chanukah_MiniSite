@@ -1013,7 +1013,7 @@ function initEventModalWizard() {
   if (!form) return;
 
   // Optional: paste your uploaded full vertical flyer URL here (leave "" to use ChabadOne's banner image)
-  const FULL_FLYER_URL = "";
+  const FULL_FLYER_URL = "https://yakov-chabad.github.io/Chanukah_MiniSite/Chanukah_on_Ice_2026.png";
 
   const contentBody = document.getElementById("ContentBody");
   const ccoBody = document.getElementById("cco_body");
