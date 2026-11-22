@@ -2970,15 +2970,15 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   border-color: #071846 !important;
   color: #ffffff !important;
 }
-#AdditionalInformation .form-radio-item:has(.form-radio-other-input) > span {
+#RegisterSinglePage #AdditionalInformation .form-radio-item:has(.form-radio-other-input) > span {
   position: relative !important;
   display: block !important;
   width: 100% !important;
 }
-#AdditionalInformation .form-radio-item:has(.form-radio-other-input) > span::before {
+#RegisterSinglePage #AdditionalInformation .form-radio-item:has(.form-radio-other-input) > span::before {
   content: "$" !important;
   position: absolute !important;
-  left: 10px !important;
+  left: 12px !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
   font-size: 13px !important;
@@ -2990,19 +2990,30 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #AdditionalInformation .form-radio-item:has(.form-radio-other-input) br {
   display: none !important;
 }
-#AdditionalInformation .form-radio-other-input {
+#RegisterSinglePage #AdditionalInformation .form-radio-item .form-radio-other-input {
   width: 100% !important;
   height: 40px !important;
-  padding: 0 8px 0 22px !important;
+  padding: 0 10px 0 26px !important;
   border: 1px solid #d1d5db !important;
   border-radius: 6px !important;
+  background: #ffffff !important;
+  color: #111827 !important;
   font-size: 13px !important;
   font-weight: 600 !important;
   text-align: left !important;
 }
-#AdditionalInformation .form-radio-item input[type="radio"]:checked ~ span .form-radio-other-input {
+#RegisterSinglePage #AdditionalInformation .form-radio-item input[type="radio"]:checked ~ span .form-radio-other-input {
+  background: #071846 !important;
   border-color: #071846 !important;
-  box-shadow: 0 0 0 1px #071846 !important;
+  color: #ffffff !important;
+  caret-color: #ffffff !important;
+  box-shadow: none !important;
+}
+#RegisterSinglePage #AdditionalInformation .form-radio-item input[type="radio"]:checked ~ span .form-radio-other-input::placeholder {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+#RegisterSinglePage #AdditionalInformation .form-radio-item input[type="radio"]:checked ~ span::before {
+  color: #ffffff !important;
 }
 
 /* Summary: Discount Code + Order Summary Box with Ticket Breakdown */
