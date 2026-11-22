@@ -392,22 +392,22 @@ function initEventModalWizard() {
       if (isSpinner || /adult|child|guest|attend|ticket/.test(labelText)) {
         li.classList.add("ch-ticket-card");
         steps[1].push(li);
-    } else if (isDonate || isVolunteer || isComment) {
-     if (isTotal) {
-       li.classList.add("ch-total-line");
-       totalLi = li;
-     } else if (isVolunteer) {
-       li.classList.add("ch-volunteer-section");
-       volunteerLi = li;
-     } else if (isComment) {
-       li.classList.add("ch-comment-box");
-       commentLi = li;
-     } else if (li.querySelector("input[type='radio']")) {
-       li.classList.add("ch-donate-tiles");
-       donateLi = li;
-     }
-     steps[3].push(li);
-   } else {
+      } else if (isDonate || isVolunteer || isComment) {
+        if (isTotal) {
+          li.classList.add("ch-total-line");
+          totalLi = li;
+        } else if (isVolunteer) {
+          li.classList.add("ch-volunteer-section");
+          volunteerLi = li;
+        } else if (isComment) {
+          li.classList.add("ch-comment-box");
+          commentLi = li;
+        } else if (li.querySelector("input[type='radio']")) {
+          li.classList.add("ch-donate-tiles");
+          donateLi = li;
+        }
+        steps[3].push(li);
+      } else {
         if (/email|e-mail/.test(labelText) && !isOptIn) {
           li.classList.add("ch-half-field");
           emailLi = li;
@@ -431,7 +431,7 @@ function initEventModalWizard() {
       optAnchor.insertAdjacentElement("afterend", optInLi);
     }
 
-    // Step 3 order: Donation Options -> Total -> Volunteer (always at bottom)
+    // Step 3 order: Donation Options -> Total -> Volunteer -> Comment
     if (donateLi && totalLi && donateLi.parentNode === ul) {
       donateLi.insertAdjacentElement("afterend", totalLi);
     }
@@ -440,9 +440,10 @@ function initEventModalWizard() {
       volAnchor.insertAdjacentElement("afterend", volunteerLi);
     }
     const commentAnchor = volunteerLi || totalLi || donateLi;
-     if (commentLi && commentAnchor && commentAnchor.parentNode === ul) {
-     commentAnchor.insertAdjacentElement("afterend", commentLi);
-     }
+    if (commentLi && commentAnchor && commentAnchor.parentNode === ul) {
+      commentAnchor.insertAdjacentElement("afterend", commentLi);
+    }
+
     // Keep "Other" donation input clickable, non-negative (>= 0), and error-free on empty blur
     ul.querySelectorAll(".form-radio-other-input").forEach((otherInput) => {
       const radioItem = otherInput.closest(".form-radio-item");
@@ -477,7 +478,6 @@ function initEventModalWizard() {
         }
       }).observe(otherInput, { attributes: true, attributeFilter: ["disabled"] });
 
-      // Clear "Other" text if user clicks a preset tier
       if (donateLi) {
         donateLi.querySelectorAll("input[type='radio']").forEach((r) => {
           if (r !== radio) {
@@ -491,7 +491,6 @@ function initEventModalWizard() {
         });
       }
 
-      // Block minus sign & scientific notation
       otherInput.addEventListener("keydown", (e) => {
         if (["-", "e", "E", "+"].includes(e.key)) {
           e.preventDefault();
@@ -554,7 +553,7 @@ function initEventModalWizard() {
         }
       });
     });
-  
+
     // Tight Stepper: keep real <input> outside .ch-stepper so zero extra gap can appear
     ul.querySelectorAll(".form-spinner-input, [data-type='input-spinner']").forEach((input) => {
       if (input.dataset.chStepperReady) return;
@@ -608,8 +607,13 @@ function initEventModalWizard() {
       });
     });
 
-  // Event Landing Card (No redundant title, subtle top-left back link, sponsor callout)
-    const SPONSOR_URL = "/7632168"; // <-- Replace with your actual sponsorship page URL
+    // Event Landing Card (No redundant title, subtle top-left back link, auto-hidden sponsor callout)
+    const pageTitle = document.querySelector(".article-header__title")
+      ? document.querySelector(".article-header__title").textContent.trim()
+      : "Event Registration";
+    const sectionId = (window.Co && window.Co.SectionId) ? window.Co.SectionId : "7629102";
+    const SPONSOR_URL = "/7629102#sponsor"; // <-- Replace with your actual sponsorship page URL
+    const isSponsorPage = /sponsor/i.test(pageTitle);
 
     const backWrap = document.createElement("div");
     backWrap.className = "ch-landing-back-wrap";
@@ -625,10 +629,14 @@ function initEventModalWizard() {
           ${landingParts.htmlBlocks.length ? landingParts.htmlBlocks.join("") : "<p>Reserve your spot below — registration takes less than a minute.</p>"}
         </div>
         <button type="button" class="ch-open-rsvp-btn" id="ch-open-rsvp">RSVP Here</button>
-        <div class="ch-sponsor-callout">
-          <p class="ch-sponsor-callout-title">Get Your Company&rsquo;s Logo on Our Flyers &amp; Event Promos!</p>
-          <p class="ch-sponsor-callout-sub">For sponsorship opportunities, <a href="${SPONSOR_URL}">click here</a>.</p>
-        </div>
+        ${
+          isSponsorPage
+            ? ""
+            : `<div class="ch-sponsor-callout">
+                 <p class="ch-sponsor-callout-title">Get Your Company&rsquo;s Logo on Our Flyers &amp; Event Promos!</p>
+                 <p class="ch-sponsor-callout-sub">For sponsorship opportunities, <a href="${SPONSOR_URL}">click here</a>.</p>
+               </div>`
+        }
       </div>
     `;
     formContainer.parentNode.insertBefore(landing, formContainer);
