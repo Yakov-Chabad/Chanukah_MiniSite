@@ -1818,6 +1818,17 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
     font-size: 19px !important;
   }
 }
+/* Lock Footer & Total Block Height So Modal Never Jumps When Toggling Donation */
+body.section_branch #formContainer.ch-wizard-ready .ch-modal-footer {
+  height: 74px !important;
+  box-sizing: border-box !important;
+  padding: 0 26px !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .ch-total-line {
+  min-height: 84px !important;
+  box-sizing: border-box !important;
+}
 /* --- 9. REGULAR CHILD WEBPAGES (NON-FORMS) --- */
 body.section_branch:not(:has(#formContainer)) #ContentBody {
   max-width: 860px !important;
