@@ -1188,7 +1188,7 @@ body.section_branch #formContainer.ch-wizard-ready form.userform-form {
   width: 100% !important;
   max-width: 600px !important;
   height: auto !important;
-  min-height: 340px !important;
+  min-height: 320px !important;
   max-height: 88vh !important;
   margin: auto !important;
   background: #ffffff !important;
@@ -1200,13 +1200,13 @@ body.section_branch #formContainer.ch-wizard-ready form.userform-form {
   overflow: hidden !important;
 }
 
-/* Clean White Top Bar */
+/* Prominent White Top Bar */
 .ch-modal-header {
   flex-shrink: 0;
   display: grid;
   grid-template-columns: 36px 1fr 36px;
   align-items: center;
-  padding: 16px 18px;
+  padding: 18px 20px 16px;
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
   text-align: center;
@@ -1239,25 +1239,27 @@ body.section_branch #formContainer.ch-wizard-ready form.userform-form {
 
 .ch-modal-title {
   font-family: "Montserrat", Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
   margin: 0;
-  line-height: 1.25;
+  line-height: 1.2;
+  letter-spacing: -0.2px;
 }
 
 .ch-modal-step-label {
   font-family: "Montserrat", Arial, sans-serif;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 500;
-  color: #6b7280;
-  margin-top: 3px;
+  color: #64748b;
+  margin-top: 4px;
 }
 
 /* Scrollable Modal Body */
 body.section_branch #formContainer.ch-wizard-ready .form-all {
   flex: 1 1 auto !important;
   overflow-y: auto !important;
+  overflow-x: hidden !important;
   width: 100% !important;
   max-width: 100% !important;
   padding: 22px 26px !important;
@@ -1297,7 +1299,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-label-right {
   display: block !important;
   text-align: left !important;
   font-family: "Montserrat", Arial, sans-serif !important;
-  font-size: 12.5px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
   color: #374151 !important;
   margin-bottom: 5px !important;
@@ -1354,7 +1356,7 @@ body.section_branch #formContainer.ch-wizard-ready .ch-field-error {
   display: block;
 }
 
-/* Side-by-Side Name Subfields */
+/* Side-by-Side Name Subfields (Only when 2 exist; single Phone box stays 100%) */
 body.section_branch #formContainer.ch-wizard-ready .form-input > .form-sub-label-container {
   display: inline-block;
   width: calc(50% - 7px);
@@ -1366,29 +1368,45 @@ body.section_branch #formContainer.ch-wizard-ready .form-input > .form-sub-label
   margin-right: 0;
 }
 
-/* Full-Width Address & Clean Payment Tables */
+body.section_branch #formContainer.ch-wizard-ready .form-input > .form-sub-label-container:only-child {
+  display: block !important;
+  width: 100% !important;
+  margin-right: 0 !important;
+}
+
+/* Full-Width Address & Payment Tables (Prevents Narrow CC or Overflowing Billing) */
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step,
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step .form-input,
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step .form-creditcard,
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step .billing_address,
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step div,
 body.section_branch #formContainer.ch-wizard-ready .form-address-table,
-body.section_branch #formContainer.ch-wizard-ready .form-creditcard table {
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step table {
   width: 100% !important;
   max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-address-table,
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step table {
   table-layout: fixed !important;
   border-collapse: separate !important;
   border-spacing: 0 8px !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-address-table td,
-body.section_branch #formContainer.ch-wizard-ready .form-creditcard td {
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step td {
   padding: 0 7px 0 0 !important;
   vertical-align: top !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-address-table td:last-child,
-body.section_branch #formContainer.ch-wizard-ready .form-creditcard td:last-child {
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step td:last-child {
   padding-right: 0 !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-address-table td[colspan="2"],
-body.section_branch #formContainer.ch-wizard-ready .form-creditcard td[colspan="2"] {
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step td[colspan="2"] {
   width: 100% !important;
   padding-right: 0 !important;
 }
@@ -1402,22 +1420,20 @@ body.section_branch #formContainer.ch-wizard-ready table select {
   margin-right: 0 !important;
 }
 
-/* Card Number (70%) vs Security Code (30%) + Remove Redundant Double Headings */
+/* Remove Double Heading on Payment Step + Card Number (70%) / CVV (30%) */
 body.section_branch #formContainer.ch-wizard-ready .ch-pay-step > .form-label {
   display: none !important;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-creditcard td.cc_number_td,
-body.section_branch #formContainer.ch-wizard-ready .form-creditcard tr:has(input[id*="cc_number"]) td:first-child {
-  width: 68% !important;
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step tr:has(input[id*="cc_number"]) td:first-child {
+  width: 70% !important;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-creditcard td.cc_ccv_td,
-body.section_branch #formContainer.ch-wizard-ready .form-creditcard tr:has(input[id*="cc_ccv"]) td:last-child {
-  width: 32% !important;
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step tr:has(input[id*="cc_ccv"]) td:last-child {
+  width: 30% !important;
 }
 
-/* Step 1: Eventbrite Ticket Cards (With Visible Numbers) */
+/* Step 1: Eventbrite Ticket Cards (Clean Border + Guaranteed Visible Number) */
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card {
   display: flex !important;
   align-items: center;
@@ -1427,18 +1443,19 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card {
   border-radius: 8px !important;
   padding: 16px 18px !important;
   background: #ffffff !important;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card.ch-ticket-active {
-  border-color: #1d4ed8 !important;
-  box-shadow: 0 0 0 1px #1d4ed8 !important;
+  border: 1.5px solid #1d4ed8 !important;
+  background: #f8fbff !important;
+  box-shadow: none !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .form-label {
   margin: 0 !important;
-  font-size: 14.5px !important;
-  font-weight: 600 !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
   color: #111827 !important;
   width: auto !important;
   flex: 1;
@@ -1452,7 +1469,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .fo
 .ch-stepper {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 }
 
 .ch-step-btn {
@@ -1473,26 +1490,26 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .fo
   color: #9ca3af;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .ch-stepper .form-spinner-input {
-  width: 44px !important;
-  min-width: 44px !important;
-  padding: 4px 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-  color: #111827 !important;
-  text-align: center !important;
-  font-size: 16px !important;
-  font-weight: 700 !important;
-  box-shadow: none !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+.ch-stepper-val {
+  display: inline-block;
+  min-width: 26px;
+  text-align: center;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-spinner {
+body.section_branch #formContainer.ch-wizard-ready .form-spinner,
+body.section_branch #formContainer.ch-wizard-ready .ch-stepper .form-spinner-input {
   display: none !important;
 }
 
-/* Step 3: Clean Donation Tile Grid + Working "Other" Box */
+/* Step 3: Clean Donation Tile Grid + Clickable "Other" Input */
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles {
+  padding-bottom: 4px !important;
+}
+
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-multiple-column,
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-single-column {
   display: flex;
@@ -1506,6 +1523,7 @@ body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-
   padding: 0 !important;
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item input[type="radio"] {
@@ -1535,25 +1553,43 @@ body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-
   color: #ffffff !important;
 }
 
+/* Hide any empty label on the "Other" item so it doesn't block the text input */
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item:has(.form-radio-other-input) label {
+  display: none !important;
+}
+
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-other-input {
-  width: 115px !important;
-  padding: 9px 10px !important;
+  width: 118px !important;
+  height: 41px !important;
+  padding: 8px 12px !important;
   border: 1px solid #d1d5db !important;
   border-radius: 6px !important;
+  background: #ffffff !important;
+  color: #111827 !important;
   font-size: 14px !important;
   font-weight: 600 !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 2;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item input[type="radio"]:checked ~ .form-radio-other-input {
+  border-color: #071846 !important;
+  box-shadow: 0 0 0 1px #071846 !important;
 }
 
 /* Step 3: Big Clean Total + Subtle 3% Fee Checkbox */
 body.section_branch #formContainer.ch-wizard-ready .ch-total-line {
-  padding-top: 8px !important;
-  border-top: 1px solid #e5e7eb !important;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  padding: 14px 16px !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .ch-total-line .form-input {
   font-size: 24px !important;
   font-weight: 700 !important;
-  color: #111827 !important;
+  color: #0f172a !important;
   line-height: 1.3 !important;
 }
 
@@ -1561,22 +1597,31 @@ body.section_branch #formContainer.ch-wizard-ready .ch-total-line label[for*="of
 body.section_branch #formContainer.ch-wizard-ready .ch-total-line .form-checkbox-item label {
   font-size: 12.5px !important;
   font-weight: 400 !important;
-  color: #4b5563 !important;
+  color: #475569 !important;
 }
 
-/* Step 3: Volunteer as a Clean 2nd Section */
+/* Step 3: Volunteer as Clean Separate Section on Bottom (No Top Line) */
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-volunteer-section {
-  margin-top: 10px !important;
-  padding-top: 16px !important;
-  border-top: 1px solid #e5e7eb !important;
+  margin-top: 8px !important;
+  padding: 14px 16px !important;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
 }
 
-/* Clean Checkboxes */
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-volunteer-section > .form-label {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin-bottom: 6px !important;
+}
+
+/* Clean Checkboxes & Tight Email Opt-In */
 body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 4px 0;
+  padding: 3px 0;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item input[type="checkbox"] {
@@ -1597,7 +1642,12 @@ body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item label {
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-optin-compact {
-  margin-top: -4px !important;
+  margin-top: -10px !important;
+  margin-bottom: 2px !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-optin-compact > .form-label {
+  display: none !important;
 }
 
 /* IMPORTANT: Must stay AFTER .ch-ticket-card */
@@ -1606,7 +1656,7 @@ body.section_branch #formContainer.ch-wizard-ready .ch-step-hidden {
   display: none !important;
 }
 
-/* Clean Bottom Footer (Back + Next on Same Line, Register Centered) */
+/* Clean Bottom Footer (Back + Next on Same Line, Big Centered Register) */
 .ch-modal-footer {
   flex-shrink: 0;
   position: relative;
@@ -1642,10 +1692,8 @@ body.section_branch #formContainer.ch-wizard-ready .ch-step-hidden {
   color: #111827;
 }
 
-.ch-btn-next,
-body.section_branch #formContainer.ch-wizard-ready .form-submit-button {
+.ch-btn-next {
   background: #1d4ed8 !important;
-  background-image: none !important;
   color: #ffffff !important;
   border: 0 !important;
   border-radius: 6px !important;
@@ -1653,12 +1701,29 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button {
   font-family: "Montserrat", Arial, sans-serif !important;
   font-size: 14.5px !important;
   font-weight: 600 !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
   cursor: pointer !important;
 }
 
-.ch-btn-next:hover,
+.ch-btn-next:hover {
+  background: #1e40af !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-submit-button {
+  background: #1d4ed8 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  padding: 13px 46px !important;
+  min-width: 190px !important;
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  text-shadow: none !important;
+  box-shadow: 0 2px 10px rgba(29, 78, 216, 0.28) !important;
+  cursor: pointer !important;
+}
+
 body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
   background: #1e40af !important;
 }
