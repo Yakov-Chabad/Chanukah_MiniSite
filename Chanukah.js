@@ -607,18 +607,13 @@ function initEventModalWizard() {
       });
     });
 
-    // Event Landing Card (No redundant title, subtle top-left back link, auto-hidden sponsor callout)
+    // Event Landing Card + Full-Width Clickable Sponsor Band + Bottom Back Link
     const pageTitle = document.querySelector(".article-header__title")
       ? document.querySelector(".article-header__title").textContent.trim()
       : "Event Registration";
     const sectionId = (window.Co && window.Co.SectionId) ? window.Co.SectionId : "7629102";
-    const SPONSOR_URL = "/7632168"; // <-- Replace with your actual sponsorship page URL
+    const SPONSOR_URL = "/7629102#sponsor"; // <-- Replace with your actual sponsorship page URL
     const isSponsorPage = /sponsor/i.test(pageTitle);
-
-    const backWrap = document.createElement("div");
-    backWrap.className = "ch-landing-back-wrap";
-    backWrap.innerHTML = `<a class="ch-landing-back" href="/${sectionId}#events">&larr; Back to All Chanukah Events</a>`;
-    formContainer.parentNode.insertBefore(backWrap, formContainer);
 
     const landing = document.createElement("div");
     landing.className = "ch-event-landing" + (landingParts.flyerSrc ? "" : " ch-no-flyer");
@@ -628,18 +623,32 @@ function initEventModalWizard() {
         <div class="ch-landing-copy">
           ${landingParts.htmlBlocks.length ? landingParts.htmlBlocks.join("") : "<p>Reserve your spot below — registration takes less than a minute.</p>"}
         </div>
-        <button type="button" class="ch-open-rsvp-btn" id="ch-open-rsvp">RSVP Here</button>
-        ${
-          isSponsorPage
-            ? ""
-            : `<div class="ch-sponsor-callout">
-                 <p class="ch-sponsor-callout-title">Get Your Company&rsquo;s Logo on Our Flyers &amp; Event Promos!</p>
-                 <p class="ch-sponsor-callout-sub">For sponsorship opportunities, <a href="${SPONSOR_URL}">click here</a>.</p>
-               </div>`
-        }
+        <div class="ch-rsvp-wrap">
+          <button type="button" class="ch-open-rsvp-btn" id="ch-open-rsvp">RSVP Here</button>
+        </div>
       </div>
     `;
     formContainer.parentNode.insertBefore(landing, formContainer);
+
+    if (!isSponsorPage) {
+      const sponsorBand = document.createElement("a");
+      sponsorBand.className = "ch-sponsor-band";
+      sponsorBand.href = SPONSOR_URL;
+      sponsorBand.innerHTML = `
+        <div class="ch-sponsor-band-left">
+          <div class="ch-sponsor-band-kicker">Become a Sponsor</div>
+          <div class="ch-sponsor-band-title">Get Your Company&rsquo;s Logo on Our Flyers &amp; Event Promos</div>
+          <div class="ch-sponsor-band-sub">Reach thousands across Camden &amp; Burlington Counties &bull; 8 events &bull; 15+ giant menorahs</div>
+        </div>
+        <span class="ch-sponsor-band-cta">Sponsorship Opportunities &rarr;</span>
+      `;
+      formContainer.parentNode.insertBefore(sponsorBand, formContainer);
+    }
+
+    const backWrap = document.createElement("div");
+    backWrap.className = "ch-landing-back-wrap";
+    backWrap.innerHTML = `<a class="ch-landing-back" href="/${sectionId}#events">&larr; Back to All Chanukah Events</a>`;
+    formContainer.parentNode.insertBefore(backWrap, formContainer);
 
     // Modal Header with Dynamic Step Name
     const activeSteps = [1, 2, 3, 4].filter((n) => steps[n].length > 0);
