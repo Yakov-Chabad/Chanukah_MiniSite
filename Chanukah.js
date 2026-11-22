@@ -68,7 +68,7 @@
       location: "Library Point, 60 N Haddon Ave, Haddonfield, NJ 08033",
       note: "",
       host: "Chabad of Camden & Burlington Counties",
-      link: "https://www.thechabadcenter.org",
+      link: "https://www.thechabadcenter.org/7632285",
       flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Haddonfield_Chanukah_2026.png",
     },
     {
@@ -92,7 +92,7 @@
       location: "Lumberyard Garden, corner of Collings Ave & N. Atlantic Ave, Collingswood, NJ",
       note: "",
       host: "Chabad of Camden & Burlington Counties",
-      link: "https://www.thechabadcenter.org",
+      link: "https://www.thechabadcenter.org/7632328",
       flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Collingswood_Chanukah_2026.png",
     },
     {
@@ -104,7 +104,7 @@
       location: "Hainesport Municipal Building, 1401 Marne Hwy, Hainesport, NJ 08036",
       note: "",
       host: "Chabad of Camden & Burlington Counties",
-      link: "https://www.thechabadcenter.org",
+      link: "https://www.thechabadcenter.org/7632329",
       flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Hainesport_Chanukah_2026.png",
     },
     {
@@ -116,7 +116,7 @@
       location: "Community House of Moorestown, 16 E Main St, Moorestown, NJ 08057",
       note: "",
       host: "Chabad of Camden & Burlington Counties",
-      link: "https://www.thechabadcenter.org",
+      link: "https://www.thechabadcenter.org/7632330",
       flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Moorestown_Chanukah_2026.png",
     },
   ];
