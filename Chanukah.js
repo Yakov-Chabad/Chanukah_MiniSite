@@ -338,6 +338,7 @@ function initEventModalWizard() {
     let donateLi = null;
     let totalLi = null;
     let volunteerLi = null;
+    let commentLi = null;
     const steps = { 1: [], 2: [], 3: [], 4: [] };
 
     items.forEach((li) => {
@@ -379,6 +380,7 @@ function initEventModalWizard() {
       const labelText = (li.querySelector("label") ? li.querySelector("label").textContent : "").toLowerCase();
       const isSpinner = !!li.querySelector(".form-spinner-input, [data-type='input-spinner']");
       const isVolunteer = /volunteer/.test(fullText) && !/donat|contribut|sponsor/.test(fullText);
+      const isComment = !!li.querySelector("textarea") || /comment|note|question|message/.test(labelText);
       const isOptIn = /receive news|updates by email|opt.?in/.test(fullText);
       const isTotal = !!li.querySelector("#total_amount, [id*='total_amount']") || /^total\b/.test(labelText.trim());
       const isDonate =
@@ -390,19 +392,22 @@ function initEventModalWizard() {
       if (isSpinner || /adult|child|guest|attend|ticket/.test(labelText)) {
         li.classList.add("ch-ticket-card");
         steps[1].push(li);
-      } else if (isDonate || isVolunteer) {
-        if (isTotal) {
-          li.classList.add("ch-total-line");
-          totalLi = li;
-        } else if (isVolunteer) {
-          li.classList.add("ch-volunteer-section");
-          volunteerLi = li;
-        } else if (li.querySelector("input[type='radio']")) {
-          li.classList.add("ch-donate-tiles");
-          donateLi = li;
-        }
-        steps[3].push(li);
-      } else {
+    } else if (isDonate || isVolunteer || isComment) {
+     if (isTotal) {
+       li.classList.add("ch-total-line");
+       totalLi = li;
+     } else if (isVolunteer) {
+       li.classList.add("ch-volunteer-section");
+       volunteerLi = li;
+     } else if (isComment) {
+       li.classList.add("ch-comment-box");
+       commentLi = li;
+     } else if (li.querySelector("input[type='radio']")) {
+       li.classList.add("ch-donate-tiles");
+       donateLi = li;
+     }
+     steps[3].push(li);
+   } else {
         if (/email|e-mail/.test(labelText) && !isOptIn) {
           li.classList.add("ch-half-field");
           emailLi = li;
@@ -434,7 +439,10 @@ function initEventModalWizard() {
     if (volunteerLi && volAnchor && volAnchor.parentNode === ul) {
       volAnchor.insertAdjacentElement("afterend", volunteerLi);
     }
-
+    const commentAnchor = volunteerLi || totalLi || donateLi;
+     if (commentLi && commentAnchor && commentAnchor.parentNode === ul) {
+     commentAnchor.insertAdjacentElement("afterend", commentLi);
+     }
     // Keep "Other" donation input clickable, non-negative (>= 0), and error-free on empty blur
     ul.querySelectorAll(".form-radio-other-input").forEach((otherInput) => {
       const radioItem = otherInput.closest(".form-radio-item");
@@ -600,23 +608,27 @@ function initEventModalWizard() {
       });
     });
 
-    // Event Landing Card
-    const pageTitle = document.querySelector(".article-header__title")
-      ? document.querySelector(".article-header__title").textContent.trim()
-      : "Event Registration";
-    const sectionId = (window.Co && window.Co.SectionId) ? window.Co.SectionId : "7629102";
+  // Event Landing Card (No redundant title, subtle top-left back link, sponsor callout)
+    const SPONSOR_URL = "/7629102#sponsor"; // <-- Replace with your actual sponsorship page URL
+
+    const backWrap = document.createElement("div");
+    backWrap.className = "ch-landing-back-wrap";
+    backWrap.innerHTML = `<a class="ch-landing-back" href="/${sectionId}#events">&larr; Back to All Chanukah Events</a>`;
+    formContainer.parentNode.insertBefore(backWrap, formContainer);
 
     const landing = document.createElement("div");
     landing.className = "ch-event-landing" + (landingParts.flyerSrc ? "" : " ch-no-flyer");
     landing.innerHTML = `
       ${landingParts.flyerSrc ? `<div class="ch-landing-flyer"><img src="${landingParts.flyerSrc}" alt="${pageTitle}" /></div>` : ""}
       <div class="ch-landing-info">
-        <h3>Join Us for ${pageTitle}</h3>
         <div class="ch-landing-copy">
           ${landingParts.htmlBlocks.length ? landingParts.htmlBlocks.join("") : "<p>Reserve your spot below — registration takes less than a minute.</p>"}
         </div>
         <button type="button" class="ch-open-rsvp-btn" id="ch-open-rsvp">RSVP Here</button>
-        <div><a class="ch-landing-back" href="/${sectionId}#events">&larr; Back to All Chanukah Events</a></div>
+        <div class="ch-sponsor-callout">
+          <p class="ch-sponsor-callout-title">Get Your Company&rsquo;s Logo on Our Flyers &amp; Event Promos!</p>
+          <p class="ch-sponsor-callout-sub">For sponsorship opportunities, <a href="${SPONSOR_URL}">click here</a>.</p>
+        </div>
       </div>
     `;
     formContainer.parentNode.insertBefore(landing, formContainer);
