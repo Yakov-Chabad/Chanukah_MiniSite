@@ -2442,7 +2442,7 @@ body:has(#RegisterSinglePage) #ch-chanukah .ch-nav {
   text-shadow: 0 2px 12px rgba(4, 12, 30, 0.85);
 }
 
-/* Landing Container (Matches Section 8) */
+/* Landing Container */
 body:has(#RegisterSinglePage) #ContentBody {
   max-width: 880px !important;
   width: calc(100% - 32px) !important;
@@ -2484,6 +2484,8 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   position: relative !important;
   width: 100% !important;
   max-width: 600px !important;
+  height: auto !important;
+  min-height: 0 !important;
   max-height: 90vh !important;
   margin: 0 auto !important;
   padding: 0 !important;
@@ -2502,32 +2504,28 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #RegisterSinglePage * {
   box-sizing: border-box !important;
 }
-
-/* Hide original header & footer inside modal (info is on the Landing Card) */
 #cco_body.ch-ev-modal-ready #RegisterHeader,
 #cco_body.ch-ev-modal-ready #RegisterFooter {
   display: none !important;
 }
 
-/* Scrollable Modal Body */
+/* Scrollable Modal Body (Shrink-wraps cleanly on short steps) */
 #cco_body.ch-ev-modal-ready #RegisterBody {
-  flex: 1 1 auto !important;
+  flex: 0 1 auto !important;
+  min-height: 0 !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  padding: 20px 26px !important;
+  padding: 18px 24px 20px !important;
   background: #ffffff !important;
 }
-#cco_body.ch-ev-modal-ready .ch-ev-hidden {
-  display: none !important;
-}
 
-/* Clean Section Titles & Separators */
+/* Clean Section Titles & Reset ChabadOne Padding */
 #RegisterBody .separator {
   display: none !important;
 }
 #RegisterBody .title.large {
   font-family: "Montserrat", Arial, sans-serif !important;
-  font-size: 15px !important;
+  font-size: 14.5px !important;
   font-weight: 700 !important;
   color: #0f172a !important;
   margin: 0 0 10px 0 !important;
@@ -2536,32 +2534,34 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 }
 #RegisterBody .large_top_padding,
 #RegisterBody .medium_bottom_padding,
-#RegisterBody .top_padding {
+#RegisterBody .top_padding,
+#RegisterBody .bottom_padding,
+#RegisterBody .medium_vertical_padding {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
 
-/* Step 1: Tickets / Reservations */
+/* Step 1: Compact Tickets / Reservations */
 #Performances > .regular.small_top_margin {
   font-size: 12.5px !important;
-  line-height: 1.55 !important;
+  line-height: 1.5 !important;
   color: #4b5563 !important;
   background: #f8fafc !important;
   border: 1px solid #e2e8f0 !important;
   border-radius: 6px !important;
   padding: 10px 12px !important;
-  margin: 0 0 14px 0 !important;
+  margin: 0 0 12px 0 !important;
 }
 #Performances .reservations {
   border: 1px solid #d1d5db !important;
   border-radius: 8px !important;
   overflow: hidden !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 10px !important;
 }
 #Performances .reservations > div:first-of-type {
   background: #f8fafc !important;
   border-bottom: 1px solid #e5e7eb !important;
-  padding: 8px 12px !important;
+  padding: 7px 12px !important;
   margin: 0 !important;
   font-size: 11px !important;
   text-transform: uppercase !important;
@@ -2587,12 +2587,12 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #Performances .reservations .reservation > .clearfix:first-child {
   display: flex !important;
   align-items: center !important;
-  padding: 10px 12px !important;
+  padding: 9px 12px !important;
   gap: 8px !important;
 }
 #Performances .reservations .g20 {
   float: none !important;
-  width: 24px !important;
+  width: 22px !important;
   margin: 0 !important;
   padding: 0 !important;
   color: #6b7280 !important;
@@ -2623,10 +2623,10 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   background: #f3f4f6 !important;
   border: 1px solid #d1d5db !important;
   color: #4b5563 !important;
-  width: 26px !important;
-  height: 26px !important;
+  width: 24px !important;
+  height: 24px !important;
   border-radius: 5px !important;
-  font-size: 16px !important;
+  font-size: 15px !important;
   line-height: 1 !important;
   cursor: pointer !important;
 }
@@ -2636,50 +2636,56 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   color: #dc2626 !important;
 }
 
-/* Smooth Add-Ticket Toggle (No Height Jump During jQuery slideDown) */
+/* Glitch-Free Add-Ticket Bar (Fixed Grid, No Slide Height Bounce) */
 #Performances .additionals_toggle {
   background: #f8fafc !important;
   border: 1px solid #d1d5db !important;
   border-radius: 8px !important;
-  overflow: hidden !important;
 }
 #Performances .additionals_toggle .toggle_message {
-  padding: 11px 14px !important;
+  padding: 10px 14px !important;
   color: #1d4ed8 !important;
   font-weight: 600 !important;
   font-size: 13.5px !important;
   cursor: pointer !important;
 }
 #Performances .additionals_toggle .toggle_options {
-  padding: 12px 14px !important;
+  padding: 12px 34px 12px 14px !important;
   position: relative !important;
+  height: auto !important;
+}
+#Performances .additionals_toggle .toggle_options:not([style*="display: none"]) {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 82px auto !important;
+  gap: 8px !important;
+  align-items: end !important;
 }
 #Performances .additionals_toggle .toggle_options > .inline_block {
-  display: inline-block !important;
-  vertical-align: bottom !important;
-  margin: 0 8px 6px 0 !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
 }
-#Performances .additionals_toggle .toggle_options .reservation_input_select {
-  width: 280px !important;
-  max-width: 100% !important;
+#Performances .additionals_toggle .toggle_options > .inline_block:has([id*="priceInfo"]) {
+  grid-column: 1 / -1 !important;
+  font-size: 11.5px !important;
+  color: #6b7280 !important;
 }
-#Performances .additionals_toggle .toggle_options select[id*="quantityOfAttendees"] {
-  width: 74px !important;
-}
-#Performances .additionals_toggle .cancel {
+#Performances .additionals_toggle .toggle_options .cancel {
   position: absolute !important;
   top: 8px !important;
-  right: 10px !important;
+  right: 8px !important;
   background: transparent !important;
   border: 0 !important;
   font-size: 18px !important;
+  line-height: 1 !important;
   color: #6b7280 !important;
   cursor: pointer !important;
 }
 #Performances .subtotal {
-  font-size: 15px !important;
+  font-size: 14.5px !important;
   color: #0f172a !important;
-  margin-top: 12px !important;
+  margin: 10px 0 0 0 !important;
 }
 
 /* Flat Crisp Inputs (Exact Match to Form Wizard) */
@@ -2696,7 +2702,7 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   color: #111827 !important;
   border: 1px solid #d1d5db !important;
   border-radius: 5px !important;
-  padding: 10px 12px !important;
+  padding: 9px 11px !important;
   font-family: "Montserrat", Arial, sans-serif !important;
   font-size: 13.5px !important;
   box-shadow: none !important;
@@ -2723,7 +2729,7 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   color: #ffffff !important;
   border: 0 !important;
   border-radius: 6px !important;
-  padding: 10px 18px !important;
+  padding: 9px 16px !important;
   font-family: "Montserrat", Arial, sans-serif !important;
   font-size: 13.5px !important;
   font-weight: 600 !important;
@@ -2743,7 +2749,7 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   color: inherit !important;
 }
 
-/* Step 2: Embedded Form (#AdditionalInformation) + Donation Tiles */
+/* Step 2: Attendees Steppers + Support Tiles */
 #AdditionalInformation #formContainer,
 #AdditionalInformation #formContainer .form-all {
   width: 100% !important;
@@ -2758,8 +2764,8 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 14px !important;
+  flex-direction: column !important;
+  gap: 12px !important;
 }
 #AdditionalInformation .form-line {
   width: 100% !important;
@@ -2768,17 +2774,14 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   background: transparent !important;
   border: 0 !important;
 }
-#AdditionalInformation .form-line:has(input[type="text"]) {
-  width: calc(50% - 7px) !important;
-}
 #AdditionalInformation .form-html {
   background: #f8fafc !important;
   border: 1px solid #e2e8f0 !important;
   border-radius: 6px !important;
-  padding: 10px 14px !important;
+  padding: 9px 12px !important;
 }
 #AdditionalInformation .form-html p {
-  margin: 0 0 3px !important;
+  margin: 0 0 2px !important;
   text-align: left !important;
 }
 #AdditionalInformation .form-html p:last-child {
@@ -2788,14 +2791,14 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #AdditionalInformation .form-html strong {
   font-family: "Montserrat", Arial, sans-serif !important;
   color: #111827 !important;
-  font-size: 13px !important;
+  font-size: 12.5px !important;
 }
 #AdditionalInformation .form-label-left {
   float: none !important;
   width: 100% !important;
   text-align: left !important;
   padding: 0 !important;
-  margin: 0 0 5px 0 !important;
+  margin: 0 0 6px 0 !important;
 }
 #AdditionalInformation .form-label-left label {
   font-family: "Montserrat", Arial, sans-serif !important;
@@ -2813,24 +2816,56 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   display: none !important;
 }
 
-/* Donation Tiles (Identical to Section 8 .ch-donate-tiles) */
-#AdditionalInformation .form-multiple-column {
+/* Adults & Children Eventbrite Stepper Cards */
+#AdditionalInformation .form-line.ch-ticket-card {
   display: flex !important;
-  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  background: #ffffff !important;
+}
+#AdditionalInformation .form-line.ch-ticket-card.ch-ticket-active {
+  border: 1.5px solid #1d4ed8 !important;
+  background: #f8fbff !important;
+}
+#AdditionalInformation .form-line.ch-ticket-card .form-label-left {
+  width: auto !important;
+  flex: 1 1 auto !important;
+  margin: 0 !important;
+}
+#AdditionalInformation .form-line.ch-ticket-card .form-label-left label {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #111827 !important;
+}
+#AdditionalInformation .form-line.ch-ticket-card .form-input {
+  width: auto !important;
+  flex-shrink: 0 !important;
+}
+#AdditionalInformation .form-line.ch-ticket-card input.form-textbox {
+  display: none !important;
+}
+
+/* Donation Tiles: Clean 5-Across Desktop / 3-Across Mobile */
+#AdditionalInformation .form-multiple-column {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
   gap: 8px !important;
-  align-items: stretch !important;
+  width: 100% !important;
 }
 #AdditionalInformation .form-multiple-column > :not(.form-radio-item) {
   display: none !important;
 }
 #AdditionalInformation .form-radio-item {
-  width: auto !important;
+  width: 100% !important;
   float: none !important;
   clear: none !important;
   margin: 0 !important;
   padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
+  display: block !important;
   position: relative !important;
 }
 #AdditionalInformation .form-radio-item input[type="radio"] {
@@ -2839,16 +2874,17 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   pointer-events: none !important;
 }
 #AdditionalInformation .form-radio-item label {
-  display: inline-flex !important;
+  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  min-width: 82px !important;
-  padding: 10px 14px !important;
+  width: 100% !important;
+  height: 40px !important;
+  padding: 0 6px !important;
   border: 1px solid #d1d5db !important;
   border-radius: 6px !important;
   background: #ffffff !important;
   color: #111827 !important;
-  font-size: 13.5px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
   cursor: pointer !important;
   margin: 0 !important;
@@ -2858,29 +2894,34 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   border-color: #071846 !important;
   color: #ffffff !important;
 }
+#AdditionalInformation .form-radio-item:has(.form-radio-other-input) > span {
+  display: block !important;
+  width: 100% !important;
+}
 #AdditionalInformation .form-radio-item:has(.form-radio-other-input) br {
   display: none !important;
 }
 #AdditionalInformation .form-radio-other-input {
-  width: 112px !important;
-  height: 41px !important;
-  padding: 8px 10px !important;
+  width: 100% !important;
+  height: 40px !important;
+  padding: 0 8px !important;
   border: 1px solid #d1d5db !important;
   border-radius: 6px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
+  text-align: center !important;
 }
 #AdditionalInformation .form-radio-item input[type="radio"]:checked ~ span .form-radio-other-input {
   border-color: #071846 !important;
   box-shadow: 0 0 0 1px #071846 !important;
 }
 
-/* Summary: Discount Code + Clean Aligned Totals */
+/* Summary: Discount Code + Order Summary Box with Ticket Breakdown */
 #Summary {
-  margin-top: 18px !important;
-  padding-top: 16px !important;
+  margin-top: 16px !important;
+  padding-top: 14px !important;
   border-top: 1px solid #e5e7eb !important;
 }
-/* Hide duplicate Additional Donation row when embedded donation form exists */
 #RegisterBody:has(#AdditionalInformation .form-radio-other) #Summary > div > .clearfix:has(#TotalDonation) {
   display: none !important;
 }
@@ -2900,64 +2941,69 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 }
 #Summary .align_right {
   text-align: left !important;
-  margin-top: 16px !important;
+  margin-top: 14px !important;
 }
 #Summary .align_right > .inline_block {
   display: block !important;
   width: 100% !important;
 }
-#Totals,
-.ch-ev-totals-clone {
+.ch-ev-order-box {
   background: #f8fafc !important;
   border: 1px solid #e2e8f0 !important;
   border-radius: 8px !important;
-  padding: 12px 16px !important;
-  width: 100% !important;
+  padding: 12px 14px !important;
+  margin-bottom: 14px !important;
 }
-#Totals > .clearfix::before,
-#Totals > .clearfix::after,
-.ch-ev-totals-clone > .clearfix::before,
-.ch-ev-totals-clone > .clearfix::after {
-  content: none !important;
-  display: none !important;
+.ch-ev-order-title {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.9px !important;
+  text-transform: uppercase !important;
+  color: #64748b !important;
+  margin: 0 0 8px 0 !important;
 }
-#Totals > .clearfix,
-.ch-ev-totals-clone > .clearfix {
+.ch-ev-order-row {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  padding: 3px 0 !important;
-  font-size: 13.5px !important;
+  font-size: 13px !important;
   color: #374151 !important;
+  padding: 3px 0 !important;
 }
-#Totals > .clearfix .float_left,
-#Totals > .clearfix .float_right,
-.ch-ev-totals-clone > .clearfix .float_left,
-.ch-ev-totals-clone > .clearfix .float_right {
-  float: none !important;
-  margin: 0 !important;
+.ch-ev-order-row strong {
+  color: #0f172a !important;
+  font-weight: 600 !important;
 }
-#Totals > .clearfix:last-child,
-.ch-ev-totals-clone > .clearfix:last-child {
+.ch-ev-order-divider {
   border-top: 1px solid #e2e8f0 !important;
-  margin-top: 6px !important;
-  padding-top: 8px !important;
-  font-size: 16px !important;
+  margin: 7px 0 !important;
+}
+.ch-ev-order-total {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-size: 15.5px !important;
   font-weight: 700 !important;
   color: #0f172a !important;
+  padding-top: 2px !important;
+}
+#Summary #Totals {
+  display: none !important;
 }
 
-/* Step 3 & 4: Your Information & Payment (Clean 2-Col Grid) */
+/* Step 3: Your Information (First/Last + Email/Phone Side-by-Side) */
 #ReserversInformation > div > .clearfix:last-child {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
   gap: 12px 14px !important;
 }
-#ReserversInformation .clearfix:has(#ReserversTitle),
-#ReserversInformation .clearfix:has(#ReserversBillingAddress1),
-#ReserversInformation .clearfix:has(#ReserversOptIn),
-#ReserversInformation .clearfix:not(:has(input, select)) {
+#ReserversInformation .clearfix:has(#ReserversTitle) {
   grid-column: 1 / -1 !important;
+  max-width: 180px !important;
+}
+#ReserversInformation .clearfix:has(#ReserversOptIn) {
+  grid-column: 1 / -1 !important;
+  margin-top: 2px !important;
 }
 #ReserversInformation > div > .clearfix:last-child > .clearfix {
   padding: 0 !important;
@@ -2967,8 +3013,8 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #Payment .label.g140 {
   float: none !important;
   width: 100% !important;
-  margin: 0 0 5px 0 !important;
-  font-size: 13px !important;
+  margin: 0 0 4px 0 !important;
+  font-size: 12.5px !important;
   font-weight: 600 !important;
   color: #374151 !important;
 }
@@ -2986,7 +3032,8 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   margin: 0 !important;
 }
 #ReserversInformation .g140:empty,
-#ReserversInformation .clearfix:not(:has(input, select)) {
+#ReserversInformation .clearfix:not(:has(input, select)),
+#ReserversInformation .small.small_top_margin {
   display: none !important;
 }
 #ReserversInformation .optin_checkbox {
@@ -2999,7 +3046,7 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   color: #4b5563 !important;
 }
 
-/* Payment: Hide Credit Card Type & Single-Option Payment Method Row */
+/* Step 4: Payment + Moved Billing Address */
 #Payment .clearfix:has(#PaymentCreditCardType),
 #Payment .clearfix:has(#PaymentMethod):has([data-count="1"]) {
   display: none !important;
@@ -3007,8 +3054,8 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #CreditCard {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
-  gap: 12px 14px !important;
-  margin-bottom: 12px !important;
+  gap: 10px 14px !important;
+  margin-bottom: 14px !important;
 }
 #CreditCard > .clearfix:has(#PaymentCreditCardNumber) {
   grid-column: 1 / -1 !important;
@@ -3016,7 +3063,7 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #CreditCard .clearfix:has(#PaymentCardExpirationMonth) {
   display: flex !important;
   flex-wrap: wrap !important;
-  gap: 5px 8px !important;
+  gap: 4px 8px !important;
 }
 #CreditCard .clearfix:has(#PaymentCardExpirationMonth) .label.g140 {
   flex: 1 1 100% !important;
@@ -3026,14 +3073,40 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   flex: 1 1 0 !important;
   width: auto !important;
 }
-#PaymentComments {
-  min-height: 58px !important;
-}
-.ch-ev-totals-clone {
+.ch-ev-billing-wrap {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px 14px !important;
+  padding-top: 12px !important;
   margin-bottom: 14px !important;
+  border-top: 1px solid #e5e7eb !important;
+}
+.ch-ev-billing-heading {
+  grid-column: 1 / -1 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin: 0 !important;
+}
+.ch-ev-billing-wrap > .clearfix {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.ch-ev-billing-wrap > .clearfix:has(#ReserversBillingAddress1) {
+  grid-column: 1 / -1 !important;
+}
+#Comments {
+  padding-top: 10px !important;
+  border-top: 1px solid #e5e7eb !important;
+}
+#Comments .small.small_top_margin {
+  display: none !important;
+}
+#PaymentComments {
+  min-height: 54px !important;
 }
 
-/* Validation Notice & Submit in Modal Footer */
+/* Validation Notice */
 #ValidationNotice {
   background: #fef2f2 !important;
   border: 1px solid #fecaca !important;
@@ -3048,13 +3121,28 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #ValidationNotice:empty {
   display: none !important;
 }
+
+/* Modal Footer: Back Left, Next Flush Right, Submit ONLY on Final Step */
+#RegisterSinglePage .ch-modal-footer {
+  height: 68px !important;
+  padding: 0 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border-top: 1px solid #e5e7eb !important;
+  background: #ffffff !important;
+}
+#RegisterSinglePage .ch-modal-footer .ch-btn-next {
+  margin-left: auto !important;
+}
 #RegisterSinglePage .ch-modal-footer #SubmitButton_wrapper {
   display: inline-block !important;
+  margin-left: auto !important;
 }
 #RegisterSinglePage .ch-modal-footer #SubmitButton {
   background: #1d4ed8 !important;
   color: #ffffff !important;
-  padding: 12px 28px !important;
+  padding: 11px 26px !important;
   font-size: 15px !important;
   font-weight: 700 !important;
   border-radius: 6px !important;
@@ -3062,6 +3150,14 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #RegisterSinglePage .ch-modal-footer #SubmitButton:disabled {
   background: #93c5fd !important;
   color: #ffffff !important;
+}
+
+/* STRICT VISIBILITY LOCK — MUST STAY AT VERY BOTTOM OF SECTION 10 */
+#cco_body.ch-ev-modal-ready .ch-ev-hidden,
+#RegisterSinglePage .ch-ev-hidden,
+#RegisterSinglePage .ch-modal-footer .ch-ev-hidden,
+#RegisterSinglePage .ch-modal-footer #SubmitButton_wrapper.ch-ev-hidden {
+  display: none !important;
 }
 
 /* Mobile Polish */
@@ -3089,24 +3185,30 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   #cco_body.ch-ev-modal-ready #RegisterBody {
     padding: 14px 16px !important;
   }
-  #AdditionalInformation .form-line:has(input[type="text"]),
-  #ReserversInformation > div > .clearfix:last-child,
-  #CreditCard {
-    grid-template-columns: 1fr !important;
+  #Performances .additionals_toggle .toggle_options:not([style*="display: none"]) {
+    grid-template-columns: 1fr 80px !important;
+  }
+  #Performances .additionals_toggle .toggle_options > .inline_block:has(button.add_attendee) {
+    grid-column: 1 / -1 !important;
+  }
+  #Performances .additionals_toggle .toggle_options button.add_attendee {
     width: 100% !important;
   }
   #AdditionalInformation .form-multiple-column {
-    display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
-  #AdditionalInformation .form-radio-item label,
-  #AdditionalInformation .form-radio-other-input {
-    width: 100% !important;
-    min-width: 0 !important;
-    text-align: center !important;
+  #ReserversInformation > div > .clearfix:last-child,
+  #CreditCard,
+  .ch-ev-billing-wrap {
+    grid-template-columns: 1fr !important;
   }
-  #Performances .additionals_toggle .toggle_options .reservation_input_select,
+  #ReserversInformation .clearfix:has(#ReserversTitle),
   #DiscountCode {
+    max-width: 100% !important;
     width: 100% !important;
+  }
+  #RegisterSinglePage .ch-modal-footer {
+    height: 62px !important;
+    padding: 0 16px !important;
   }
 }

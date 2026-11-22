@@ -412,6 +412,7 @@ function chBuildCalLinks(ev) {
 }
 
 function initEventModalWizard() {
+  if (document.getElementById("RegisterSinglePage")) return;
     const formContainer = document.getElementById("formContainer");
     const form = formContainer ? formContainer.querySelector("form.userform-form") : null;
     const ul = form ? form.querySelector("ul.form-section") : null;
@@ -1012,8 +1013,12 @@ function initEventModalWizard() {
   const form = document.getElementById("RegisterSinglePage");
   if (!form) return;
 
-  // Optional: paste your uploaded full vertical flyer URL here (leave "" to use ChabadOne's banner image)
-  const FULL_FLYER_URL = "https://yakov-chabad.github.io/Chanukah_MiniSite/Chanukah_on_Ice_2026.png";
+  // Map specific ChabadOne Event IDs to full vertical flyers hosted on GitHub Pages
+  const EVENT_FLYERS = {
+    "24399": "https://yakov-chabad.github.io/Chanukah_MiniSite/Chanukah_on_Ice_2026.png"
+  };
+  const eventIdMatch = location.pathname.match(/eventid\/(\d+)/i);
+  const customFlyerUrl = eventIdMatch ? (EVENT_FLYERS[eventIdMatch[1]] || "") : "";
 
   const contentBody = document.getElementById("ContentBody");
   const ccoBody = document.getElementById("cco_body");
@@ -1024,7 +1029,7 @@ function initEventModalWizard() {
   // 1. Pull Event Details from ChabadOne's RegisterHeader
   const titleText = (regHeader.querySelector(".event_name")?.textContent || "Event Registration").trim();
   const descText = (regHeader.querySelector(".event_description")?.textContent || "").trim();
-  const flyerSrc = FULL_FLYER_URL || regHeader.querySelector(".banner_image img")?.src || "";
+  const flyerSrc = customFlyerUrl || regHeader.querySelector(".banner_image img")?.src || "";
   const locLink = regHeader.querySelector("#EventMapLocation");
   const dateLink = regHeader.querySelector("#ICalDownload");
   const dateText = (dateLink?.textContent || "").trim();
@@ -1032,17 +1037,16 @@ function initEventModalWizard() {
   const locHref = locLink ? locLink.href : "";
   const icalHref = dateLink ? dateLink.href : "";
 
-  // 2. Insert Option B Slim Menorah Hero Strip above #ContentBody
+  // 2. Insert Option B Slim Menorah Hero Strip
   const hero = document.createElement("div");
   hero.className = "ch-ev-hero";
   hero.innerHTML = `
     <p class="ch-ev-hero-eyebrow">CHANUKAH 2026 &bull; CHABAD OF CAMDEN &amp; BURLINGTON COUNTIES</p>
-    <h1>${titleText}</h1>
-    ${dateText ? `<p class="ch-ev-hero-sub">${dateText}</p>` : ""}
+    <h1>${titleText}</h1>${dateText ? `<p class="ch-ev-hero-sub">${dateText}</p>` : ""}
   `;
   contentBody.parentNode.insertBefore(hero, contentBody);
 
-  // 3. Build 2-Column Event Landing Card (Exact Match to Form Builder Pages)
+  // 3. Build 2-Column Event Landing Card
   const landing = document.createElement("div");
   landing.className = "ch-event-landing" + (flyerSrc ? "" : " ch-no-flyer");
   landing.innerHTML = `
@@ -1056,7 +1060,7 @@ function initEventModalWizard() {
         </ul>
       </div>
       <div class="ch-rsvp-wrap">
-        <button type="button" class="ch-open-rsvp-btn" id="chEvOpenBtn">RSVP / Get Tickets</button>
+        <button type="button" class="ch-open-rsvp-btn" id="chEvOpenBtn">Get Tickets</button>
         ${icalHref ? `<div class="ch-add-cal"><span class="ch-add-cal-label">Add to Calendar:</span> <a href="${icalHref}">Download iCal</a></div>` : ""}
       </div>
     </div>
@@ -1091,25 +1095,81 @@ function initEventModalWizard() {
   `;
   form.appendChild(footer);
 
-  // Move ChabadOne's native SubmitButton_wrapper into the modal footer (hidden until Step 4)
+  // Move ChabadOne's native SubmitButton_wrapper into the modal footer (strictly hidden until Step 4)
   const submitWrap = document.getElementById("SubmitButton_wrapper");
   if (submitWrap) {
     footer.appendChild(submitWrap);
     submitWrap.classList.add("ch-ev-hidden");
   }
 
-  // Clone live totals into Step 4 (Payment) so user sees total above credit card
+  // 5. Move Billing Address fields from Step 3 (Your Info) -> Step 4 (Payment)
+  const resInfo = document.getElementById("ReserversInformation");
   const paymentEl = document.getElementById("Payment");
-  const totalsClone = document.createElement("div");
-  totalsClone.className = "ch-ev-totals-clone";
-  if (paymentEl) paymentEl.insertBefore(totalsClone, paymentEl.firstChild);
+  const creditCardEl = document.getElementById("CreditCard");
+  if (resInfo && paymentEl && creditCardEl) {
+    const billingIds = [
+      "ReserversBillingAddress1",
+      "ReserversBillingCity",
+      "ReserversBillingState",
+      "ReserversBillingPostCode",
+      "ReserversCountry"
+    ];
+    const billingWrap = document.createElement("div");
+    billingWrap.className = "ch-ev-billing-wrap";
+    billingWrap.innerHTML = `<div class="ch-ev-billing-heading">Billing Address</div>`;
 
-  const syncTotalsClone = () => {
-    const srcTotals = document.getElementById("Totals");
-    if (srcTotals) totalsClone.innerHTML = srcTotals.innerHTML;
-  };
+    billingIds.forEach((id) => {
+      const row = document.getElementById(id)?.closest(".clearfix");
+      if (row) billingWrap.appendChild(row);
+    });
+    creditCardEl.parentNode.insertBefore(billingWrap, creditCardEl.nextSibling);
+  }
 
-  // Unlock "Other" donation input cleanly (same as Form Builder wizard)
+  // 6. Upgrade Adults / Children Numeric Fields to Eventbrite (- 0 +) Steppers
+  const addInfo = document.getElementById("AdditionalInformation");
+  if (addInfo) {
+    addInfo.querySelectorAll(".form-line").forEach((line) => {
+      const inp = line.querySelector('input[type="text"]');
+      const lbl = (line.querySelector("label")?.textContent || "").toLowerCase();
+      if (!inp || !/(adult|child|guest|attend)/i.test(lbl)) return;
+
+      line.classList.add("ch-ticket-card");
+      const stepper = document.createElement("div");
+      stepper.className = "ch-stepper";
+
+      const minusBtn = document.createElement("button");
+      minusBtn.type = "button";
+      minusBtn.className = "ch-step-btn";
+      minusBtn.textContent = "−";
+
+      const valSpan = document.createElement("span");
+      valSpan.className = "ch-stepper-val";
+
+      const plusBtn = document.createElement("button");
+      plusBtn.type = "button";
+      plusBtn.className = "ch-step-btn";
+      plusBtn.textContent = "+";
+
+      stepper.append(minusBtn, valSpan, plusBtn);
+      inp.parentNode.appendChild(stepper);
+
+      const syncStepper = (val) => {
+        const num = Math.max(0, parseInt(val, 10) || 0);
+        inp.value = String(num);
+        valSpan.textContent = String(num);
+        minusBtn.classList.toggle("ch-muted-btn", num === 0);
+        line.classList.toggle("ch-ticket-active", num > 0);
+        inp.dispatchEvent(new Event("input", { bubbles: true }));
+        inp.dispatchEvent(new Event("change", { bubbles: true }));
+      };
+
+      syncStepper(inp.value || 0);
+      minusBtn.addEventListener("click", () => syncStepper((parseInt(inp.value, 10) || 0) - 1));
+      plusBtn.addEventListener("click", () => syncStepper((parseInt(inp.value, 10) || 0) + 1));
+    });
+  }
+
+  // 7. Unlock "Other" Donation Input Cleanly
   const otherInput = document.querySelector("#AdditionalInformation .form-radio-other-input");
   const otherRadio = document.querySelector("#AdditionalInformation .form-radio-other");
   if (otherInput && otherRadio) {
@@ -1126,7 +1186,69 @@ function initEventModalWizard() {
     });
   }
 
-  // Fix sticky quantity dropdown ("7" remaining when all reservations are removed)
+  // 8. Rich Order Summary Box (Ticket Breakdown + Fee + Total) on Step 2 & Step 4
+  const summaryEl = document.getElementById("Summary");
+  const summaryOrderBox = document.createElement("div");
+  summaryOrderBox.className = "ch-ev-order-box";
+  if (summaryEl) {
+    const totalsParent = summaryEl.querySelector("#Totals")?.parentNode;
+    if (totalsParent) totalsParent.insertBefore(summaryOrderBox, totalsParent.firstChild);
+  }
+
+  const paymentOrderBox = document.createElement("div");
+  paymentOrderBox.className = "ch-ev-order-box";
+  if (paymentEl) paymentEl.insertBefore(paymentOrderBox, paymentEl.firstChild);
+
+  const buildOrderSummaryHtml = () => {
+    const counts = {};
+    document.querySelectorAll("#Performances .reservation").forEach((row) => {
+      const cat = (row.querySelector(".g100")?.textContent || "Ticket").trim();
+      const priceText = (row.querySelector(".price-display")?.textContent || "$0.00").replace(/\s+/g, "");
+      const priceNum = parseFloat(priceText.replace(/[^0-9.]/g, "")) || 0;
+      if (!counts[cat]) counts[cat] = { qty: 0, total: 0 };
+      counts[cat].qty += 1;
+      counts[cat].total += priceNum;
+    });
+
+    let rowsHtml = "";
+    Object.keys(counts).forEach((cat) => {
+      const item = counts[cat];
+      rowsHtml += `<div class="ch-ev-order-row"><span><strong>${item.qty} &times;</strong> ${cat}</span><span>$${item.total.toFixed(2)}</span></div>`;
+    });
+
+    let extraRows = "";
+    let grandTotal = "";
+    document.querySelectorAll("#Totals > .clearfix").forEach((r) => {
+      const left = (r.querySelector(".float_left")?.textContent || "").trim();
+      const right = (r.querySelector(".float_right")?.textContent || "").replace(/\s+/g, " ").trim();
+      if (/^total/i.test(left)) {
+        grandTotal = `<div class="ch-ev-order-total"><span>Total</span><span>${right}</span></div>`;
+      } else if (!/^subtotal/i.test(left) && left) {
+        extraRows += `<div class="ch-ev-order-row"><span>${left.replace(/:$/, "")}</span><span>${right}</span></div>`;
+      }
+    });
+
+    return `
+      <div class="ch-ev-order-title">Order Summary</div>
+      ${rowsHtml || `<div class="ch-ev-order-row"><span>No tickets selected</span><span>$0.00</span></div>`}
+      ${extraRows}
+      <div class="ch-ev-order-divider"></div>
+      ${grandTotal || `<div class="ch-ev-order-total"><span>Total</span><span>$0.00</span></div>`}
+    `;
+  };
+
+  const syncOrderSummaries = () => {
+    const html = buildOrderSummaryHtml();
+    summaryOrderBox.innerHTML = html;
+    paymentOrderBox.innerHTML = html;
+  };
+
+  const totalsEl = document.getElementById("Totals");
+  if (totalsEl) {
+    new MutationObserver(syncOrderSummaries).observe(totalsEl, { childList: true, subtree: true, characterData: true });
+  }
+
+  // 9. Fix Sticky Quantity Dropdown & Smooth Add-Ticket Toggle
   const perfEl = document.getElementById("Performances");
   if (perfEl) {
     perfEl.addEventListener("click", (e) => {
@@ -1134,16 +1256,23 @@ function initEventModalWizard() {
         setTimeout(() => {
           const qtySel = perfEl.querySelector('select[id*="quantityOfAttendees"]');
           if (qtySel && !perfEl.querySelector(".reservation")) qtySel.value = "1";
+          syncOrderSummaries();
         }, 120);
+      }
+      if (e.target.closest(".toggle_message")) {
+        const opts = perfEl.querySelector(".toggle_options");
+        if (opts) {
+          setTimeout(() => {
+            opts.style.height = "";
+            opts.style.overflow = "";
+          }, 30);
+        }
       }
     });
   }
 
-  // 5. Step Controller
+  // 10. Step Controller
   const secItems = document.getElementById("SecondaryFormItems");
-  const addInfo = document.getElementById("AdditionalInformation");
-  const summaryEl = document.getElementById("Summary");
-  const resInfo = document.getElementById("ReserversInformation");
   const buttonsEl = document.getElementById("Buttons");
   const stepLabel = document.getElementById("chEvStepLabel");
   const backBtn = document.getElementById("chEvBackBtn");
@@ -1157,7 +1286,6 @@ function initEventModalWizard() {
   ];
   let currentStep = 0;
 
-  // Inline error helper
   const clearErrors = (container) => {
     container?.querySelectorAll(".ch-field-error").forEach((el) => el.classList.remove("ch-field-error"));
     container?.querySelectorAll(".ch-inline-err").forEach((el) => el.remove());
@@ -1184,6 +1312,7 @@ function initEventModalWizard() {
       secItems?.classList.remove("ch-ev-hidden");
       addInfo?.classList.remove("ch-ev-hidden");
       summaryEl?.classList.remove("ch-ev-hidden");
+      syncOrderSummaries();
     } else if (step === 2) {
       secItems?.classList.remove("ch-ev-hidden");
       resInfo?.classList.remove("ch-ev-hidden");
@@ -1191,18 +1320,16 @@ function initEventModalWizard() {
       secItems?.classList.remove("ch-ev-hidden");
       paymentEl?.classList.remove("ch-ev-hidden");
       buttonsEl?.classList.remove("ch-ev-hidden");
-      syncTotalsClone();
+      syncOrderSummaries();
     }
 
     backBtn.style.visibility = step === 0 ? "hidden" : "visible";
     if (step === 3) {
       nextBtn.classList.add("ch-ev-hidden");
       submitWrap?.classList.remove("ch-ev-hidden");
-      footer.classList.add("ch-final-step");
     } else {
       nextBtn.classList.remove("ch-ev-hidden");
       submitWrap?.classList.add("ch-ev-hidden");
-      footer.classList.remove("ch-final-step");
     }
     regBody.scrollTop = 0;
   };
@@ -1223,14 +1350,7 @@ function initEventModalWizard() {
 
     if (currentStep === 1) {
       clearErrors(addInfo);
-      let ok = true;
-      addInfo.querySelectorAll('input.validate\\[required\\,\\ Numeric\\], input[class*="required"]').forEach((inp) => {
-        if (!inp.value.trim() || isNaN(Number(inp.value.trim()))) {
-          showError(inp, "Please enter a number (0 or more).");
-          ok = false;
-        }
-      });
-      return ok;
+      return true;
     }
 
     if (currentStep === 2) {
