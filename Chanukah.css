@@ -476,12 +476,14 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: stretch;
   gap: 22px;
 }
 
 #ch-chanukah .ch-event-card {
   position: relative;
   flex: 0 1 calc(50% - 11px);
+  align-self: stretch;
   min-width: 0;
   display: grid;
   grid-template-columns: 162px minmax(0, 1fr);
