@@ -411,6 +411,28 @@ function chBuildCalLinks(ev) {
   return '<div class="ch-add-cal"><span class="ch-add-cal-label">' + calIcon + 'Add to calendar:</span><a href="' + gUrl + '" target="_blank" rel="noopener">Google Calendar</a><span class="ch-add-cal-sep">\u2022</span><a href="' + icsUrl + '" download="' + slug + '.ics">Apple Calendar</a></div>';
 }
 
+// Google Calendar URL for a page title (used by the Events Module wizard, which cannot see EVENTS).
+// Same start/end logic as chBuildCalLinks: end parsed from the time range, else start + 90 min.
+window.chGoogleCalUrlForTitle = function (title) {
+  const ev = chFindEventForPage(title);
+  if (!ev) return "";
+  const start = new Date(ev.isoStart);
+  if (isNaN(start)) return "";
+  let end = null;
+  const parts = (ev.time || "").split(/\s*[\u2013\u2014-]\s*/);
+  if (parts.length >= 2) end = chParseTimeOnDate(parts[parts.length - 1], ev.isoStart);
+  if (end && !isNaN(end)) {
+    if (end <= start) end = new Date(end.getTime() + 24 * 60 * 60000);
+  } else {
+    end = new Date(start.getTime() + 90 * 60000);
+  }
+  return "https://calendar.google.com/calendar/render?action=TEMPLATE"
+    + "&text=" + encodeURIComponent(ev.eventName)
+    + "&dates=" + chUTCStamp(start) + "/" + chUTCStamp(end)
+    + "&details=" + encodeURIComponent(ev.note || "Chanukah 2026")
+    + "&location=" + encodeURIComponent(ev.location || "");
+};
+
 function initEventModalWizard() {
   if (document.getElementById("RegisterSinglePage")) return;
     const formContainer = document.getElementById("formContainer");
@@ -1047,6 +1069,13 @@ function initEventModalWizard() {
   contentBody.parentNode.insertBefore(hero, contentBody);
 
   // 3. Build 2-Column Event Landing Card
+  // Calendar line matches the Form Builder pages: Google Calendar link + native ChabadOne iCal as Apple Calendar.
+  const googleCalUrl = (typeof window.chGoogleCalUrlForTitle === "function") ? (window.chGoogleCalUrlForTitle(titleText) || "") : "";
+  const calIconSvg = '<svg class="ch-cal-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>';
+  const calLineHtml = !icalHref ? "" : googleCalUrl
+    ? `<div class="ch-add-cal"><span class="ch-add-cal-label">${calIconSvg}Add to calendar:</span><a href="${googleCalUrl}" target="_blank" rel="noopener">Google Calendar</a><span class="ch-add-cal-sep">•</span><a href="${icalHref}">Apple Calendar</a></div>`
+    : `<div class="ch-add-cal"><span class="ch-add-cal-label">Add to Calendar:</span> <a href="${icalHref}">Download iCal</a></div>`;
+
   const landing = document.createElement("div");
   landing.className = "ch-event-landing" + (flyerSrc ? "" : " ch-no-flyer");
   landing.innerHTML = `
@@ -1061,7 +1090,7 @@ function initEventModalWizard() {
       </div>
       <div class="ch-rsvp-wrap">
         <button type="button" class="ch-open-rsvp-btn" id="chEvOpenBtn">Get Tickets</button>
-        ${icalHref ? `<div class="ch-add-cal"><span class="ch-add-cal-label">Add to Calendar:</span> <a href="${icalHref}">Download iCal</a></div>` : ""}
+        ${calLineHtml}
       </div>
     </div>
   `;
