@@ -2696,6 +2696,9 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   color: #6b7280 !important;
   cursor: pointer !important;
 }
+#Performances .additionals_toggle:has(.toggle_options:not([style*="display: none"])) .toggle_message {
+  display: none !important;
+}
 #Performances .subtotal {
   font-size: 14.5px !important;
   color: #0f172a !important;
@@ -2707,7 +2710,19 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #RegisterSinglePage input[type="email"],
 #RegisterSinglePage input[type="tel"],
 #RegisterSinglePage input[type="number"],
-#RegisterSinglePage select,
+#RegisterSinglePage select {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 40px !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 5px !important;
+  padding: 8px 11px !important;
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-size: 13.5px !important;
+  box-shadow: none !important;
+}
 #RegisterSinglePage textarea {
   width: 100% !important;
   max-width: 100% !important;
@@ -2788,6 +2803,10 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   background: transparent !important;
   border: 0 !important;
 }
+#AdditionalInformation .form-line:not(.ch-ticket-card) {
+  display: block !important;
+  width: 100% !important;
+}
 #AdditionalInformation .form-html {
   background: #f8fafc !important;
   border: 1px solid #e2e8f0 !important;
@@ -2822,9 +2841,15 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 }
 #AdditionalInformation .form-input,
 #AdditionalInformation .form-input-wide {
+  display: block !important;
+  float: none !important;
   width: 100% !important;
+  max-width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
+}
+#AdditionalInformation .subtotal {
+  display: none !important;
 }
 #AdditionalInformation .center.small {
   display: none !important;
@@ -3006,16 +3031,31 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 }
 
 /* Step 3: Your Information (First/Last + Email/Phone Side-by-Side) */
+#ReserversInformation,
+#ReserversInformation > div {
+  width: 100% !important;
+  max-width: 100% !important;
+}
 #ReserversInformation > div > .clearfix:last-child {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
   gap: 12px 14px !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
-#ReserversInformation .clearfix:has(#ReserversTitle) {
+#ReserversInformation > div > .clearfix:last-child::before,
+#ReserversInformation > div > .clearfix:last-child::after {
+  content: none !important;
+  display: none !important;
+}
+#ReserversInformation > div > .clearfix:last-child > .clearfix:has(#ReserversTitle) {
   grid-column: 1 / -1 !important;
-  max-width: 180px !important;
+  max-width: none !important;
 }
-#ReserversInformation .clearfix:has(#ReserversOptIn) {
+#ReserversTitle {
+  max-width: 220px !important;
+}
+#ReserversInformation > div > .clearfix:last-child > .clearfix:has(#ReserversOptIn) {
   grid-column: 1 / -1 !important;
   margin-top: 2px !important;
 }
@@ -3067,25 +3107,35 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 }
 #CreditCard {
   display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 10px 14px !important;
+  grid-template-columns: 1.4fr 1fr !important;
+  gap: 12px 14px !important;
+  align-items: start !important;
   margin-bottom: 14px !important;
+}
+#CreditCard > .clearfix {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#CreditCard .clearfix::before,
+#CreditCard .clearfix::after {
+  content: none !important;
+  display: none !important;
 }
 #CreditCard > .clearfix:has(#PaymentCreditCardNumber) {
   grid-column: 1 / -1 !important;
 }
 #CreditCard .clearfix:has(#PaymentCardExpirationMonth) {
-  display: flex !important;
-  flex-wrap: wrap !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
   gap: 4px 8px !important;
 }
 #CreditCard .clearfix:has(#PaymentCardExpirationMonth) .label.g140 {
-  flex: 1 1 100% !important;
-  margin-bottom: 0 !important;
+  grid-column: 1 / -1 !important;
+  margin: 0 !important;
 }
 #CreditCard .clearfix:has(#PaymentCardExpirationMonth) .float_left.left_margin {
-  flex: 1 1 0 !important;
-  width: auto !important;
+  width: 100% !important;
+  margin: 0 !important;
 }
 .ch-ev-billing-wrap {
   display: grid !important;
@@ -3166,11 +3216,32 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   color: #ffffff !important;
 }
 
-/* STRICT VISIBILITY LOCK — MUST STAY AT VERY BOTTOM OF SECTION 10 */
+/* STRICT STEP VISIBILITY LOCK (Immune to ChabadOne overwriting className or inline display) */
+#RegisterSinglePage[data-ch-step]:not([data-ch-step="0"]) #Performances {
+  display: none !important;
+}
+#RegisterSinglePage[data-ch-step="0"] #SecondaryFormItems {
+  display: none !important;
+}
+#RegisterSinglePage[data-ch-step]:not([data-ch-step="1"]) #AdditionalInformation,
+#RegisterSinglePage[data-ch-step]:not([data-ch-step="1"]) #Summary {
+  display: none !important;
+}
+#RegisterSinglePage[data-ch-step]:not([data-ch-step="2"]) #ReserversInformation {
+  display: none !important;
+}
+#RegisterSinglePage[data-ch-step]:not([data-ch-step="3"]) #Payment,
+#RegisterSinglePage[data-ch-step]:not([data-ch-step="3"]) #Buttons {
+  display: none !important;
+}
+#RegisterSinglePage[data-ch-step="3"] .ch-modal-footer .ch-btn-next {
+  display: none !important;
+}
+#RegisterSinglePage[data-ch-step]:not([data-ch-step="3"]) .ch-modal-footer #SubmitButton_wrapper {
+  display: none !important;
+}
 #cco_body.ch-ev-modal-ready .ch-ev-hidden,
-#RegisterSinglePage .ch-ev-hidden,
-#RegisterSinglePage .ch-modal-footer .ch-ev-hidden,
-#RegisterSinglePage .ch-modal-footer #SubmitButton_wrapper.ch-ev-hidden {
+#RegisterSinglePage .ch-ev-hidden {
   display: none !important;
 }
 

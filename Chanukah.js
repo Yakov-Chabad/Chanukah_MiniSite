@@ -971,7 +971,7 @@ function initEventModalWizard() {
   }
 
   function setupChildPage() {
-    if (!document.body.classList.contains("section_branch")) return false;
+    if (!document.body.classList.contains("section_branch") && !document.getElementById("RegisterSinglePage")) return false;
 
     const sectionId = (window.Co && window.Co.SectionId) ? window.Co.SectionId : "7629102";
     const homeBase = "/" + sectionId;
@@ -1095,11 +1095,10 @@ function initEventModalWizard() {
   `;
   form.appendChild(footer);
 
-  // Move ChabadOne's native SubmitButton_wrapper into the modal footer (strictly hidden until Step 4)
+  // Move ChabadOne's native SubmitButton_wrapper into the modal footer (shown only on Step 4 via data-ch-step)
   const submitWrap = document.getElementById("SubmitButton_wrapper");
   if (submitWrap) {
     footer.appendChild(submitWrap);
-    submitWrap.classList.add("ch-ev-hidden");
   }
 
   // 5. Move Billing Address fields from Step 3 (Your Info) -> Step 4 (Payment)
@@ -1218,9 +1217,11 @@ function initEventModalWizard() {
 
     let extraRows = "";
     let grandTotal = "";
+    let totalsMentionDonation = false;
     document.querySelectorAll("#Totals > .clearfix").forEach((r) => {
       const left = (r.querySelector(".float_left")?.textContent || "").trim();
       const right = (r.querySelector(".float_right")?.textContent || "").replace(/\s+/g, " ").trim();
+      if (/additional|donat|contribut/i.test((r.textContent || ""))) totalsMentionDonation = true;
       if (/^total/i.test(left)) {
         grandTotal = `<div class="ch-ev-order-total"><span>Total</span><span>${right}</span></div>`;
       } else if (!/^subtotal/i.test(left) && left) {
@@ -1228,10 +1229,21 @@ function initEventModalWizard() {
       }
     });
 
+    // Contribution / Additional Donation line item (not always reflected in #Totals)
+    let contribRow = "";
+    const addTotalEl = document.querySelector('#AdditionalInformation [id^="additional_"][id$="_total"]');
+    if (addTotalEl && !totalsMentionDonation) {
+      const addVal = parseFloat((addTotalEl.textContent || "").replace(/[^0-9.]/g, "")) || 0;
+      if (addVal > 0) {
+        contribRow = `<div class="ch-ev-order-row"><span>Contribution / Sponsorship</span><span>$${addVal.toFixed(2)}</span></div>`;
+      }
+    }
+
     return `
       <div class="ch-ev-order-title">Order Summary</div>
       ${rowsHtml || `<div class="ch-ev-order-row"><span>No tickets selected</span><span>$0.00</span></div>`}
       ${extraRows}
+      ${contribRow}
       <div class="ch-ev-order-divider"></div>
       ${grandTotal || `<div class="ch-ev-order-total"><span>Total</span><span>$0.00</span></div>`}
     `;
@@ -1248,10 +1260,36 @@ function initEventModalWizard() {
     new MutationObserver(syncOrderSummaries).observe(totalsEl, { childList: true, subtree: true, characterData: true });
   }
 
+  // Re-sync the Order Summary the moment a donation tile / Other amount changes
+  if (addInfo) {
+    addInfo.addEventListener("change", syncOrderSummaries);
+    addInfo.addEventListener("input", syncOrderSummaries);
+    new MutationObserver(syncOrderSummaries).observe(addInfo, { childList: true, subtree: true, characterData: true });
+  }
+
   // 9. Fix Sticky Quantity Dropdown & Smooth Add-Ticket Toggle
   const perfEl = document.getElementById("Performances");
   if (perfEl) {
     perfEl.addEventListener("click", (e) => {
+      if (e.target.closest(".toggle_message, .toggle_options .cancel, .add_attendee")) {
+        const toggleWrap = e.target.closest(".additionals_toggle");
+        const snapToggle = () => {
+          if (!toggleWrap) return;
+          if (window.$j) {
+            window.$j(toggleWrap).find(".toggle_options, .toggle_message").stop(true, true);
+          }
+          toggleWrap.querySelectorAll(".toggle_options, .toggle_message").forEach((el) => {
+            el.style.height = "";
+            el.style.overflow = "";
+            el.style.paddingTop = "";
+            el.style.paddingBottom = "";
+            el.style.marginTop = "";
+            el.style.marginBottom = "";
+          });
+        };
+        snapToggle();
+        requestAnimationFrame(snapToggle);
+      }
       if (e.target.closest(".remove_reservation")) {
         setTimeout(() => {
           const qtySel = perfEl.querySelector('select[id*="quantityOfAttendees"]');
@@ -1301,36 +1339,13 @@ function initEventModalWizard() {
   const renderStep = (step) => {
     currentStep = step;
     stepLabel.textContent = stepNames[step];
+    form.setAttribute("data-ch-step", String(step));
 
-    [perfEl, secItems, addInfo, summaryEl, resInfo, paymentEl, buttonsEl].forEach((el) => {
-      if (el) el.classList.add("ch-ev-hidden");
-    });
-
-    if (step === 0) {
-      perfEl?.classList.remove("ch-ev-hidden");
-    } else if (step === 1) {
-      secItems?.classList.remove("ch-ev-hidden");
-      addInfo?.classList.remove("ch-ev-hidden");
-      summaryEl?.classList.remove("ch-ev-hidden");
-      syncOrderSummaries();
-    } else if (step === 2) {
-      secItems?.classList.remove("ch-ev-hidden");
-      resInfo?.classList.remove("ch-ev-hidden");
-    } else if (step === 3) {
-      secItems?.classList.remove("ch-ev-hidden");
-      paymentEl?.classList.remove("ch-ev-hidden");
-      buttonsEl?.classList.remove("ch-ev-hidden");
+    if (step === 1 || step === 3) {
       syncOrderSummaries();
     }
 
     backBtn.style.visibility = step === 0 ? "hidden" : "visible";
-    if (step === 3) {
-      nextBtn.classList.add("ch-ev-hidden");
-      submitWrap?.classList.remove("ch-ev-hidden");
-    } else {
-      nextBtn.classList.remove("ch-ev-hidden");
-      submitWrap?.classList.add("ch-ev-hidden");
-    }
     regBody.scrollTop = 0;
   };
 
