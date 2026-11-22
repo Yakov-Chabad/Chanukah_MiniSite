@@ -1193,7 +1193,8 @@ body.section_branch #ContentBody {
 
 .ch-rsvp-wrap {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
 }
 
@@ -1218,6 +1219,35 @@ body.section_branch #ContentBody {
 .ch-open-rsvp-btn:hover {
   background: #fff1c7;
   transform: translateY(-1px);
+}
+
+/* --- Add to Calendar Links Under RSVP --- */
+.ch-add-cal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin-top: 14px;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.75);
+  text-align: center;
+}
+
+.ch-add-cal a {
+  color: #ffe69a !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+.ch-add-cal a:hover {
+  color: #fff1c7 !important;
+}
+
+.ch-add-cal-sep {
+  color: rgba(226, 232, 240, 0.5);
 }
 
 /* --- Full-Width Clickable Sponsor Band (Matches Sponsor Page Style) --- */
@@ -1986,6 +2016,10 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
   }
   .ch-rsvp-wrap {
     margin-bottom: 20px;
+  }
+  .ch-add-cal {
+    font-size: 12.5px;
+    margin-top: 12px;
   }
   .ch-landing-copy {
     margin-bottom: 0;

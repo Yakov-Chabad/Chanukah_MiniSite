@@ -311,6 +311,85 @@
     });
   }
 
+// --- Add to Calendar: Google link + Apple .ics download ---
+function chNormalizeTitle(s) {
+  return (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function chFindEventForPage(title) {
+  const t = chNormalizeTitle(title);
+  if (!t) return null;
+  let best = null;
+  let bestLen = 0;
+  EVENTS.forEach((ev) => {
+    const n = chNormalizeTitle(ev.eventName);
+    if (!n) return;
+    if (t.includes(n) || n.includes(t)) {
+      if (n.length > bestLen) { best = ev; bestLen = n.length; }
+    }
+  });
+  return best;
+}
+
+function chParseTimeOnDate(timeStr, isoStart) {
+  const m = (timeStr || "").match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
+  if (!m) return null;
+  let h = parseInt(m[1], 10);
+  const min = m[2] ? parseInt(m[2], 10) : 0;
+  const ap = m[3].toLowerCase();
+  if (ap === "pm" && h !== 12) h += 12;
+  if (ap === "am" && h === 12) h = 0;
+  const off = (isoStart.match(/([+-]\d{2}:\d{2}|Z)$/) || [""])[0];
+  const iso = isoStart.slice(0, 10) + "T" + String(h).padStart(2, "0") + ":" + String(min).padStart(2, "0") + ":00" + off;
+  const d = new Date(iso);
+  return isNaN(d) ? null : d;
+}
+
+function chUTCStamp(d) {
+  return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+}
+
+function chBuildCalLinks(ev) {
+  const start = new Date(ev.isoStart);
+  if (isNaN(start)) return "";
+  let end = null;
+  const parts = (ev.time || "").split(/\s*[\u2013\u2014-]\s*/);
+  if (parts.length >= 2) end = chParseTimeOnDate(parts[parts.length - 1], ev.isoStart);
+  if (end && !isNaN(end)) {
+    if (end <= start) end = new Date(end.getTime() + 24 * 60 * 60000);
+  } else {
+    end = new Date(start.getTime() + 90 * 60000);
+  }
+  const desc = ev.note || "Chanukah 2026";
+  const gUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE"
+    + "&text=" + encodeURIComponent(ev.eventName)
+    + "&dates=" + chUTCStamp(start) + "/" + chUTCStamp(end)
+    + "&details=" + encodeURIComponent(desc)
+    + "&location=" + encodeURIComponent(ev.location || "");
+  const esc = (s) => (s || "").replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
+  const slug = chNormalizeTitle(ev.eventName).replace(/ /g, "-");
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Chabad of Camden & Burlington Counties//Chanukah 2026//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "BEGIN:VEVENT",
+    "UID:chanukah2026-" + slug + "@thechabadcenter.org",
+    "DTSTAMP:" + chUTCStamp(new Date()),
+    "DTSTART:" + chUTCStamp(start),
+    "DTEND:" + chUTCStamp(end),
+    "SUMMARY:" + esc(ev.eventName),
+    "DESCRIPTION:" + esc(desc),
+    "LOCATION:" + esc(ev.location || ""),
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+  const icsUrl = URL.createObjectURL(blob);
+  return '<div class="ch-add-cal"><span class="ch-add-cal-label">Add to calendar:</span><a href="' + gUrl + '" target="_blank" rel="noopener">Google Calendar</a><span class="ch-add-cal-sep">\u2022</span><a href="' + icsUrl + '" download="' + slug + '.ics">Apple Calendar</a></div>';
+}
+
 function initEventModalWizard() {
     const formContainer = document.getElementById("formContainer");
     const form = formContainer ? formContainer.querySelector("form.userform-form") : null;
@@ -614,6 +693,8 @@ function initEventModalWizard() {
     const sectionId = (window.Co && window.Co.SectionId) ? window.Co.SectionId : "7629102";
     const SPONSOR_URL = "/7632168";
     const isSponsorPage = /sponsor/i.test(pageTitle);
+    const calEvent = chFindEventForPage(pageTitle);
+    const calLinks = calEvent ? chBuildCalLinks(calEvent) : "";
 
     const landing = document.createElement("div");
     landing.className = "ch-event-landing" + (landingParts.flyerSrc ? "" : " ch-no-flyer");
@@ -625,6 +706,7 @@ function initEventModalWizard() {
         </div>
         <div class="ch-rsvp-wrap">
           <button type="button" class="ch-open-rsvp-btn" id="ch-open-rsvp">RSVP Here</button>
+          ${calLinks}
         </div>
       </div>
     `;
