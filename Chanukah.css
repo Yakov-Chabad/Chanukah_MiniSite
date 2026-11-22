@@ -1098,40 +1098,55 @@ body.section_branch article.content > .center.small {
   display: none !important;
 }
 
-/* --- Event Landing Card (Balanced Proportions) --- */
+/* --- Event Landing Card (Full-Bleed Flyer Flush to Edges) --- */
 body.section_branch #ContentBody {
-  max-width: 1020px !important;
+  max-width: 980px !important;
 }
 
 .ch-event-landing {
   display: grid;
-  grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
-  gap: 32px;
-  align-items: center;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 0;
+  align-items: stretch;
   background: #0b1c3e;
   border: 1px solid rgba(255, 230, 154, 0.16);
   border-radius: 14px;
-  padding: 24px;
+  padding: 0 !important;
+  overflow: hidden;
 }
 
 .ch-event-landing.ch-no-flyer {
   grid-template-columns: 1fr;
   max-width: 620px;
   margin: 0 auto;
+  padding: 32px !important;
   text-align: center;
+}
+
+.ch-landing-flyer {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  display: flex;
+  align-items: center;
+  background: #07132b;
 }
 
 .ch-landing-flyer img {
   width: 100% !important;
+  max-width: none !important;
   height: auto !important;
-  border-radius: 10px;
-  display: block;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  display: block !important;
 }
 
 .ch-landing-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 32px 36px;
   color: #e2e8f0;
   font-family: "Montserrat", Arial, sans-serif;
 }
@@ -1955,9 +1970,12 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
 @media (max-width: 649px) {
   .ch-event-landing {
     grid-template-columns: 1fr;
-    padding: 20px 18px;
-    gap: 20px;
+    padding: 0 !important;
+    gap: 0 !important;
     text-align: center;
+  }
+  .ch-landing-info {
+    padding: 22px 18px 24px !important;
   }
   .ch-open-rsvp-btn {
     width: 100%;
