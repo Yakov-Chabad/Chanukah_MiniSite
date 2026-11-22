@@ -925,6 +925,11 @@ function initEventModalWizard() {
     });
   }
 
+  function initReceiptPage() {
+    if (!document.querySelector(".ch-receipt-card") || document.getElementById("formContainer")) return;
+    document.body.classList.add("ch-is-receipt");
+  }
+
   function setupChildPage() {
     if (!document.body.classList.contains("section_branch")) return false;
 
@@ -937,6 +942,7 @@ function initEventModalWizard() {
     });
 
     initEventModalWizard();
+    initReceiptPage();
     return true;
   }
 
