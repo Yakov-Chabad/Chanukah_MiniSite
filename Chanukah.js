@@ -609,7 +609,7 @@ function initEventModalWizard() {
     });
 
   // Event Landing Card (No redundant title, subtle top-left back link, sponsor callout)
-    const SPONSOR_URL = "/7629102#sponsor"; // <-- Replace with your actual sponsorship page URL
+    const SPONSOR_URL = "/7632168"; // <-- Replace with your actual sponsorship page URL
 
     const backWrap = document.createElement("div");
     backWrap.className = "ch-landing-back-wrap";
