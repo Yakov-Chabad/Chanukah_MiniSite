@@ -1004,3 +1004,273 @@ function initEventModalWizard() {
     document.addEventListener("DOMContentLoaded", init);
   }
 })();
+
+/* ==========================================================================
+   CHABADONE EVENTS MODULE WIZARD (#RegisterSinglePage)
+   ========================================================================== */
+(function initEventsModuleWizard() {
+  const form = document.getElementById("RegisterSinglePage");
+  if (!form) return;
+
+  // Optional: paste your uploaded full vertical flyer URL here (leave "" to use ChabadOne's banner image)
+  const FULL_FLYER_URL = "";
+
+  const contentBody = document.getElementById("ContentBody");
+  const ccoBody = document.getElementById("cco_body");
+  const regHeader = document.getElementById("RegisterHeader");
+  const regBody = document.getElementById("RegisterBody");
+  if (!contentBody || !ccoBody || !regHeader || !regBody) return;
+
+  // 1. Pull Event Details from ChabadOne's RegisterHeader
+  const titleText = (regHeader.querySelector(".event_name")?.textContent || "Event Registration").trim();
+  const descText = (regHeader.querySelector(".event_description")?.textContent || "").trim();
+  const flyerSrc = FULL_FLYER_URL || regHeader.querySelector(".banner_image img")?.src || "";
+  const locLink = regHeader.querySelector("#EventMapLocation");
+  const dateLink = regHeader.querySelector("#ICalDownload");
+  const dateText = (dateLink?.textContent || "").trim();
+  const locHtml = locLink ? locLink.innerHTML : "";
+  const locHref = locLink ? locLink.href : "";
+  const icalHref = dateLink ? dateLink.href : "";
+
+  // 2. Insert Option B Slim Menorah Hero Strip above #ContentBody
+  const hero = document.createElement("div");
+  hero.className = "ch-ev-hero";
+  hero.innerHTML = `
+    <p class="ch-ev-hero-eyebrow">CHANUKAH 2026 &bull; CHABAD OF CAMDEN &amp; BURLINGTON COUNTIES</p>
+    <h1>${titleText}</h1>
+    ${dateText ? `<p class="ch-ev-hero-sub">${dateText}</p>` : ""}
+  `;
+  contentBody.parentNode.insertBefore(hero, contentBody);
+
+  // 3. Build 2-Column Event Landing Card (Exact Match to Form Builder Pages)
+  const landing = document.createElement("div");
+  landing.className = "ch-event-landing" + (flyerSrc ? "" : " ch-no-flyer");
+  landing.innerHTML = `
+    ${flyerSrc ? `<div class="ch-landing-flyer"><img src="${flyerSrc}" alt="${titleText}" /></div>` : ""}
+    <div class="ch-landing-info">
+      <div class="ch-landing-copy">
+        <p>${descText}</p>
+        <ul>
+          ${dateText ? `<li><strong>When:</strong> ${dateText}</li>` : ""}
+          ${locHtml ? `<li><strong>Where:</strong> <a href="${locHref}" target="_blank" rel="noopener">${locHtml.replace(/<br\s*\/?>/gi, ", ")}</a></li>` : ""}
+        </ul>
+      </div>
+      <div class="ch-rsvp-wrap">
+        <button type="button" class="ch-open-rsvp-btn" id="chEvOpenBtn">RSVP / Get Tickets</button>
+        ${icalHref ? `<div class="ch-add-cal"><span class="ch-add-cal-label">Add to Calendar:</span> <a href="${icalHref}">Download iCal</a></div>` : ""}
+      </div>
+    </div>
+  `;
+
+  const backWrap = document.createElement("div");
+  backWrap.className = "ch-landing-back-wrap";
+  backWrap.innerHTML = `<a class="ch-landing-back" href="/7629102">&larr; Back to all Chanukah events</a>`;
+
+  contentBody.insertBefore(landing, contentBody.firstChild);
+  contentBody.appendChild(backWrap);
+
+  // 4. Turn #cco_body into the 4-Step Eventbrite Modal
+  ccoBody.classList.add("ch-ev-modal-ready");
+
+  const header = document.createElement("div");
+  header.className = "ch-modal-header";
+  header.innerHTML = `
+    <div class="ch-modal-title-wrap">
+      <h3 class="ch-modal-title">${titleText}</h3>
+      <div class="ch-modal-step-label" id="chEvStepLabel">Step 1 of 4 &mdash; Select Tickets</div>
+    </div>
+    <button type="button" class="ch-modal-close" id="chEvCloseBtn" aria-label="Close">&times;</button>
+  `;
+  form.insertBefore(header, regBody);
+
+  const footer = document.createElement("div");
+  footer.className = "ch-modal-footer";
+  footer.innerHTML = `
+    <button type="button" class="ch-btn-back" id="chEvBackBtn">&larr; Back</button>
+    <button type="button" class="ch-btn-next" id="chEvNextBtn">Next &rarr;</button>
+  `;
+  form.appendChild(footer);
+
+  // Move ChabadOne's native SubmitButton_wrapper into the modal footer (hidden until Step 4)
+  const submitWrap = document.getElementById("SubmitButton_wrapper");
+  if (submitWrap) {
+    footer.appendChild(submitWrap);
+    submitWrap.classList.add("ch-ev-hidden");
+  }
+
+  // Clone live totals into Step 4 (Payment) so user sees total above credit card
+  const paymentEl = document.getElementById("Payment");
+  const totalsClone = document.createElement("div");
+  totalsClone.className = "ch-ev-totals-clone";
+  if (paymentEl) paymentEl.insertBefore(totalsClone, paymentEl.firstChild);
+
+  const syncTotalsClone = () => {
+    const srcTotals = document.getElementById("Totals");
+    if (srcTotals) totalsClone.innerHTML = srcTotals.innerHTML;
+  };
+
+  // Unlock "Other" donation input cleanly (same as Form Builder wizard)
+  const otherInput = document.querySelector("#AdditionalInformation .form-radio-other-input");
+  const otherRadio = document.querySelector("#AdditionalInformation .form-radio-other");
+  if (otherInput && otherRadio) {
+    const unlock = () => {
+      if (otherInput.hasAttribute("disabled")) otherInput.removeAttribute("disabled");
+    };
+    unlock();
+    new MutationObserver(unlock).observe(otherInput, { attributes: true, attributeFilter: ["disabled"] });
+    otherInput.addEventListener("input", () => {
+      if (parseFloat(otherInput.value) > 0) {
+        otherRadio.checked = true;
+        otherRadio.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+  }
+
+  // Fix sticky quantity dropdown ("7" remaining when all reservations are removed)
+  const perfEl = document.getElementById("Performances");
+  if (perfEl) {
+    perfEl.addEventListener("click", (e) => {
+      if (e.target.closest(".remove_reservation")) {
+        setTimeout(() => {
+          const qtySel = perfEl.querySelector('select[id*="quantityOfAttendees"]');
+          if (qtySel && !perfEl.querySelector(".reservation")) qtySel.value = "1";
+        }, 120);
+      }
+    });
+  }
+
+  // 5. Step Controller
+  const secItems = document.getElementById("SecondaryFormItems");
+  const addInfo = document.getElementById("AdditionalInformation");
+  const summaryEl = document.getElementById("Summary");
+  const resInfo = document.getElementById("ReserversInformation");
+  const buttonsEl = document.getElementById("Buttons");
+  const stepLabel = document.getElementById("chEvStepLabel");
+  const backBtn = document.getElementById("chEvBackBtn");
+  const nextBtn = document.getElementById("chEvNextBtn");
+
+  const stepNames = [
+    "Step 1 of 4 — Select Tickets",
+    "Step 2 of 4 — Attendees & Support",
+    "Step 3 of 4 — Your Information",
+    "Step 4 of 4 — Payment Details"
+  ];
+  let currentStep = 0;
+
+  // Inline error helper
+  const clearErrors = (container) => {
+    container?.querySelectorAll(".ch-field-error").forEach((el) => el.classList.remove("ch-field-error"));
+    container?.querySelectorAll(".ch-inline-err").forEach((el) => el.remove());
+  };
+  const showError = (target, msg) => {
+    target.classList.add("ch-field-error");
+    const err = document.createElement("span");
+    err.className = "ch-inline-err";
+    err.textContent = msg;
+    target.parentNode.appendChild(err);
+  };
+
+  const renderStep = (step) => {
+    currentStep = step;
+    stepLabel.textContent = stepNames[step];
+
+    [perfEl, secItems, addInfo, summaryEl, resInfo, paymentEl, buttonsEl].forEach((el) => {
+      if (el) el.classList.add("ch-ev-hidden");
+    });
+
+    if (step === 0) {
+      perfEl?.classList.remove("ch-ev-hidden");
+    } else if (step === 1) {
+      secItems?.classList.remove("ch-ev-hidden");
+      addInfo?.classList.remove("ch-ev-hidden");
+      summaryEl?.classList.remove("ch-ev-hidden");
+    } else if (step === 2) {
+      secItems?.classList.remove("ch-ev-hidden");
+      resInfo?.classList.remove("ch-ev-hidden");
+    } else if (step === 3) {
+      secItems?.classList.remove("ch-ev-hidden");
+      paymentEl?.classList.remove("ch-ev-hidden");
+      buttonsEl?.classList.remove("ch-ev-hidden");
+      syncTotalsClone();
+    }
+
+    backBtn.style.visibility = step === 0 ? "hidden" : "visible";
+    if (step === 3) {
+      nextBtn.classList.add("ch-ev-hidden");
+      submitWrap?.classList.remove("ch-ev-hidden");
+      footer.classList.add("ch-final-step");
+    } else {
+      nextBtn.classList.remove("ch-ev-hidden");
+      submitWrap?.classList.add("ch-ev-hidden");
+      footer.classList.remove("ch-final-step");
+    }
+    regBody.scrollTop = 0;
+  };
+
+  const validateCurrentStep = () => {
+    if (currentStep === 0) {
+      clearErrors(perfEl);
+      if (perfEl.querySelector(".reservation")) return true;
+      const catSel = perfEl.querySelector('select[id*="priceCategory"]');
+      const addBtn = perfEl.querySelector('button[id*="addAttendeeButton"]');
+      if (catSel && catSel.value && addBtn && !addBtn.disabled) {
+        addBtn.click();
+        return "wait";
+      }
+      if (catSel) showError(catSel, "Please select a ticket category and click Add / Continue.");
+      return false;
+    }
+
+    if (currentStep === 1) {
+      clearErrors(addInfo);
+      let ok = true;
+      addInfo.querySelectorAll('input.validate\\[required\\,\\ Numeric\\], input[class*="required"]').forEach((inp) => {
+        if (!inp.value.trim() || isNaN(Number(inp.value.trim()))) {
+          showError(inp, "Please enter a number (0 or more).");
+          ok = false;
+        }
+      });
+      return ok;
+    }
+
+    if (currentStep === 2) {
+      clearErrors(resInfo);
+      let ok = true;
+      resInfo.querySelectorAll(".required input, .required select").forEach((inp) => {
+        if (!inp.value.trim()) {
+          showError(inp, "This field is required.");
+          ok = false;
+        }
+      });
+      return ok;
+    }
+    return true;
+  };
+
+  nextBtn.addEventListener("click", () => {
+    const res = validateCurrentStep();
+    if (res === true) renderStep(currentStep + 1);
+    else if (res === "wait") setTimeout(() => renderStep(currentStep + 1), 250);
+  });
+
+  backBtn.addEventListener("click", () => {
+    if (currentStep > 0) renderStep(currentStep - 1);
+  });
+
+  // Open / Close Modal
+  const openModal = () => {
+    renderStep(0);
+    ccoBody.classList.add("ch-modal-open");
+    document.body.style.overflow = "hidden";
+  };
+  const closeModal = () => {
+    ccoBody.classList.remove("ch-modal-open");
+    document.body.style.overflow = "";
+  };
+
+  document.getElementById("chEvOpenBtn").addEventListener("click", openModal);
+  document.getElementById("chEvCloseBtn").addEventListener("click", closeModal);
+  ccoBody.addEventListener("click", (e) => {
+    if (e.target === ccoBody) closeModal();
+  });
+})();
