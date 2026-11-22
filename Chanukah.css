@@ -1098,20 +1098,20 @@ body.section_branch article.content > .center.small {
   display: none !important;
 }
 
-/* --- Event Landing Card (Focused: Flyer + Clean Details + Centered RSVP) --- */
+/* --- Event Landing Card (Balanced Proportions) --- */
 body.section_branch #ContentBody {
-  max-width: 1020px !important;
+  max-width: 940px !important;
 }
 
 .ch-event-landing {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 36px;
+  grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+  gap: 32px;
   align-items: center;
   background: #0b1c3e;
   border: 1px solid rgba(255, 230, 154, 0.16);
   border-radius: 14px;
-  padding: 28px;
+  padding: 24px;
 }
 
 .ch-event-landing.ch-no-flyer {
