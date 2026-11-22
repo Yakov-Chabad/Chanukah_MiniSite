@@ -1829,6 +1829,12 @@ body.section_branch #formContainer.ch-wizard-ready .ch-total-line {
   min-height: 84px !important;
   box-sizing: border-box !important;
 }
+
+/* Prevent ChabadOne's "Please enter a value" from appearing on optional Donation tiles */
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-error-message {
+  display: none !important;
+}
+
 /* --- 9. REGULAR CHILD WEBPAGES (NON-FORMS) --- */
 body.section_branch:not(:has(#formContainer)) #ContentBody {
   max-width: 860px !important;
