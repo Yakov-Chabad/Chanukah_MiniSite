@@ -1167,7 +1167,7 @@ body.section_branch article.content > .center.small {
   color: #ffe69a !important;
 }
 
-/* --- Eventbrite-Style Fixed-Height Flat White Modal --- */
+/* --- Eventbrite-Style Flat White Modal --- */
 body.section_branch #formContainer.ch-wizard-ready {
   display: none;
   position: fixed !important;
@@ -1186,8 +1186,9 @@ body.section_branch #formContainer.ch-wizard-ready.ch-modal-open {
 body.section_branch #formContainer.ch-wizard-ready form.userform-form {
   position: relative;
   width: 100% !important;
-  max-width: 580px !important;
-  height: 600px !important;
+  max-width: 600px !important;
+  height: auto !important;
+  min-height: 340px !important;
   max-height: 88vh !important;
   margin: auto !important;
   background: #ffffff !important;
@@ -1245,11 +1246,12 @@ body.section_branch #formContainer.ch-wizard-ready form.userform-form {
   line-height: 1.25;
 }
 
-.ch-modal-sub {
+.ch-modal-step-label {
   font-family: "Montserrat", Arial, sans-serif;
-  font-size: 12px;
+  font-size: 12.5px;
+  font-weight: 500;
   color: #6b7280;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 /* Scrollable Modal Body */
@@ -1258,7 +1260,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-all {
   overflow-y: auto !important;
   width: 100% !important;
   max-width: 100% !important;
-  padding: 22px 24px !important;
+  padding: 22px 26px !important;
   background: #ffffff !important;
   font-family: "Montserrat", Arial, sans-serif !important;
   color: #111827 !important;
@@ -1304,6 +1306,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-label-right {
 body.section_branch #formContainer.ch-wizard-ready .form-input {
   display: block !important;
   width: 100% !important;
+  max-width: 100% !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-sub-label {
@@ -1323,7 +1326,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-textarea {
   background: #ffffff !important;
   color: #111827 !important;
   border: 1px solid #d1d5db !important;
-  border-radius: 4px !important;
+  border-radius: 5px !important;
   padding: 10px 12px !important;
   font-family: "Montserrat", Arial, sans-serif !important;
   font-size: 13.5px !important;
@@ -1333,9 +1336,9 @@ body.section_branch #formContainer.ch-wizard-ready .form-textarea {
 body.section_branch #formContainer.ch-wizard-ready .form-textbox:focus,
 body.section_branch #formContainer.ch-wizard-ready .form-dropdown:focus,
 body.section_branch #formContainer.ch-wizard-ready .form-textarea:focus {
-  border-color: #071846 !important;
+  border-color: #1d4ed8 !important;
   outline: none !important;
-  box-shadow: 0 0 0 1px #071846 !important;
+  box-shadow: 0 0 0 1px #1d4ed8 !important;
 }
 
 /* Inline Errors */
@@ -1351,7 +1354,7 @@ body.section_branch #formContainer.ch-wizard-ready .ch-field-error {
   display: block;
 }
 
-/* Side-by-Side Name Subfields (Outside Tables Only) */
+/* Side-by-Side Name Subfields */
 body.section_branch #formContainer.ch-wizard-ready .form-input > .form-sub-label-container {
   display: inline-block;
   width: calc(50% - 7px);
@@ -1363,10 +1366,11 @@ body.section_branch #formContainer.ch-wizard-ready .form-input > .form-sub-label
   margin-right: 0;
 }
 
-/* Fix Address & Payment Tables (Eliminates Excess Whitespace) */
+/* Full-Width Address & Clean Payment Tables */
 body.section_branch #formContainer.ch-wizard-ready .form-address-table,
 body.section_branch #formContainer.ch-wizard-ready .form-creditcard table {
   width: 100% !important;
+  max-width: 100% !important;
   table-layout: fixed !important;
   border-collapse: separate !important;
   border-spacing: 0 8px !important;
@@ -1374,7 +1378,6 @@ body.section_branch #formContainer.ch-wizard-ready .form-creditcard table {
 
 body.section_branch #formContainer.ch-wizard-ready .form-address-table td,
 body.section_branch #formContainer.ch-wizard-ready .form-creditcard td {
-  width: 50% !important;
   padding: 0 7px 0 0 !important;
   vertical-align: top !important;
 }
@@ -1390,13 +1393,31 @@ body.section_branch #formContainer.ch-wizard-ready .form-creditcard td[colspan="
   padding-right: 0 !important;
 }
 
-body.section_branch #formContainer.ch-wizard-ready table .form-sub-label-container {
+body.section_branch #formContainer.ch-wizard-ready table .form-sub-label-container,
+body.section_branch #formContainer.ch-wizard-ready table input,
+body.section_branch #formContainer.ch-wizard-ready table select {
   display: block !important;
   width: 100% !important;
+  max-width: 100% !important;
   margin-right: 0 !important;
 }
 
-/* Step 1: Eventbrite Ticket Cards */
+/* Card Number (70%) vs Security Code (30%) + Remove Redundant Double Headings */
+body.section_branch #formContainer.ch-wizard-ready .ch-pay-step > .form-label {
+  display: none !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-creditcard td.cc_number_td,
+body.section_branch #formContainer.ch-wizard-ready .form-creditcard tr:has(input[id*="cc_number"]) td:first-child {
+  width: 68% !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .form-creditcard td.cc_ccv_td,
+body.section_branch #formContainer.ch-wizard-ready .form-creditcard tr:has(input[id*="cc_ccv"]) td:last-child {
+  width: 32% !important;
+}
+
+/* Step 1: Eventbrite Ticket Cards (With Visible Numbers) */
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card {
   display: flex !important;
   align-items: center;
@@ -1410,8 +1431,8 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card {
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card.ch-ticket-active {
-  border-color: #071846 !important;
-  box-shadow: 0 0 0 1px #071846 !important;
+  border-color: #1d4ed8 !important;
+  box-shadow: 0 0 0 1px #1d4ed8 !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .form-label {
@@ -1431,7 +1452,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .fo
 .ch-stepper {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
 }
 
 .ch-step-btn {
@@ -1439,7 +1460,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .fo
   height: 32px;
   border-radius: 6px;
   border: 0;
-  background: #071846;
+  background: #1d4ed8;
   color: #ffffff;
   font-size: 18px;
   font-weight: 600;
@@ -1452,31 +1473,39 @@ body.section_branch #formContainer.ch-wizard-ready .form-line.ch-ticket-card .fo
   color: #9ca3af;
 }
 
-.ch-stepper .form-spinner-input {
-  width: 32px !important;
+body.section_branch #formContainer.ch-wizard-ready .ch-stepper .form-spinner-input {
+  width: 44px !important;
+  min-width: 44px !important;
+  padding: 4px 0 !important;
   border: 0 !important;
   background: transparent !important;
+  color: #111827 !important;
   text-align: center !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
-  padding: 0 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-spinner {
   display: none !important;
 }
 
-/* Step 3: Clean Donation Tile Grid */
+/* Step 3: Clean Donation Tile Grid + Working "Other" Box */
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-multiple-column,
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-single-column {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  align-items: stretch;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item {
   margin: 0 !important;
   padding: 0 !important;
+  display: flex;
+  align-items: center;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item input[type="radio"] {
@@ -1489,24 +1518,60 @@ body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 78px;
+  min-width: 82px;
   padding: 10px 14px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
   background: #ffffff;
-  color: #071846 !important;
+  color: #111827 !important;
   font-size: 14px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   cursor: pointer;
 }
 
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item input[type="radio"]:checked + label {
   background: #071846;
   border-color: #071846;
-  color: #ffe69a !important;
+  color: #ffffff !important;
 }
 
-/* Clean Checkboxes (Email Opt-In & Volunteer) */
+body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-other-input {
+  width: 115px !important;
+  padding: 9px 10px !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 6px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+/* Step 3: Big Clean Total + Subtle 3% Fee Checkbox */
+body.section_branch #formContainer.ch-wizard-ready .ch-total-line {
+  padding-top: 8px !important;
+  border-top: 1px solid #e5e7eb !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .ch-total-line .form-input {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #111827 !important;
+  line-height: 1.3 !important;
+}
+
+body.section_branch #formContainer.ch-wizard-ready .ch-total-line label[for*="offset"],
+body.section_branch #formContainer.ch-wizard-ready .ch-total-line .form-checkbox-item label {
+  font-size: 12.5px !important;
+  font-weight: 400 !important;
+  color: #4b5563 !important;
+}
+
+/* Step 3: Volunteer as a Clean 2nd Section */
+body.section_branch #formContainer.ch-wizard-ready .form-line.ch-volunteer-section {
+  margin-top: 10px !important;
+  padding-top: 16px !important;
+  border-top: 1px solid #e5e7eb !important;
+}
+
+/* Clean Checkboxes */
 body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item {
   display: flex;
   align-items: center;
@@ -1515,9 +1580,9 @@ body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item {
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item input[type="checkbox"] {
-  width: 17px;
-  height: 17px;
-  accent-color: #071846;
+  width: 16px;
+  height: 16px;
+  accent-color: #1d4ed8;
   cursor: pointer;
   margin: 0;
   flex-shrink: 0;
@@ -1532,40 +1597,41 @@ body.section_branch #formContainer.ch-wizard-ready .form-checkbox-item label {
 }
 
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-optin-compact {
-  margin-top: -6px !important;
+  margin-top: -4px !important;
 }
 
-body.section_branch #formContainer.ch-wizard-ready .form-line.ch-volunteer-box {
-  background: #f9fafb !important;
-  border: 1px solid #e5e7eb !important;
-  border-radius: 6px !important;
-  padding: 12px 14px !important;
-}
-
-/* IMPORTANT: Must stay AFTER .ch-ticket-card so hidden steps stay hidden */
+/* IMPORTANT: Must stay AFTER .ch-ticket-card */
 body.section_branch #formContainer.ch-wizard-ready .form-line.ch-step-hidden,
 body.section_branch #formContainer.ch-wizard-ready .ch-step-hidden {
   display: none !important;
 }
 
-/* Pinned Modal Footer with Prominent Back + Primary CTA */
+/* Clean Bottom Footer (Back + Next on Same Line, Register Centered) */
 .ch-modal-footer {
   flex-shrink: 0;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 14px 24px 16px;
+  padding: 14px 26px 18px;
   border-top: 1px solid #e5e7eb;
   background: #ffffff;
 }
 
+.ch-modal-footer.ch-final-step {
+  justify-content: center;
+}
+
+.ch-modal-footer.ch-final-step .ch-btn-back {
+  position: absolute;
+  left: 26px;
+}
+
 .ch-btn-back {
-  background: #ffffff;
-  color: #374151;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  padding: 11px 20px;
+  background: transparent;
+  color: #4b5563;
+  border: 0;
+  padding: 10px 6px;
   font-family: "Montserrat", Arial, sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -1573,30 +1639,28 @@ body.section_branch #formContainer.ch-wizard-ready .ch-step-hidden {
 }
 
 .ch-btn-back:hover {
-  background: #f3f4f6;
   color: #111827;
 }
 
 .ch-btn-next,
 body.section_branch #formContainer.ch-wizard-ready .form-submit-button {
-  background: #071846 !important;
+  background: #1d4ed8 !important;
   background-image: none !important;
-  color: #ffe69a !important;
+  color: #ffffff !important;
   border: 0 !important;
   border-radius: 6px !important;
-  padding: 12px 32px !important;
+  padding: 11px 30px !important;
   font-family: "Montserrat", Arial, sans-serif !important;
-  font-size: 15px !important;
-  font-weight: 700 !important;
+  font-size: 14.5px !important;
+  font-weight: 600 !important;
   text-shadow: none !important;
-  box-shadow: 0 2px 8px rgba(7, 24, 70, 0.22) !important;
+  box-shadow: none !important;
   cursor: pointer !important;
-  margin-left: auto;
 }
 
 .ch-btn-next:hover,
 body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
-  background: #134480 !important;
+  background: #1e40af !important;
 }
 
 @media (max-width: 900px) {
@@ -1614,10 +1678,6 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
   }
   .ch-open-rsvp-btn {
     width: 100%;
-  }
-  body.section_branch #formContainer.ch-wizard-ready form.userform-form {
-    height: 92vh !important;
-    max-height: 92vh !important;
   }
   body.section_branch #formContainer.ch-wizard-ready .form-line.ch-half-field {
     width: 100% !important;
