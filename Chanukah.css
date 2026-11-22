@@ -1518,6 +1518,12 @@ body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-single
   align-items: stretch;
 }
 
+/* Hide ChabadOne's invisible clearfix spacers so they don't create empty grid cells */
+  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-multiple-column > :not(.form-radio-item),
+  body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-single-column > :not(.form-radio-item) {
+    display: none !important;
+  }
+
 body.section_branch #formContainer.ch-wizard-ready .ch-donate-tiles .form-radio-item {
   margin: 0 !important;
   padding: 0 !important;
