@@ -1197,21 +1197,105 @@ function initEventModalWizard() {
     });
   }
 
-  // 7. Unlock "Other" Donation Input Cleanly
+  // 7. Donation Tiles: "No Thanks" opt-out + working "Other" input (triggers ChabadOne recalc)
+  const donateGrid = document.querySelector("#AdditionalInformation .form-multiple-column");
+  const donateRadios = Array.from(document.querySelectorAll('#AdditionalInformation input[type="radio"]'));
   const otherInput = document.querySelector("#AdditionalInformation .form-radio-other-input");
   const otherRadio = document.querySelector("#AdditionalInformation .form-radio-other");
-  if (otherInput && otherRadio) {
-    const unlock = () => {
-      if (otherInput.hasAttribute("disabled")) otherInput.removeAttribute("disabled");
-    };
-    unlock();
-    new MutationObserver(unlock).observe(otherInput, { attributes: true, attributeFilter: ["disabled"] });
-    otherInput.addEventListener("input", () => {
-      if (parseFloat(otherInput.value) > 0) {
-        otherRadio.checked = true;
-        otherRadio.dispatchEvent(new Event("change", { bubbles: true }));
+
+  if (donateGrid && donateRadios.length) {
+    const triggerChabadUpdate = (el) => {
+      if (!el) return;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+      if (window.$j) {
+        window.$j(el).trigger("keyup").trigger("change");
       }
+    };
+
+    // Inject "No Thanks" tile at the start of the 3x2 grid
+    const noThanksWrap = document.createElement("span");
+    noThanksWrap.className = "form-radio-item";
+    const noThanksBtn = document.createElement("button");
+    noThanksBtn.type = "button";
+    noThanksBtn.className = "ch-ev-no-thanks";
+    noThanksBtn.textContent = "No Thanks";
+    noThanksWrap.appendChild(noThanksBtn);
+    donateGrid.insertBefore(noThanksWrap, donateGrid.firstChild);
+
+    const syncNoThanksState = () => {
+      const anyChecked = donateRadios.some((r) => r.checked);
+      noThanksBtn.classList.toggle("is-active", !anyChecked);
+    };
+
+    const resetDonation = () => {
+      donateRadios.forEach((r) => {
+        r.checked = false;
+      });
+      if (otherInput) {
+        otherInput.value = "";
+        triggerChabadUpdate(otherInput);
+      }
+      // Trigger change on first radio so ChabadOne clears additional total to $0
+      if (donateRadios[0]) {
+        triggerChabadUpdate(donateRadios[0]);
+      }
+      syncNoThanksState();
+      setTimeout(syncOrderSummaries, 80);
+    };
+
+    noThanksBtn.addEventListener("click", resetDonation);
+
+    donateRadios.forEach((r) => {
+      r.addEventListener("change", () => {
+        if (r !== otherRadio && otherInput) otherInput.value = "";
+        syncNoThanksState();
+        setTimeout(syncOrderSummaries, 80);
+      });
     });
+
+    if (otherInput && otherRadio) {
+      otherInput.placeholder = "Other $";
+      const unlock = () => {
+        if (otherInput.hasAttribute("disabled")) otherInput.removeAttribute("disabled");
+      };
+      unlock();
+      new MutationObserver(unlock).observe(otherInput, { attributes: true, attributeFilter: ["disabled"] });
+
+      const activateOther = () => {
+        unlock();
+        if (!otherRadio.checked) {
+          otherRadio.checked = true;
+          if (window.$j) window.$j(otherRadio).trigger("click").trigger("change");
+          else otherRadio.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+        syncNoThanksState();
+      };
+
+      otherInput.addEventListener("focus", activateOther);
+      otherInput.addEventListener("click", activateOther);
+      otherInput.addEventListener("input", () => {
+        const val = parseFloat(otherInput.value);
+        if (val > 0) {
+          activateOther();
+          otherRadio.value = String(val);
+          triggerChabadUpdate(otherInput);
+          setTimeout(syncOrderSummaries, 80);
+        }
+      });
+      otherInput.addEventListener("blur", () => {
+        const val = parseFloat(otherInput.value);
+        if (!val || val <= 0) {
+          resetDonation();
+        } else {
+          otherRadio.value = String(val);
+          triggerChabadUpdate(otherInput);
+          setTimeout(syncOrderSummaries, 80);
+        }
+      });
+    }
+
+    syncNoThanksState();
   }
 
   // 8. Rich Order Summary Box (Ticket Breakdown + Fee + Total) on Step 2 & Step 4
@@ -1227,21 +1311,75 @@ function initEventModalWizard() {
   paymentOrderBox.className = "ch-ev-order-box";
   if (paymentEl) paymentEl.insertBefore(paymentOrderBox, paymentEl.firstChild);
 
+  // Move Discount Code onto Step 4 (right below the Order Summary box) in a minimalist toggle
+  const discountRow = document.getElementById("DiscountCode")?.closest(".clearfix");
+  if (discountRow && paymentEl && paymentOrderBox) {
+    const discInput = document.getElementById("DiscountCode");
+    if (discInput && !discInput.placeholder) discInput.placeholder = "Enter discount code";
+
+    const discWrap = document.createElement("div");
+    discWrap.className = "ch-ev-discount-wrap";
+    discWrap.innerHTML = `<button type="button" class="ch-ev-discount-toggle" id="chEvDiscToggle">Have a discount code?</button>`;
+
+    const discBody = document.createElement("div");
+    discBody.className = "ch-ev-discount-body ch-ev-hidden";
+    discBody.appendChild(discountRow);
+    discWrap.appendChild(discBody);
+
+    paymentOrderBox.insertAdjacentElement("afterend", discWrap);
+
+    discWrap.querySelector("#chEvDiscToggle").addEventListener("click", () => {
+      discBody.classList.toggle("ch-ev-hidden");
+      if (!discBody.classList.contains("ch-ev-hidden")) discInput?.focus();
+    });
+  }
+
   const buildOrderSummaryHtml = () => {
     const counts = {};
+    const order = [];
     document.querySelectorAll("#Performances .reservation").forEach((row) => {
-      const cat = (row.querySelector(".g100")?.textContent || "Ticket").trim();
+      const rawCat = (row.querySelector(".g100")?.textContent || "Ticket").trim();
       const priceText = (row.querySelector(".price-display")?.textContent || "$0.00").replace(/\s+/g, "");
       const priceNum = parseFloat(priceText.replace(/[^0-9.]/g, "")) || 0;
-      if (!counts[cat]) counts[cat] = { qty: 0, total: 0 };
-      counts[cat].qty += 1;
-      counts[cat].total += priceNum;
+      const isIncluded = /includ/i.test(priceText) || priceNum === 0;
+      // Clean label: strip "(Includes X Tickets)" and any price tag (e.g. "Gold Sponsor")
+      const cleanCat = rawCat
+        .replace(/\s*\(includes?\s+\d+\s+tickets?\)/i, "")
+        .replace(/\s*\$[\d,]+(?:\.\d{1,2})?/g, "")
+        .replace(/\s+/g, " ")
+        .trim() || "Ticket";
+      const includesMatch = rawCat.match(/includes?\s+(\d+)\s+ticket/i);
+      const includesX = includesMatch ? parseInt(includesMatch[1], 10) : 0;
+      if (!counts[cleanCat]) {
+        counts[cleanCat] = { rows: 0, paidCount: 0, includedCount: 0, total: 0, includesX: 0 };
+        order.push(cleanCat);
+      }
+      const c = counts[cleanCat];
+      c.rows += 1;
+      if (priceNum > 0) c.paidCount += 1;
+      if (isIncluded) c.includedCount += 1;
+      c.total += priceNum;
+      if (includesX > 0) c.includesX = includesX;
     });
 
     let rowsHtml = "";
-    Object.keys(counts).forEach((cat) => {
+    order.forEach((cat) => {
       const item = counts[cat];
-      rowsHtml += `<div class="ch-ev-order-row"><span><strong>${item.qty} &times;</strong> ${cat}</span><span>$${item.total.toFixed(2)}</span></div>`;
+      // Package tier: paid rows + included rows, or "(Includes X Tickets)" in the name.
+      // A category with no paid rows is a free regular ticket, not a package.
+      const isPackage = (item.includedCount > 0 && item.paidCount > 0) || item.includesX > 0;
+      if (isPackage) {
+        const meta = item.includesX > 0
+          ? `(${item.rows} of ${item.paidCount > 1 ? item.paidCount * item.includesX : item.includesX} tickets)`
+          : `(${item.rows} tickets)`;
+        const left = item.paidCount > 1
+          ? `<strong>${item.paidCount} &times; ${cat}</strong><span class="ch-ev-order-meta">${meta}</span>`
+          : `<strong>${cat}</strong><span class="ch-ev-order-meta">${meta}</span>`;
+        rowsHtml += `<div class="ch-ev-order-row"><span>${left}</span><span>$${item.total.toFixed(2)}</span></div>`;
+      } else {
+        const right = item.total === 0 ? "Included" : `$${item.total.toFixed(2)}`;
+        rowsHtml += `<div class="ch-ev-order-row"><span><strong>${item.rows} &times;</strong> ${cat}</span><span>${right}</span></div>`;
+      }
     });
 
     let extraRows = "";
@@ -1336,6 +1474,59 @@ function initEventModalWizard() {
         }
       }
     });
+  }
+
+  // 9b. Auto-sort & re-number Step 1 reservation rows (priced first per category, then included)
+  const reservationsEl = perfEl ? perfEl.querySelector(".reservations") : null;
+  let resObserver = null;
+  const normalizeReservationRows = () => {
+    if (!reservationsEl) return;
+    if (resObserver) resObserver.disconnect();
+    const rows = Array.from(reservationsEl.children).filter((el) => el.classList.contains("reservation"));
+    // Header row (no _index element) stays first and is excluded from sorting
+    const ticketRows = rows.filter((r) => r.querySelector('[id$="_index"]'));
+    if (ticketRows.length) {
+      const cleanLabel = (row) => {
+        const t = (row.querySelector(".g100")?.textContent || "").trim();
+        return t.replace(/\s*\(includes?\s+\d+\s+tickets?\)/i, "").replace(/\s*\$[\d,]+(?:\.\d{1,2})?/g, "").replace(/\s+/g, " ").trim().toLowerCase();
+      };
+      const rowPrice = (row) => {
+        const pt = (row.querySelector(".price-display")?.textContent || "").replace(/\s+/g, "");
+        return parseFloat(pt.replace(/[^0-9.]/g, "")) || 0;
+      };
+      // Group by category in first-appearance order; priced rows first within each group
+      const groups = [];
+      ticketRows.forEach((row) => {
+        const key = cleanLabel(row);
+        let g = groups.find((x) => x.key === key);
+        if (!g) { g = { key, rows: [] }; groups.push(g); }
+        g.rows.push(row);
+      });
+      const sorted = [];
+      groups.forEach((g) => {
+        const priced = g.rows.filter((r) => rowPrice(r) > 0);
+        const included = g.rows.filter((r) => rowPrice(r) === 0);
+        sorted.push(...priced, ...included);
+      });
+      // Re-number sequentially from top
+      let n = 1;
+      sorted.forEach((row) => {
+        const idxEl = row.querySelector('[id$="_index"]');
+        if (idxEl) idxEl.textContent = String(n);
+        n += 1;
+      });
+      // Re-append in sorted order only if the order changed (headers stay put at the top)
+      const orderChanged = sorted.some((r, i) => r !== ticketRows[i]);
+      if (orderChanged) {
+        sorted.forEach((r) => reservationsEl.appendChild(r));
+      }
+    }
+    if (resObserver) resObserver.observe(reservationsEl, { childList: true });
+  };
+  if (reservationsEl) {
+    resObserver = new MutationObserver(normalizeReservationRows);
+    resObserver.observe(reservationsEl, { childList: true });
+    normalizeReservationRows();
   }
 
   // 10. Step Controller

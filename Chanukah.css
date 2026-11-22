@@ -2670,9 +2670,10 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 }
 #Performances .additionals_toggle .toggle_options:not([style*="display: none"]) {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 82px auto !important;
-  gap: 8px !important;
+  grid-template-columns: 110px auto !important;
+  gap: 10px 10px !important;
   align-items: end !important;
+  justify-content: start !important;
 }
 #Performances .additionals_toggle .toggle_options > .inline_block {
   display: block !important;
@@ -2680,10 +2681,20 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   padding: 0 !important;
   width: 100% !important;
 }
+#Performances .additionals_toggle .toggle_options > .inline_block:first-child {
+  grid-column: 1 / -1 !important;
+}
 #Performances .additionals_toggle .toggle_options > .inline_block:has([id*="priceInfo"]) {
   grid-column: 1 / -1 !important;
   font-size: 11.5px !important;
   color: #6b7280 !important;
+}
+#Performances .additionals_toggle .toggle_options .reservation_input_select {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+#Performances .additionals_toggle .toggle_options select[id*="quantityOfAttendees"] {
+  width: 100% !important;
 }
 #Performances .additionals_toggle .toggle_options .cancel {
   position: absolute !important;
@@ -2891,9 +2902,30 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 /* Donation Tiles: Clean 5-Across Desktop / 3-Across Mobile */
 #AdditionalInformation .form-multiple-column {
   display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   gap: 8px !important;
   width: 100% !important;
+}
+#AdditionalInformation .ch-ev-no-thanks {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 40px !important;
+  padding: 0 6px !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 6px !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+#AdditionalInformation .ch-ev-no-thanks.is-active {
+  background: #071846 !important;
+  border-color: #071846 !important;
+  color: #ffffff !important;
 }
 #AdditionalInformation .form-multiple-column > :not(.form-radio-item) {
   display: none !important;
@@ -3026,6 +3058,12 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   color: #0f172a !important;
   padding-top: 2px !important;
 }
+.ch-ev-order-meta {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #64748b !important;
+  margin-left: 4px !important;
+}
 #Summary #Totals {
   display: none !important;
 }
@@ -3049,11 +3087,7 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   display: none !important;
 }
 #ReserversInformation > div > .clearfix:last-child > .clearfix:has(#ReserversTitle) {
-  grid-column: 1 / -1 !important;
-  max-width: none !important;
-}
-#ReserversTitle {
-  max-width: 220px !important;
+  display: none !important;
 }
 #ReserversInformation > div > .clearfix:last-child > .clearfix:has(#ReserversOptIn) {
   grid-column: 1 / -1 !important;
@@ -3109,7 +3143,7 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   display: grid !important;
   grid-template-columns: 1.4fr 1fr !important;
   gap: 12px 14px !important;
-  align-items: start !important;
+  align-items: end !important;
   margin-bottom: 14px !important;
 }
 #CreditCard > .clearfix {
@@ -3127,11 +3161,13 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 #CreditCard .clearfix:has(#PaymentCardExpirationMonth) {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
-  gap: 4px 8px !important;
+  row-gap: 0 !important;
+  column-gap: 8px !important;
+  align-items: end !important;
 }
 #CreditCard .clearfix:has(#PaymentCardExpirationMonth) .label.g140 {
   grid-column: 1 / -1 !important;
-  margin: 0 !important;
+  margin: 0 0 4px 0 !important;
 }
 #CreditCard .clearfix:has(#PaymentCardExpirationMonth) .float_left.left_margin {
   width: 100% !important;
@@ -3158,6 +3194,61 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 }
 .ch-ev-billing-wrap > .clearfix:has(#ReserversBillingAddress1) {
   grid-column: 1 / -1 !important;
+}
+.ch-ev-discount-wrap {
+  margin: -6px 0 16px 0 !important;
+}
+.ch-ev-discount-toggle {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  font-family: "Montserrat", Arial, sans-serif !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  color: #1d4ed8 !important;
+  cursor: pointer !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+.ch-ev-discount-toggle:hover {
+  color: #1e40af !important;
+}
+.ch-ev-discount-body {
+  margin-top: 8px !important;
+}
+.ch-ev-discount-body.ch-ev-hidden {
+  display: none !important;
+}
+.ch-ev-discount-body > .clearfix {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.ch-ev-discount-body > .clearfix::before,
+.ch-ev-discount-body > .clearfix::after,
+.ch-ev-discount-body .label.g140 {
+  display: none !important;
+}
+.ch-ev-discount-body .inline_block.left_margin {
+  flex: 1 1 auto !important;
+  margin: 0 !important;
+}
+.ch-ev-discount-body #DiscountCode {
+  width: 100% !important;
+  height: 38px !important;
+}
+.ch-ev-discount-body #ApplyDiscountCode {
+  height: 38px !important;
+  padding: 0 16px !important;
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  font-size: 13px !important;
+}
+.ch-ev-discount-body #ApplyDiscountCode:hover {
+  background: #e2e8f0 !important;
 }
 #Comments {
   padding-top: 10px !important;
@@ -3269,15 +3360,6 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
   }
   #cco_body.ch-ev-modal-ready #RegisterBody {
     padding: 14px 16px !important;
-  }
-  #Performances .additionals_toggle .toggle_options:not([style*="display: none"]) {
-    grid-template-columns: 1fr 80px !important;
-  }
-  #Performances .additionals_toggle .toggle_options > .inline_block:has(button.add_attendee) {
-    grid-column: 1 / -1 !important;
-  }
-  #Performances .additionals_toggle .toggle_options button.add_attendee {
-    width: 100% !important;
   }
   #AdditionalInformation .form-multiple-column {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
