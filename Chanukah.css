@@ -2317,11 +2317,14 @@ body.section_branch.ch-is-receipt a[onclick*="print"] {
   display: none !important;
 }
 
-body.section_branch.ch-is-receipt .ch-receipt-card a {
-  color: #1d4ed8 !important;
+body.section_branch:not(:has(#formContainer)) #ContentBody .ch-receipt-card a,
+body.section_branch.ch-is-receipt #ContentBody .ch-receipt-card a {
+  color: #071846 !important;
+  text-decoration: underline !important;
 }
 
-body.section_branch.ch-is-receipt .ch-receipt-card a[style*="background:#071846"] {
+body.section_branch:not(:has(#formContainer)) #ContentBody .ch-receipt-card a[style*="background:#071846"],
+body.section_branch.ch-is-receipt #ContentBody .ch-receipt-card a[style*="background:#071846"] {
   color: #ffe69a !important;
   text-decoration: none !important;
 }
