@@ -1338,7 +1338,20 @@ function initEventModalWizard() {
     const counts = {};
     const order = [];
     document.querySelectorAll("#Performances .reservation").forEach((row) => {
-      const rawCat = (row.querySelector(".g100")?.textContent || "Ticket").trim();
+      // Category name: prefer the visible .g100 (on mobile the desktop one is .hidden).
+      // Fall back to the first non-empty text div that is not the index, price, or remove button.
+      let rawCat = (row.querySelector(".g100:not(.hidden)")?.textContent || "").trim();
+      if (!rawCat) {
+        for (const d of row.querySelectorAll("div")) {
+          const t = (d.textContent || "").trim();
+          if (!t || /^\d+$/.test(t)) continue; // empty or index number
+          if (d.classList.contains("price-display") || d.querySelector(".price-display")) continue;
+          if (d.querySelector("button, a")) continue; // remove button
+          rawCat = t;
+          break;
+        }
+      }
+      rawCat = rawCat || "Ticket";
       const priceText = (row.querySelector(".price-display")?.textContent || "$0.00").replace(/\s+/g, "");
       const priceNum = parseFloat(priceText.replace(/[^0-9.]/g, "")) || 0;
       const isIncluded = /includ/i.test(priceText) || priceNum === 0;
@@ -1382,35 +1395,47 @@ function initEventModalWizard() {
       }
     });
 
+    // Contribution / Donation: read directly from the donation inputs (with fallbacks).
+    // ChabadOne does not always reflect the chosen amount in #Totals, so derive it here.
+    let donationVal = 0;
+    const checkedRadio = document.querySelector('#AdditionalInformation input[type="radio"]:checked');
+    if (checkedRadio) {
+      if (checkedRadio.classList.contains("form-radio-other")) {
+        const otherInput = document.querySelector('#AdditionalInformation .form-radio-other-input');
+        donationVal = parseFloat(otherInput?.value) || 0;
+      } else {
+        donationVal = parseFloat(checkedRadio.value) || 0;
+      }
+    }
+    if (!donationVal) {
+      const addTotalEl = document.querySelector('#AdditionalInformation [id^="additional_"][id$="_total"]');
+      if (addTotalEl) donationVal = parseFloat((addTotalEl.textContent || "").replace(/[^0-9.]/g, "")) || 0;
+    }
+    if (!donationVal) {
+      donationVal = parseFloat(document.getElementById("TotalDonation")?.value) || 0;
+    }
+    let contribRow = "";
+    if (donationVal > 0) {
+      contribRow = `<div class="ch-ev-order-row"><span>Contribution / Sponsorship</span><span>$${donationVal.toFixed(2)}</span></div>`;
+    }
+
     let extraRows = "";
     let grandTotal = "";
-    let totalsMentionDonation = false;
     document.querySelectorAll("#Totals > .clearfix").forEach((r) => {
       const left = (r.querySelector(".float_left")?.textContent || "").trim();
-      const right = (r.querySelector(".float_right")?.textContent || "").replace(/\s+/g, " ").trim();
-      if (/additional|donat|contribut/i.test((r.textContent || ""))) totalsMentionDonation = true;
+      const right = (r.querySelector(".float_right")?.textContent || "").replace(/\s+/g, " ").replace(/\$\s+/g, "$").trim();
       if (/^total/i.test(left)) {
         grandTotal = `<div class="ch-ev-order-total"><span>Total</span><span>${right}</span></div>`;
-      } else if (!/^subtotal/i.test(left) && left) {
+      } else if (!/^subtotal|additional|donat|contribut/i.test(left) && left) {
         extraRows += `<div class="ch-ev-order-row"><span>${left.replace(/:$/, "")}</span><span>${right}</span></div>`;
       }
     });
 
-    // Contribution / Additional Donation line item (not always reflected in #Totals)
-    let contribRow = "";
-    const addTotalEl = document.querySelector('#AdditionalInformation [id^="additional_"][id$="_total"]');
-    if (addTotalEl && !totalsMentionDonation) {
-      const addVal = parseFloat((addTotalEl.textContent || "").replace(/[^0-9.]/g, "")) || 0;
-      if (addVal > 0) {
-        contribRow = `<div class="ch-ev-order-row"><span>Contribution / Sponsorship</span><span>$${addVal.toFixed(2)}</span></div>`;
-      }
-    }
-
     return `
       <div class="ch-ev-order-title">Order Summary</div>
       ${rowsHtml || `<div class="ch-ev-order-row"><span>No tickets selected</span><span>$0.00</span></div>`}
-      ${extraRows}
       ${contribRow}
+      ${extraRows}
       <div class="ch-ev-order-divider"></div>
       ${grandTotal || `<div class="ch-ev-order-total"><span>Total</span><span>$0.00</span></div>`}
     `;
