@@ -311,7 +311,7 @@
     });
   }
 
-  function initEventModalWizard() {
+function initEventModalWizard() {
     const formContainer = document.getElementById("formContainer");
     const form = formContainer ? formContainer.querySelector("form.userform-form") : null;
     const ul = form ? form.querySelector("ul.form-section") : null;
@@ -335,6 +335,9 @@
     let emailLi = null;
     let phoneLi = null;
     let optInLi = null;
+    let donateLi = null;
+    let totalLi = null;
+    let volunteerLi = null;
     const steps = { 1: [], 2: [], 3: [], 4: [] };
 
     items.forEach((li) => {
@@ -388,9 +391,16 @@
         li.classList.add("ch-ticket-card");
         steps[1].push(li);
       } else if (isDonate || isVolunteer) {
-        if (isTotal) li.classList.add("ch-total-line");
-        else if (isVolunteer) li.classList.add("ch-volunteer-section");
-        else if (li.querySelector("input[type='radio']")) li.classList.add("ch-donate-tiles");
+        if (isTotal) {
+          li.classList.add("ch-total-line");
+          totalLi = li;
+        } else if (isVolunteer) {
+          li.classList.add("ch-volunteer-section");
+          volunteerLi = li;
+        } else if (li.querySelector("input[type='radio']")) {
+          li.classList.add("ch-donate-tiles");
+          donateLi = li;
+        }
         steps[3].push(li);
       } else {
         if (/email|e-mail/.test(labelText) && !isOptIn) {
@@ -407,7 +417,7 @@
       }
     });
 
-    // Force Email + Phone on same row, and Email Opt-In directly underneath
+    // Step 2 order: Email + Phone side-by-side, Opt-In directly underneath
     if (emailLi && phoneLi && emailLi.parentNode === ul) {
       emailLi.insertAdjacentElement("afterend", phoneLi);
     }
@@ -416,22 +426,51 @@
       optAnchor.insertAdjacentElement("afterend", optInLi);
     }
 
-    // Make "Other" donation text box auto-select its hidden radio button
+    // Step 3 order: Donation Options -> Total -> Volunteer (always at bottom)
+    if (donateLi && totalLi && donateLi.parentNode === ul) {
+      donateLi.insertAdjacentElement("afterend", totalLi);
+    }
+    const volAnchor = totalLi || donateLi;
+    if (volunteerLi && volAnchor && volAnchor.parentNode === ul) {
+      volAnchor.insertAdjacentElement("afterend", volunteerLi);
+    }
+
+    // Make "Other" donation input reliably clickable and synced to its radio
     ul.querySelectorAll(".form-radio-other-input").forEach((otherInput) => {
       const radioItem = otherInput.closest(".form-radio-item");
       const radio = radioItem ? radioItem.querySelector("input[type='radio']") : null;
       if (!radio) return;
-      ["focus", "click", "input"].forEach((evt) => {
-        otherInput.addEventListener(evt, () => {
-          if (!radio.checked) {
-            radio.checked = true;
-            radio.dispatchEvent(new Event("change", { bubbles: true }));
-          }
-        });
+
+      otherInput.disabled = false;
+      otherInput.readOnly = false;
+      if (/^other$/i.test((otherInput.value || "").trim())) {
+        otherInput.value = "";
+      }
+      otherInput.placeholder = "Other ($)";
+
+      function activateOther() {
+        otherInput.disabled = false;
+        otherInput.readOnly = false;
+        if (!radio.checked) {
+          radio.checked = true;
+          radio.dispatchEvent(new Event("click", { bubbles: true }));
+          radio.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      }
+
+      radioItem.addEventListener("mousedown", () => {
+        activateOther();
+        setTimeout(() => otherInput.focus(), 10);
+      });
+      otherInput.addEventListener("focus", activateOther);
+      otherInput.addEventListener("input", () => {
+        activateOther();
+        otherInput.dispatchEvent(new Event("change", { bubbles: true }));
+        setTimeout(renderStep, 50);
       });
     });
 
-    // Upgrade spinners to clean − [ 0 ] + steppers
+    // Bulletproof Stepper: visible <span> number synced 1:1 with real hidden <input>
     ul.querySelectorAll(".form-spinner-input, [data-type='input-spinner']").forEach((input) => {
       if (input.closest(".ch-stepper")) return;
       const card = input.closest(".ch-ticket-card");
@@ -440,23 +479,31 @@
 
       const wrap = document.createElement("div");
       wrap.className = "ch-stepper";
+
       const minus = document.createElement("button");
       minus.type = "button";
       minus.className = "ch-step-btn";
       minus.textContent = "−";
+
+      const valDisplay = document.createElement("span");
+      valDisplay.className = "ch-stepper-val";
+
       const plus = document.createElement("button");
       plus.type = "button";
       plus.className = "ch-step-btn";
       plus.textContent = "+";
 
       wrap.appendChild(minus);
+      wrap.appendChild(valDisplay);
       wrap.appendChild(input);
       wrap.appendChild(plus);
       formInput.appendChild(wrap);
+
       if (!input.value) input.value = "0";
 
       function syncCard() {
         const val = parseInt(input.value, 10) || 0;
+        valDisplay.textContent = String(val);
         minus.classList.toggle("ch-muted-btn", val <= 0);
         if (card) card.classList.toggle("ch-ticket-active", val > 0);
       }
@@ -515,7 +562,7 @@
     `;
     form.insertBefore(header, form.firstChild);
 
-    // Pinned Footer (Back + Next on Same Line, Register Centered)
+    // Pinned Footer (Back + Next on Same Line, Big Centered Register)
     const footer = document.createElement("div");
     footer.className = "ch-modal-footer";
     footer.innerHTML = `
@@ -537,19 +584,33 @@
     const stepLabel = header.querySelector("#ch-step-label");
     const scrollBody = form.querySelector(".form-all");
 
+    // Only returns true if an actual dollar donation > 0 is selected
     function needsPayment() {
       if (!paymentLi) return false;
-      const totalInp = form.querySelector("#total_amount, input[name*='total']");
-      if (totalInp && parseFloat(String(totalInp.value).replace(/[^0-9.]/g, "")) > 0) {
-        return true;
+
+      if (totalLi) {
+        const totalEl = totalLi.querySelector("#total_amount, input[name*='total'], .total_amount, .form-input");
+        if (totalEl) {
+          const raw = totalEl.tagName === "INPUT" ? totalEl.value : totalEl.textContent;
+          const m = String(raw || "").match(/\$?\s*([0-9]+(?:\.[0-9]+)?)/);
+          if (m && parseFloat(m[1]) > 0) return true;
+        }
       }
-      return steps[3].some((li) =>
-        Array.from(li.querySelectorAll("input:checked")).some((inp) => {
-          const val = (inp.value || "").toLowerCase();
-          if (/no thanks|volunteer|none|^0$/.test(val)) return false;
-          return /donat|sponsor|\$|[1-9]|other/.test(val);
-        })
-      );
+
+      if (donateLi) {
+        const checked = donateLi.querySelector("input[type='radio']:checked");
+        if (!checked) return false;
+        const val = (checked.value || "").trim().toLowerCase();
+        if (/no thanks|none|^0$/.test(val)) return false;
+        if (checked.classList.contains("form-radio-other") || val === "other") {
+          const otherInp = donateLi.querySelector(".form-radio-other-input");
+          const num = otherInp ? parseFloat(String(otherInp.value).replace(/[^0-9.]/g, "")) : 0;
+          return num > 0;
+        }
+        return parseFloat(val.replace(/[^0-9.]/g, "")) > 0;
+      }
+
+      return false;
     }
 
     function clearInlineErrors() {
@@ -616,13 +677,10 @@
         const err = e.target.parentNode.querySelector(".ch-inline-err");
         if (err) err.remove();
       }
-      if (activeSteps[currentIdx] === 3 && e.target.classList.contains("form-radio-other-input")) {
-        setTimeout(renderStep, 50);
-      }
     });
 
     form.addEventListener("change", () => {
-      if (activeSteps[currentIdx] === 3) setTimeout(renderStep, 50);
+      if (activeSteps[currentIdx] === 3) setTimeout(renderStep, 60);
     });
 
     nextBtn.addEventListener("click", () => {
