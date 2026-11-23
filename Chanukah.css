@@ -1243,6 +1243,8 @@ body.section_branch #ContentBody {
   border-radius: 8px;
   padding: 16px 52px;
   min-width: 240px;
+  max-width: 100%;
+  box-sizing: border-box;
   font-family: "Montserrat", Arial, sans-serif;
   font-size: 16.5px;
   font-weight: 700;
@@ -2058,6 +2060,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
   }
   .ch-open-rsvp-btn {
     width: 100%;
+    padding: 16px 20px;
   }
   /* Mobile: Move RSVP button above event info */
   .ch-landing-info {
@@ -2067,7 +2070,7 @@ body.section_branch #formContainer.ch-wizard-ready .form-submit-button:hover {
     margin-bottom: 20px;
   }
   .ch-add-cal {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     font-size: 11px;
     gap: 3px 6px;
     margin-top: 18px;
