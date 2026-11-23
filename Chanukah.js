@@ -210,7 +210,7 @@
           ${ev.note ? `<div class="ch-event-note">${ev.note}</div>` : ""}
           <div class="ch-footer-row">
             ${ev.host ? `<span class="ch-event-host">Hosted by: ${ev.host}</span>` : ""}
-            ${link ? `<a class="ch-reserve-btn" href="${link}">More Information &rarr;</a>` : ""}
+            ${link ? `<a class="ch-reserve-btn" href="${link}">Info and RSVP &rarr;</a>` : ""}
           </div>
         </div>
       </div>
@@ -730,6 +730,70 @@ function initEventModalWizard() {
       });
     });
 
+    // Quantity stepper: plain number fields (e.g. "How many cars") get - / + arrows.
+    // Mobile browsers show no native spinner on a plain number input, so build the
+    // same stepper the guest counts use. Scoped to the cars quantity field only.
+    ul.querySelectorAll("input[type='number']").forEach((input) => {
+      if (input.dataset.chQtyStepperReady) return;
+      if (input.classList.contains("form-spinner-input") || input.classList.contains("form-radio-other-input")) return;
+      if (input.closest(".ch-donate-tiles, .ch-pay-step")) return;
+      const li = input.closest("li");
+      const labelText = li && li.querySelector("label") ? li.querySelector("label").textContent : "";
+      if (!/car/i.test(labelText)) return;
+      input.dataset.chQtyStepperReady = "1";
+      const formInput = input.closest(".form-input");
+      if (!formInput) return;
+
+      const min = parseInt(input.getAttribute("min") || "1", 10) || 1;
+      const maxAttr = input.getAttribute("max");
+      const max = maxAttr ? parseInt(maxAttr, 10) : null;
+
+      const wrap = document.createElement("div");
+      wrap.className = "ch-stepper";
+
+      const minus = document.createElement("button");
+      minus.type = "button";
+      minus.className = "ch-step-btn";
+      minus.textContent = "−";
+
+      const valDisplay = document.createElement("span");
+      valDisplay.className = "ch-stepper-val";
+
+      const plus = document.createElement("button");
+      plus.type = "button";
+      plus.className = "ch-step-btn";
+      plus.textContent = "+";
+
+      wrap.appendChild(minus);
+      wrap.appendChild(valDisplay);
+      wrap.appendChild(plus);
+
+      input.style.setProperty("display", "none", "important");
+      formInput.appendChild(wrap);
+
+      if (!input.value) input.value = String(min);
+
+      function syncQty() {
+        const val = parseInt(input.value, 10) || min;
+        valDisplay.textContent = String(val);
+        minus.classList.toggle("ch-muted-btn", val <= min);
+      }
+      syncQty();
+
+      minus.addEventListener("click", () => {
+        input.value = String(Math.max(min, (parseInt(input.value, 10) || min) - 1));
+        syncQty();
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      plus.addEventListener("click", () => {
+        let v = (parseInt(input.value, 10) || min) + 1;
+        if (max !== null) v = Math.min(max, v);
+        input.value = String(v);
+        syncQty();
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
+
     // Event Landing Card + Full-Width Clickable Sponsor Band + Bottom Back Link
     const pageTitle = document.querySelector(".article-header__title")
       ? document.querySelector(".article-header__title").textContent.trim()
@@ -746,7 +810,7 @@ function initEventModalWizard() {
       ${landingParts.flyerSrc ? `<div class="ch-landing-flyer"><img src="${landingParts.flyerSrc}" alt="${pageTitle}" /></div>` : ""}
       <div class="ch-landing-info">
         <div class="ch-landing-copy">
-          ${landingParts.htmlBlocks.length ? landingParts.htmlBlocks.join("") : "<p>Reserve your spot below — registration takes less than a minute.</p>"}
+          ${landingParts.htmlBlocks.length ? landingParts.htmlBlocks.join("") : ""}
         </div>
         <div class="ch-rsvp-wrap">
           <button type="button" class="ch-open-rsvp-btn" id="ch-open-rsvp">RSVP Here</button>
@@ -947,6 +1011,17 @@ function initEventModalWizard() {
     formContainer.addEventListener("click", (e) => {
       if (e.target === formContainer) closeModal();
     });
+
+    // Parade sign-up: open the form right away on page load, no RSVP-button click.
+    // The RSVP Here button stays as the way back in if someone closes the form.
+    const isParadeSignup =
+      /parade/i.test(pageTitle) || /7632246/.test(window.location.pathname + window.location.search);
+    if (isParadeSignup) {
+      currentIdx = 0;
+      renderStep();
+      formContainer.classList.add("ch-modal-open");
+      document.body.style.overflow = "hidden";
+    }
   }
 
   function initReceiptPage() {
