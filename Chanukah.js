@@ -44,7 +44,7 @@
       location: "Starts at Chabad, 1925 Kresson Rd, Cherry Hill, NJ 08003",
       note: "",
       host: "CTeen",
-      link: "",
+      link: "https://www.thechabadcenter.org/7633057",
       flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/CTeen_Limo_Parade_2026.webp",
     },
     {
