@@ -51,7 +51,7 @@
       date: "Sunday, Dec. 6",
       night: 3,
       isoStart: "2026-12-06T17:00:00-05:00",
-      eventName: "Giant Menorah Lighting",
+      eventName: "Grand Chanukah Fest & Menorah Lighting",
       time: "5:00 PM",
       location: "Barclay Farm Shopping Center, 80 Barclay Farms Shopping Center, Cherry Hill, NJ 08034",
       note: "",
