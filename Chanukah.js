@@ -45,7 +45,7 @@
       note: "",
       host: "CTeen",
       link: "",
-      flyer: "coming-soon",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/CTeen_Limo_Parade_2026.webp",
     },
     {
       date: "Sunday, Dec. 6",
