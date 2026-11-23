@@ -42,7 +42,7 @@
       eventName: "CTeen Limo Parade & Grand Menorah Lighting",
       time: "3:30 PM",
       location: "Starts at Chabad, 1925 Kresson Rd, Cherry Hill, NJ 08003",
-      note: "An exclusive CTeen limo ride in the Menorah Car Parade, followed by the Grand Barclay Farms Giant Menorah Lighting with live entertainment, music, Chanukah crafts, hot beverages, fresh latkes &amp; donuts! Parents can pick up teens directly at Barclay Farms after the lighting, or teens can ride back to Chabad with the group for pickup there.",
+      note: "",
       host: "CTeen",
       link: "",
       flyer: "coming-soon",
