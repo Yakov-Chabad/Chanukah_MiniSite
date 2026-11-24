@@ -166,7 +166,7 @@
       location: "Chabad, 1925 Kresson Road, Cherry Hill, NJ\u00A008003",
       note: "",
       host: "CTeen Jr.",
-      link: "https://www.thechabadcenter.org/chanukah",
+      link: "https://www.thechabadcenter.org/7640230",
       flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Cteen%20jr%20chanukah.jpeg",
     },
   ];
