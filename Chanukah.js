@@ -264,9 +264,13 @@
         const menorahUrl = grp.night
           ? `https://chabad.org/images/1/calendar/menorah_colored_small_${grp.night}.png`
           : "";
-        const nightLabel =
+        /* Pre-Hanukkah group only: "Pre Hanukkah" is the heading and the date
+           is the small sub-line. Every other group keeps the date as the
+           heading with the night label below. */
+        const headerTitle = grp.pre ? "Pre Hanukkah" : grp.date;
+        const headerSub =
           grp.pre
-            ? `<span>Pre Hanukkah</span>`
+            ? `<span>${grp.date}</span>`
             : grp.night && NIGHT_MAP[grp.night]
               ? `<span>${NIGHT_MAP[grp.night]} Night of Chanukah</span>`
               : "";
@@ -277,8 +281,8 @@
           <div class="ch-night-header${preClass}">
             ${menorahUrl ? `<img class="ch-menorah-icon" src="${menorahUrl}" alt="" />` : ""}
             <div>
-              <h2>${grp.date}</h2>
-              ${nightLabel}
+              <h2>${headerTitle}</h2>
+              ${headerSub}
             </div>
           </div>
           <div class="ch-modules-wrapper${singleClass}">

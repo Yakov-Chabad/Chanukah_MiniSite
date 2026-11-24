@@ -838,6 +838,31 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
   #ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-title {
     font-size: 13.5px;
   }
+  /* Compact card stays visibly smaller on phones: the 980px rule gives every
+     card flex: 1 1 100%, and the 460px max-width never binds below 460px, so
+     without this the compact card was exactly as wide as a regular card.
+     Narrow it, center it, and tighten the text so it also reads shorter. */
+  #ch-chanukah .ch-modules-wrapper.ch-single-night .ch-event-card.ch-event-card--compact {
+    flex: 0 1 330px;
+    max-width: calc(100% - 48px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-main {
+    padding: 8px 10px 8px 8px;
+  }
+  #ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-details {
+    font-size: 11px;
+  }
+  #ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-footer {
+    padding: 6px 10px 8px;
+  }
+  #ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-note {
+    font-size: 10.5px;
+  }
+  #ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-host {
+    font-size: 9.5px;
+  }
   #ch-chanukah .ch-night-header.ch-night-header--pre {
     margin: 24px 0 10px;
   }
