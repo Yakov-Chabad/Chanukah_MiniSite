@@ -81,7 +81,7 @@
       time: "5:30 PM – 7:30 PM",
       location: "Main Street, Medford, 16 N Main St, Medford, NJ 08055",
       note: "",
-      host: "Chabad of Medford",
+      host: "Chabad in Medford",
       link: "https://www.chabadmedford.org/Walk",
       flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Medford_Chanukah_2026.webp",
     },
