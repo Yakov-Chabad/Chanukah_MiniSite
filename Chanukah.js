@@ -155,7 +155,7 @@
       note: "",
       host: "CTeen Jr.",
       link: "https://www.thechabadcenter.org/chanukah",
-      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Cteen_jr_chanukah.jpeg",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Cteen%20jr%20chanukah.jpeg",
     },
   ];
 
