@@ -136,6 +136,18 @@
     {
       date: "Thursday, Dec. 10",
       night: 7,
+      isoStart: "2026-12-10T17:30:00-05:00",
+      eventName: "Outdoor Menorah Lighting",
+      time: "5:30 PM",
+      location: "Silver Dental, 1816 Mt. Holly Road #101, Burlington, NJ",
+      note: "",
+      host: "Chabad of Florence",
+      link: "https://www.florencechabad.org/templates/articlecco_cdo/aid/4658710/jewish/Chanukah.htm",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Florence_Chanukah_2026.png",
+    },
+    {
+      date: "Thursday, Dec. 10",
+      night: 7,
       isoStart: "2026-12-10T18:00:00-05:00",
       eventName: "Moorestown Menorah Lighting",
       time: "6:00 PM",
