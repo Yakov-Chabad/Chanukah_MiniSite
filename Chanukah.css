@@ -3556,3 +3556,25 @@ html body.cco_body #ch-chanukah .ch-event-card.ch-card-flagship a.ch-reserve-btn
   color: #071846;
   border-color: #ffe69a;
 }
+
+/* Donuts & Dazzle flyer (AID 7640230) — page-scoped, do not apply elsewhere */
+html:has(meta[name="scope-aid"][content="7640230"]) img.flyer-img {
+  width: 100% !important;
+  max-width: 500px !important;
+  height: auto !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+  border-radius: 10px;
+  margin: 0 auto 20px !important;
+}
+
+@media (min-width: 768px) {
+  html:has(meta[name="scope-aid"][content="7640230"]) img.flyer-img {
+    width: 420px !important;
+    max-width: 420px !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
+  }
+}
