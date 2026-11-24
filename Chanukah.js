@@ -18,7 +18,7 @@
       isoStart: "2026-12-01T19:30:00-05:00",
       eventName: "Mats & Miracles",
       time: "7:30 PM",
-      location: "Chabad, 1925 Kresson Road, Cherry Hill, New Jersey 08003",
+      location: "Chabad, 1925 Kresson Road, Cherry Hill, NJ\u00A008003",
       note: "Ladies Night Out",
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org/templates/articlecco_cdo/aid/7623784/jewish/Ladies-Night-Out-RSVP.htm",
@@ -163,7 +163,7 @@
       isoStart: "2026-12-10T18:00:00-05:00",
       eventName: "Donuts & Dazzle",
       time: "6:00 PM",
-      location: "Chabad, 1925 Kresson Road, Cherry Hill, New Jersey 08003",
+      location: "Chabad, 1925 Kresson Road, Cherry Hill, NJ\u00A008003",
       note: "",
       host: "CTeen Jr.",
       link: "https://www.thechabadcenter.org/chanukah",
@@ -220,7 +220,7 @@
     if (!loc) return "";
     return loc
       .replace(/,/g, "<br />")
-      .replace(/<br \/>\s*(NJ|PA|NY)\b/g, ", $1");
+      .replace(/<br \/>\s*(NJ|PA|NY)\b/g, ",\u00A0$1");
   }
 
   function buildFlyerHtml(ev) {
