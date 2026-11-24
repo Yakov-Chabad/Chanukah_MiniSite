@@ -143,7 +143,7 @@
       note: "",
       host: "Chabad of Florence",
       link: "https://www.florencechabad.org/templates/articlecco_cdo/aid/4658710/jewish/Chanukah.htm",
-      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Florence_Chanukah_2026.png",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Florence_Chanukah_2026.webp",
     },
     {
       date: "Thursday, Dec. 10",
