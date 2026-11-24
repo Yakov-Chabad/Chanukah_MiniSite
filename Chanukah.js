@@ -12,6 +12,19 @@
 
   const EVENTS = [
     {
+      date: "Tuesday, Dec. 1",
+      pre: true,
+      compact: true,
+      isoStart: "2026-12-01T19:30:00-05:00",
+      eventName: "Mats & Miracles",
+      time: "7:30 PM",
+      location: "Chabad, 1925 Kresson Rd, Cherry Hill, NJ 08003",
+      note: "Pre-Chanukah Ladies Night Out · $36",
+      host: "Chabad of Camden & Burlington Counties",
+      link: "https://www.thechabadcenter.org/templates/articlecco_cdo/aid/7623784/jewish/Ladies-Night-Out-RSVP.htm",
+      flyer: "https://w2.chabad.org/media/images/1396/cuWh13961752.png",
+    },
+    {
       date: "Saturday, Dec. 5",
       night: 2,
       isoStart: "2026-12-05T19:30:00-05:00",
@@ -209,7 +222,7 @@
     }
 
     return `
-      <div class="ch-event-card">
+      <div class="ch-event-card${ev.compact ? " ch-event-card--compact" : ""}">
         ${buildFlyerHtml(ev)}
         <div class="ch-event-main">
           <div class="ch-event-title">${ev.eventName || ""}</div>
@@ -240,7 +253,7 @@
     EVENTS.forEach((ev) => {
       if (ev.date !== currentDate) {
         currentDate = ev.date;
-        currentGroup = { date: ev.date, night: ev.night, items: [] };
+        currentGroup = { date: ev.date, night: ev.night, pre: ev.pre, items: [] };
         groups.push(currentGroup);
       }
       currentGroup.items.push(ev);
@@ -252,13 +265,16 @@
           ? `https://chabad.org/images/1/calendar/menorah_colored_small_${grp.night}.png`
           : "";
         const nightLabel =
-          grp.night && NIGHT_MAP[grp.night]
-            ? `<span>${NIGHT_MAP[grp.night]} Night of Chanukah</span>`
-            : "";
+          grp.pre
+            ? `<span>Pre Hanukkah</span>`
+            : grp.night && NIGHT_MAP[grp.night]
+              ? `<span>${NIGHT_MAP[grp.night]} Night of Chanukah</span>`
+              : "";
         const singleClass = grp.items.length === 1 ? " ch-single-night" : "";
+        const preClass = grp.pre ? " ch-night-header--pre" : "";
 
         return `
-          <div class="ch-night-header">
+          <div class="ch-night-header${preClass}">
             ${menorahUrl ? `<img class="ch-menorah-icon" src="${menorahUrl}" alt="" />` : ""}
             <div>
               <h2>${grp.date}</h2>

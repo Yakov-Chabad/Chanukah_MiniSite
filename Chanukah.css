@@ -528,6 +528,57 @@ html body.cco_body #ch-chanukah .ch-night-header h2,
   flex: 0 1 590px;
 }
 
+/* Compact pre-Hanukkah card: narrower, shorter, quieter than the regular event cards */
+#ch-chanukah .ch-modules-wrapper.ch-single-night .ch-event-card.ch-event-card--compact {
+  flex: 0 1 460px;
+}
+#ch-chanukah .ch-event-card.ch-event-card--compact {
+  grid-template-columns: 118px minmax(0, 1fr);
+}
+#ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-flyer {
+  padding: 10px 0 10px 10px;
+}
+#ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-flyer img {
+  max-height: 132px;
+}
+#ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-main {
+  padding: 11px 14px 0 12px;
+}
+#ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-title {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+#ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-details {
+  font-size: 11.5px;
+  line-height: 1.35;
+}
+#ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-footer {
+  padding: 2px 14px 11px 12px;
+}
+#ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-note {
+  font-size: 11px;
+}
+#ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-host {
+  font-size: 10.5px;
+}
+html body.cco_body #ch-chanukah .ch-event-card.ch-event-card--compact a.ch-reserve-btn,
+#ch-chanukah .ch-event-card.ch-event-card--compact a.ch-reserve-btn {
+  padding: 5px 12px;
+  font-size: 11px;
+}
+
+/* Quieter header for the pre-Hanukkah group */
+#ch-chanukah .ch-night-header.ch-night-header--pre {
+  margin: 34px 0 14px;
+}
+html body.cco_body #ch-chanukah .ch-night-header.ch-night-header--pre h2,
+#ch-chanukah .ch-night-header.ch-night-header--pre h2 {
+  font-size: 27px;
+}
+#ch-chanukah .ch-night-header.ch-night-header--pre span {
+  font-size: 17px;
+}
+
 #ch-chanukah .ch-event-flyer {
   grid-area: flyer;
   padding: 14px 0 14px 14px;
@@ -685,6 +736,9 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
     flex: 1 1 100%;
     max-width: 660px;
   }
+  #ch-chanukah .ch-modules-wrapper.ch-single-night .ch-event-card.ch-event-card--compact {
+    max-width: 460px;
+  }
 }
 
 @media (max-width: 649px) {
@@ -774,6 +828,25 @@ html body.cco_body #ch-chanukah a.ch-reserve-btn:hover,
     padding: 5px 12px;
     font-size: 11px;
     flex-shrink: 0;
+  }
+  #ch-chanukah .ch-event-card.ch-event-card--compact {
+    grid-template-columns: 74px minmax(0, 1fr);
+  }
+  #ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-flyer img {
+    max-height: 96px;
+  }
+  #ch-chanukah .ch-event-card.ch-event-card--compact .ch-event-title {
+    font-size: 13.5px;
+  }
+  #ch-chanukah .ch-night-header.ch-night-header--pre {
+    margin: 24px 0 10px;
+  }
+  html body.cco_body #ch-chanukah .ch-night-header.ch-night-header--pre h2,
+  #ch-chanukah .ch-night-header.ch-night-header--pre h2 {
+    font-size: 21px;
+  }
+  #ch-chanukah .ch-night-header.ch-night-header--pre span {
+    font-size: 14.5px;
   }
 }
 
