@@ -145,6 +145,18 @@
       link: "https://www.thechabadcenter.org/7632330",
       flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Moorestown_Chanukah_2026.webp",
     },
+    {
+      date: "Thursday, Dec. 10",
+      night: 7,
+      isoStart: "2026-12-10T18:00:00-05:00",
+      eventName: "Donuts & Dazzle",
+      time: "6:00 PM",
+      location: "Chabad in Cherry Hill",
+      note: "",
+      host: "CTeen Jr.",
+      link: "https://www.thechabadcenter.org/chanukah",
+      flyer: "https://yakov-chabad.github.io/Chanukah_MiniSite/Cteen_jr_chanukah.jpeg",
+    },
   ];
 
   // Extra events for Add-to-Calendar only (test pages, NOT in the public listing)
