@@ -19,7 +19,7 @@
       eventName: "Mats & Miracles",
       time: "7:30 PM",
       location: "Chabad, 1925 Kresson Road, Cherry Hill, New Jersey 08003",
-      note: "",
+      note: "Ladies Night Out",
       host: "Chabad of Camden & Burlington Counties",
       link: "https://www.thechabadcenter.org/templates/articlecco_cdo/aid/7623784/jewish/Ladies-Night-Out-RSVP.htm",
       flyer: "https://w2.chabad.org/media/images/1396/cuWh13961752.png",
