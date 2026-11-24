@@ -63,6 +63,7 @@
     {
       date: "Sunday, Dec. 6",
       night: 3,
+      flagship: true,
       isoStart: "2026-12-06T17:00:00-05:00",
       eventName: "Grand Chanukah Fest & Menorah Lighting",
       time: "5:00 PM",
@@ -222,9 +223,10 @@
     }
 
     return `
-      <div class="ch-event-card${ev.compact ? " ch-event-card--compact" : ""}">
+      <div class="ch-event-card${ev.compact ? " ch-event-card--compact" : ""}${ev.flagship ? " ch-card-flagship" : ""}">
         ${buildFlyerHtml(ev)}
         <div class="ch-event-main">
+          ${ev.flagship ? `<div class="ch-event-eyebrow">Featured event</div>` : ""}
           <div class="ch-event-title">${ev.eventName || ""}</div>
           <div class="ch-event-details">
             ${ev.location ? `<div class="ch-detail-line"><i class="fas fa-map-marker-alt"></i><span>${formatLocation(ev.location)}</span></div>` : ""}
