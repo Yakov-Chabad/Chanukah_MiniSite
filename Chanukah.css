@@ -3529,20 +3529,24 @@ body:has(#RegisterSinglePage) #cco_body.ch-ev-modal-ready > .vertical_padding {
 }
 
 /* Flagship card (Grand Chanukah Fest only): solid gold border all the way
-   around, a bigger "Featured event" eyebrow, and a solid gold RSVP button.
-   No surface change, no glow/shadow. */
+   around, a squared-off gold "Featured event" banner with stars, and a solid
+   gold RSVP button. No surface change, no glow/shadow. */
 #ch-chanukah .ch-event-card.ch-card-flagship {
   border: 2px solid #ffe69a;
 }
 #ch-chanukah .ch-event-card.ch-card-flagship:has(a):hover {
   border-color: #ffe69a;
 }
-#ch-chanukah .ch-event-card.ch-card-flagship .ch-event-eyebrow {
-  color: #ffe69a;
+#ch-chanukah .ch-event-card.ch-card-flagship .ch-event-banner {
+  display: inline-block;
+  background: #ffe69a;
+  color: #071846;
+  border-radius: 0;
+  padding: 4px 10px;
   font-family: var(--ch-font-sans);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 2.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: 6px;
 }

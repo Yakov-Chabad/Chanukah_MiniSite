@@ -226,7 +226,7 @@
       <div class="ch-event-card${ev.compact ? " ch-event-card--compact" : ""}${ev.flagship ? " ch-card-flagship" : ""}">
         ${buildFlyerHtml(ev)}
         <div class="ch-event-main">
-          ${ev.flagship ? `<div class="ch-event-eyebrow">Featured event</div>` : ""}
+          ${ev.flagship ? `<div class="ch-event-banner">★ Featured event ★</div>` : ""}
           <div class="ch-event-title">${ev.eventName || ""}</div>
           <div class="ch-event-details">
             ${ev.location ? `<div class="ch-detail-line"><i class="fas fa-map-marker-alt"></i><span>${formatLocation(ev.location)}</span></div>` : ""}
