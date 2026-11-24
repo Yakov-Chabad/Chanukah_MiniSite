@@ -1046,10 +1046,12 @@ function initEventModalWizard() {
       if (e.target === formContainer) closeModal();
     });
 
-    // Parade sign-up: open the form right away on page load, no RSVP-button click.
+    // Parade sign-up form page only: open the form right away on page load, no RSVP-button click.
+    // Do NOT auto-open by page title: the parade info page ("Car Menorah Parade") also
+    // contains "parade" in its title, and it must show its own content first.
     // The RSVP Here button stays as the way back in if someone closes the form.
     const isParadeSignup =
-      /parade/i.test(pageTitle) || /7632246/.test(window.location.pathname + window.location.search);
+      /7632246/.test(window.location.pathname + window.location.search);
     if (isParadeSignup) {
       currentIdx = 0;
       renderStep();
