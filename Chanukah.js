@@ -1154,6 +1154,7 @@ function initEventModalWizard() {
      ========================================================================== */
   var TICKER_CACHE_KEY = "ch_campaign_ticker_v1";
   var TICKER_CACHE_TTL_MS = 60 * 1000;
+  var CAMPAIGN_URL = "https://www.thechabadcenter.org/templates/fundraising/default_cdo/aid/7643793/jewish/Campaign.htm";
   var tickerCountdownTimer = null;
 
   function tickerText(root, selector) {
@@ -1332,6 +1333,42 @@ function initEventModalWizard() {
     startTickerCountdown(el, data.endTimestamp);
   }
 
+  /* Read the campaign page itself (used when the homepage has no site ticker).
+     The campaign page carries the same goal / raised / percent / countdown
+     markup (.fs-goal, .fs-countdown) as the site ticker, just without the
+     .fs-ticker-* heading wrapper. Returns null if the page has no live data. */
+  function extractCampaignPageData(doc) {
+    var goal = tickerText(doc, ".fs-goal b");
+    var raised = tickerText(doc, ".fs-total-raised-amount") || tickerText(doc, ".fs-goal-total-raised span");
+    var percent = tickerText(doc, ".fs-percent-complete-amount");
+    var fillEl = doc.querySelector(".fs-goal-graph-fill");
+    var fillWidth = "";
+    if (fillEl && fillEl.style && fillEl.style.width) fillWidth = fillEl.style.width.trim();
+    if (!fillWidth) fillWidth = tickerAsPercent(percent);
+    var donateUrl =
+      tickerAttr(doc, ".fs-donate .fs-btn", "href") ||
+      tickerAttr(doc, ".fs-donate a", "href") ||
+      CAMPAIGN_URL;
+    var days = parseInt(tickerText(doc, ".fs-countdown-days .fs-countdown-number"), 10) || 0;
+    var hours = parseInt(tickerText(doc, ".fs-countdown-hours .fs-countdown-number"), 10) || 0;
+    var minutes = parseInt(tickerText(doc, ".fs-countdown-minutes .fs-countdown-number"), 10) || 0;
+    var seconds = parseInt(tickerText(doc, ".fs-countdown-seconds .fs-countdown-number"), 10) || 0;
+    var totalMs = (((days * 24 + hours) * 60 + minutes) * 60 + seconds) * 1000;
+    if (!goal && !raised && !percent && totalMs <= 0) return null;
+    return {
+      title: "Light it up!",
+      subtitle: "Help us bring Chanukah light to South Jersey!",
+      campaignUrl: CAMPAIGN_URL,
+      donateUrl: donateUrl,
+      goal: goal,
+      raised: raised,
+      percent: tickerAsPercent(percent),
+      fillWidth: fillWidth,
+      endTimestamp: totalMs > 0 ? Date.now() + totalMs : 0,
+      fetchedAt: Date.now(),
+    };
+  }
+
   function fetchCampaignTicker(nav) {
     fetch("/", { credentials: "same-origin" })
       .then(function (res) {
@@ -1340,17 +1377,34 @@ function initEventModalWizard() {
       .then(function (html) {
         var doc = new DOMParser().parseFromString(html, "text/html");
         var wrapper = doc.querySelector("#new-campaign-ticker-wrapper");
-        if (!wrapper) {
-          clearTickerCache();
-          return;
+        if (wrapper) {
+          var data = extractTickerData(wrapper);
+          if (data && !(data.endTimestamp && data.endTimestamp <= Date.now())) {
+            try {
+              sessionStorage.setItem(TICKER_CACHE_KEY, JSON.stringify(data));
+            } catch (e) {}
+            renderCampaignTicker(nav, data);
+            return;
+          }
         }
-        var data = extractTickerData(wrapper);
-        if (!data) return;
-        if (data.endTimestamp && data.endTimestamp <= Date.now()) return;
-        try {
-          sessionStorage.setItem(TICKER_CACHE_KEY, JSON.stringify(data));
-        } catch (e) {}
-        renderCampaignTicker(nav, data);
+        /* No site ticker on the homepage: read the campaign page itself. */
+        return fetch(CAMPAIGN_URL, { credentials: "same-origin" })
+          .then(function (res2) {
+            return res2.text();
+          })
+          .then(function (html2) {
+            var doc2 = new DOMParser().parseFromString(html2, "text/html");
+            var data2 = extractCampaignPageData(doc2);
+            if (!data2) {
+              clearTickerCache();
+              return;
+            }
+            if (data2.endTimestamp && data2.endTimestamp <= Date.now()) return;
+            try {
+              sessionStorage.setItem(TICKER_CACHE_KEY, JSON.stringify(data2));
+            } catch (e) {}
+            renderCampaignTicker(nav, data2);
+          });
       })
       .catch(function () {
         /* Homepage unreachable: leave the ticker off rather than showing stale data. */
