@@ -1143,12 +1143,248 @@ function initEventModalWizard() {
     return true;
   }
 
+  /* ==========================================================================
+     CAMPAIGN TICKER (live ChabadOne fundraiser bar above .ch-nav)
+     Fetches "/" once, parses #new-campaign-ticker-wrapper, caches 60s in
+     sessionStorage, renders a compact bar before .ch-nav, and runs a live
+     1-second countdown. Renders nothing if the campaign is off or ended.
+     On child pages .ch-nav is position:fixed, so the ticker height is
+     measured and exposed as --ch-ticker-h (see Chanukah.css) to push the
+     fixed nav down instead of overlapping it.
+     ========================================================================== */
+  var TICKER_CACHE_KEY = "ch_campaign_ticker_v1";
+  var TICKER_CACHE_TTL_MS = 60 * 1000;
+  var tickerCountdownTimer = null;
+
+  function tickerText(root, selector) {
+    var el = root.querySelector(selector);
+    return el ? el.textContent.trim() : "";
+  }
+
+  function tickerAttr(root, selector, attr) {
+    var el = root.querySelector(selector);
+    return el ? (el.getAttribute(attr) || "").trim() : "";
+  }
+
+  function tickerEscape(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function tickerAsPercent(value) {
+    var v = String(value == null ? "" : value).trim();
+    if (!v) return "0%";
+    return /%$/.test(v) ? v : v + "%";
+  }
+
+  function extractTickerData(wrapper) {
+    var titleEl = wrapper.querySelector(".fs-ticker-heading-large");
+    var title = titleEl ? titleEl.innerHTML.trim() : "";
+    var subtitle = tickerText(wrapper, ".fs-ticker-heading-small");
+    var campaignUrl = tickerAttr(wrapper, ".fs-ticker-heading a", "href");
+    var donateUrl = tickerAttr(wrapper, ".fs-ticker-donate a", "href");
+    var goal = tickerText(wrapper, ".fs-ticker-goal b");
+    var raised = tickerText(wrapper, ".fs-ticker-goal-total-raised span");
+    var percent = tickerText(wrapper, ".fs-ticker-goal-percent-complete span");
+    var fillEl = wrapper.querySelector(".fs-goal-graph-fill");
+    var fillWidth = "";
+    if (fillEl && fillEl.style && fillEl.style.width) fillWidth = fillEl.style.width.trim();
+    if (!fillWidth) fillWidth = tickerAsPercent(percent);
+    var days = parseInt(tickerText(wrapper, ".fs-countdown-days .fs-countdown-number"), 10) || 0;
+    var hours = parseInt(tickerText(wrapper, ".fs-countdown-hours .fs-countdown-number"), 10) || 0;
+    var minutes = parseInt(tickerText(wrapper, ".fs-countdown-minutes .fs-countdown-number"), 10) || 0;
+    var seconds = parseInt(tickerText(wrapper, ".fs-countdown-seconds .fs-countdown-number"), 10) || 0;
+    var totalMs = (((days * 24 + hours) * 60 + minutes) * 60 + seconds) * 1000;
+    return {
+      title: title,
+      subtitle: subtitle,
+      campaignUrl: campaignUrl,
+      donateUrl: donateUrl,
+      goal: goal,
+      raised: raised,
+      percent: tickerAsPercent(percent),
+      fillWidth: fillWidth,
+      endTimestamp: totalMs > 0 ? Date.now() + totalMs : 0,
+      fetchedAt: Date.now(),
+    };
+  }
+
+  function readTickerCache() {
+    try {
+      var raw = sessionStorage.getItem(TICKER_CACHE_KEY);
+      if (!raw) return null;
+      var data = JSON.parse(raw);
+      if (!data || !data.fetchedAt) return null;
+      if (Date.now() - data.fetchedAt > TICKER_CACHE_TTL_MS) return null;
+      if (data.endTimestamp && data.endTimestamp <= Date.now()) return null;
+      return data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function clearTickerCache() {
+    try {
+      sessionStorage.removeItem(TICKER_CACHE_KEY);
+    } catch (e) {}
+  }
+
+  function syncTickerOffset() {
+    try {
+      var t = document.getElementById("ch-campaign-ticker");
+      var h = t ? t.offsetHeight : 0;
+      document.documentElement.style.setProperty("--ch-ticker-h", h + "px");
+    } catch (e) {}
+  }
+
+  function stopTickerCountdown() {
+    if (tickerCountdownTimer) {
+      clearInterval(tickerCountdownTimer);
+      tickerCountdownTimer = null;
+    }
+  }
+
+  function startTickerCountdown(tickerEl, endTimestamp) {
+    if (!endTimestamp) return;
+    var nums = {
+      days: tickerEl.querySelector('[data-ticker-unit="days"]'),
+      hours: tickerEl.querySelector('[data-ticker-unit="hours"]'),
+      minutes: tickerEl.querySelector('[data-ticker-unit="minutes"]'),
+      seconds: tickerEl.querySelector('[data-ticker-unit="seconds"]'),
+    };
+    var pad = function (n) {
+      return (n < 10 ? "0" : "") + n;
+    };
+    var tick = function () {
+      var remain = endTimestamp - Date.now();
+      if (remain <= 0) {
+        stopTickerCountdown();
+        var t = document.getElementById("ch-campaign-ticker");
+        if (t && t.parentNode) t.parentNode.removeChild(t);
+        syncTickerOffset();
+        return;
+      }
+      var totalSec = Math.floor(remain / 1000);
+      var d = Math.floor(totalSec / 86400);
+      var h = Math.floor((totalSec % 86400) / 3600);
+      var m = Math.floor((totalSec % 3600) / 60);
+      var s = totalSec % 60;
+      if (nums.days) nums.days.textContent = pad(d);
+      if (nums.hours) nums.hours.textContent = pad(h);
+      if (nums.minutes) nums.minutes.textContent = pad(m);
+      if (nums.seconds) nums.seconds.textContent = pad(s);
+    };
+    tick();
+    stopTickerCountdown();
+    tickerCountdownTimer = setInterval(tick, 1000);
+  }
+
+  function renderCampaignTicker(nav, data) {
+    if (document.getElementById("ch-campaign-ticker")) return;
+    if (data.endTimestamp && data.endTimestamp <= Date.now()) return;
+    var title = data.title || "Light it up!";
+    var subtitle = data.subtitle || "Help us bring Chanukah light to South Jersey!";
+    var campaignUrl = data.campaignUrl || "/chanukah";
+    var donateUrl = data.donateUrl || campaignUrl;
+    var goal = data.goal || "$18,000";
+    var raised = data.raised || "";
+    var percent = data.percent || "0%";
+    var fillWidth = data.fillWidth || percent;
+    var raisedLine = raised
+      ? tickerEscape(raised) + " Raised &bull; " + tickerEscape(percent)
+      : tickerEscape(percent);
+    var countdownHtml = "";
+    if (data.endTimestamp) {
+      countdownHtml =
+        '<div class="ch-ticker-countdown">' +
+        '<span class="ch-ticker-label">Time remaining</span>' +
+        '<span class="ch-ticker-time">' +
+        '<span class="ch-ticker-unit"><span class="ch-ticker-num" data-ticker-unit="days">00</span><span class="ch-ticker-unit-label">Days</span></span>' +
+        '<span class="ch-ticker-sep">:</span>' +
+        '<span class="ch-ticker-unit"><span class="ch-ticker-num" data-ticker-unit="hours">00</span><span class="ch-ticker-unit-label">Hours</span></span>' +
+        '<span class="ch-ticker-sep">:</span>' +
+        '<span class="ch-ticker-unit"><span class="ch-ticker-num" data-ticker-unit="minutes">00</span><span class="ch-ticker-unit-label">Min</span></span>' +
+        '<span class="ch-ticker-sep">:</span>' +
+        '<span class="ch-ticker-unit"><span class="ch-ticker-num" data-ticker-unit="seconds">00</span><span class="ch-ticker-unit-label">Sec</span></span>' +
+        "</span>" +
+        "</div>";
+    }
+    var el = document.createElement("div");
+    el.id = "ch-campaign-ticker";
+    el.className = "ch-campaign-ticker";
+    el.innerHTML =
+      '<a class="ch-ticker-title" href="' + tickerEscape(campaignUrl) + '">' +
+      '<span class="ch-ticker-title-text">' + title + "</span>" +
+      '<span class="ch-ticker-subtitle">' + tickerEscape(subtitle) + "</span>" +
+      "</a>" +
+      countdownHtml +
+      '<div class="ch-ticker-goal">' +
+      '<span class="ch-ticker-goal-label">Goal <b>' + tickerEscape(goal) + "</b></span>" +
+      '<span class="ch-ticker-bar"><span class="ch-ticker-fill" style="width: ' + tickerEscape(fillWidth) + '"></span></span>' +
+      '<span class="ch-ticker-raised">' + raisedLine + "</span>" +
+      "</div>" +
+      '<a class="ch-ticker-donate" href="' + tickerEscape(donateUrl) + '">Donate &rsaquo;</a>';
+    nav.parentNode.insertBefore(el, nav);
+    syncTickerOffset();
+    startTickerCountdown(el, data.endTimestamp);
+  }
+
+  function fetchCampaignTicker(nav) {
+    fetch("/", { credentials: "same-origin" })
+      .then(function (res) {
+        return res.text();
+      })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var wrapper = doc.querySelector("#new-campaign-ticker-wrapper");
+        if (!wrapper) {
+          clearTickerCache();
+          return;
+        }
+        var data = extractTickerData(wrapper);
+        if (!data) return;
+        if (data.endTimestamp && data.endTimestamp <= Date.now()) return;
+        try {
+          sessionStorage.setItem(TICKER_CACHE_KEY, JSON.stringify(data));
+        } catch (e) {}
+        renderCampaignTicker(nav, data);
+      })
+      .catch(function () {
+        /* Homepage unreachable: leave the ticker off rather than showing stale data. */
+      });
+  }
+
+  function initCampaignTicker() {
+    var nav = document.querySelector("#ch-chanukah .ch-nav") || document.querySelector(".ch-nav");
+    if (!nav || document.getElementById("ch-campaign-ticker")) return;
+    var cached = readTickerCache();
+    if (cached) {
+      renderCampaignTicker(nav, cached);
+      return;
+    }
+    fetchCampaignTicker(nav);
+    if (typeof window !== "undefined" && window.addEventListener) {
+      var resizeTimer = null;
+      window.addEventListener("resize", function () {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(syncTickerOffset, 150);
+      });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(syncTickerOffset).catch(function () {});
+      }
+    }
+  }
+
   function init() {
     ensureViewport();
     removeChabadOneTopBar();
     const isChild = setupChildPage();
     initNav();
     initMobileNavHome();
+    initCampaignTicker();
     if (!isChild) {
       renderDirectory();
       initLightbox();
