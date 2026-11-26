@@ -3583,18 +3583,20 @@ html:has(meta[name="scope-aid"][content="7640230"]) img.flyer-img {
 }
 
 /* --- CAMPAIGN TICKER (live ChabadOne fundraiser bar above .ch-nav) --- */
-/* Self-contained flex bar, no Bootstrap. Sits in normal flow directly before
-   .ch-nav; on the homepage .ch-nav is already sticky, so the ticker scrolls
-   away and the nav sticks. On child pages .ch-nav is fixed and offset by
-   --ch-ticker-h (set from JS) — see the section_branch rules above. */
-#ch-chanukah .ch-campaign-ticker {
+/* Self-contained flex bar, no Bootstrap. Prepended to <body> (not inside
+   #ch-chanukah) so the child-page rule hiding #ch-chanukah children can never
+   hide it. On the homepage it sits in normal flow above the sticky .ch-nav and
+   scrolls away. On child pages it is pinned to the viewport top above the fixed
+   .ch-nav, which is offset by --ch-ticker-h (set from JS). */
+.ch-campaign-ticker {
   position: relative;
   z-index: 999;
   display: flex;
   align-items: center;
-  gap: 28px;
+  justify-content: space-between;
+  gap: 48px;
   width: 100%;
-  padding: 8px 28px;
+  padding: 10px 40px;
   background: linear-gradient(90deg, #0c2454 0%, #102a5c 100%);
   border-bottom: 1px solid rgba(255, 230, 154, 0.28);
   color: #ffffff;
@@ -3602,7 +3604,16 @@ html:has(meta[name="scope-aid"][content="7640230"]) img.flyer-img {
   box-sizing: border-box;
 }
 
-#ch-chanukah .ch-ticker-title {
+/* Child pages: pinned to the viewport top above the fixed nav. */
+body.section_branch > .ch-campaign-ticker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10001;
+}
+
+.ch-ticker-title {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -3611,16 +3622,16 @@ html:has(meta[name="scope-aid"][content="7640230"]) img.flyer-img {
   text-decoration: none;
   line-height: 1.25;
 }
-#ch-chanukah .ch-ticker-title:hover .ch-ticker-title-text {
+.ch-ticker-title:hover .ch-ticker-title-text {
   text-decoration: underline;
 }
-#ch-chanukah .ch-ticker-title-text {
+.ch-ticker-title-text {
   color: #ffe69a;
   font-size: 15px;
   font-weight: 700;
   white-space: nowrap;
 }
-#ch-chanukah .ch-ticker-subtitle {
+.ch-ticker-subtitle {
   color: rgba(255, 255, 255, 0.78);
   font-size: 12px;
   font-weight: 400;
@@ -3629,46 +3640,50 @@ html:has(meta[name="scope-aid"][content="7640230"]) img.flyer-img {
   text-overflow: ellipsis;
 }
 
-#ch-chanukah .ch-ticker-countdown {
+.ch-ticker-subtitle-mobile {
+  display: none;
+}
+
+.ch-ticker-countdown {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   flex: 0 0 auto;
   line-height: 1.2;
 }
-#ch-chanukah .ch-ticker-label {
+.ch-ticker-label {
   color: rgba(255, 255, 255, 0.6);
   font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 1.4px;
   text-transform: uppercase;
 }
-#ch-chanukah .ch-ticker-time {
+.ch-ticker-time {
   display: flex;
   align-items: flex-start;
   gap: 5px;
 }
-#ch-chanukah .ch-ticker-unit {
+.ch-ticker-unit {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-width: 26px;
 }
-#ch-chanukah .ch-ticker-num {
+.ch-ticker-num {
   color: #ffffff;
   font-size: 17px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1.15;
 }
-#ch-chanukah .ch-ticker-unit-label {
+.ch-ticker-unit-label {
   color: rgba(255, 255, 255, 0.6);
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.4px;
   text-transform: uppercase;
 }
-#ch-chanukah .ch-ticker-sep {
+.ch-ticker-sep {
   color: rgba(255, 255, 255, 0.45);
   font-size: 15px;
   font-weight: 600;
@@ -3676,28 +3691,28 @@ html:has(meta[name="scope-aid"][content="7640230"]) img.flyer-img {
   padding-top: 1px;
 }
 
-#ch-chanukah .ch-ticker-goal {
+.ch-ticker-goal {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  flex: 1 1 200px;
+  flex: 1 1 280px;
   min-width: 170px;
-  max-width: 320px;
+  max-width: 420px;
   gap: 3px;
   line-height: 1.2;
 }
-#ch-chanukah .ch-ticker-goal-label {
+.ch-ticker-goal-label {
   color: rgba(255, 255, 255, 0.85);
   font-size: 11.5px;
   font-weight: 500;
   letter-spacing: 0.4px;
   text-transform: uppercase;
 }
-#ch-chanukah .ch-ticker-goal-label b {
+.ch-ticker-goal-label b {
   color: #ffe69a;
   font-weight: 700;
 }
-#ch-chanukah .ch-ticker-bar {
+.ch-ticker-bar {
   display: block;
   width: 100%;
   height: 6px;
@@ -3705,19 +3720,19 @@ html:has(meta[name="scope-aid"][content="7640230"]) img.flyer-img {
   background: rgba(255, 255, 255, 0.22);
   overflow: hidden;
 }
-#ch-chanukah .ch-ticker-fill {
+.ch-ticker-fill {
   display: block;
   height: 100%;
   border-radius: 999px;
   background: #ffe69a;
 }
-#ch-chanukah .ch-ticker-raised {
+.ch-ticker-raised {
   color: rgba(255, 255, 255, 0.85);
   font-size: 11.5px;
   font-weight: 500;
 }
 
-#ch-chanukah .ch-ticker-donate {
+.ch-ticker-donate {
   flex: 0 0 auto;
   margin-left: auto;
   display: inline-flex;
@@ -3733,41 +3748,48 @@ html:has(meta[name="scope-aid"][content="7640230"]) img.flyer-img {
   white-space: nowrap;
   transition: background 0.15s ease;
 }
-#ch-chanukah .ch-ticker-donate:hover {
+.ch-ticker-donate:hover {
   background: #fff1c7;
   color: #071846;
   text-decoration: none;
 }
 
 @media (max-width: 768px) {
-  #ch-chanukah .ch-campaign-ticker {
+  .ch-campaign-ticker {
     flex-wrap: wrap;
     gap: 6px 14px;
     padding: 8px 14px 10px;
   }
-  #ch-chanukah .ch-ticker-title {
+  .ch-ticker-title {
     flex: 1 1 auto;
     order: 1;
   }
-  #ch-chanukah .ch-ticker-subtitle {
+  .ch-ticker-subtitle {
     display: none;
   }
-  #ch-chanukah .ch-ticker-donate {
+  .ch-ticker-subtitle-mobile {
+    display: block;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 12px;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  .ch-ticker-donate {
     order: 2;
     margin-left: 0;
     padding: 7px 14px;
     font-size: 13px;
   }
-  #ch-chanukah .ch-ticker-goal {
+  .ch-ticker-goal {
     order: 3;
-    flex: 1 1 55%;
+    flex: 1 1 100%;
     min-width: 150px;
     max-width: none;
   }
-  #ch-chanukah .ch-ticker-countdown {
-    order: 4;
+  .ch-ticker-countdown {
+    display: none;
   }
-  #ch-chanukah .ch-ticker-num {
+  .ch-ticker-num {
     font-size: 15px;
   }
 }

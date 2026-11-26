@@ -1283,9 +1283,10 @@ function initEventModalWizard() {
     tickerCountdownTimer = setInterval(tick, 1000);
   }
 
-  function renderCampaignTicker(nav, data) {
+  function renderCampaignTicker(data) {
     if (document.getElementById("ch-campaign-ticker")) return;
     if (data.endTimestamp && data.endTimestamp <= Date.now()) return;
+    if (!document.body) return;
     var title = data.title || "Light it up!";
     var subtitle = data.subtitle || "Help us bring Chanukah light to South Jersey!";
     var campaignUrl = data.campaignUrl || "/chanukah";
@@ -1320,6 +1321,7 @@ function initEventModalWizard() {
       '<a class="ch-ticker-title" href="' + tickerEscape(campaignUrl) + '">' +
       '<span class="ch-ticker-title-text">' + title + "</span>" +
       '<span class="ch-ticker-subtitle">' + tickerEscape(subtitle) + "</span>" +
+      '<span class="ch-ticker-subtitle-mobile">Help support these events!</span>' +
       "</a>" +
       countdownHtml +
       '<div class="ch-ticker-goal">' +
@@ -1328,7 +1330,10 @@ function initEventModalWizard() {
       '<span class="ch-ticker-raised">' + raisedLine + "</span>" +
       "</div>" +
       '<a class="ch-ticker-donate" href="' + tickerEscape(donateUrl) + '">Donate &rsaquo;</a>';
-    nav.parentNode.insertBefore(el, nav);
+    /* Prepend to <body>, not inside #ch-chanukah: the child-page rule that
+       hides #ch-chanukah children can never hide it, and rendering no longer
+       depends on .ch-nav being in the DOM yet. */
+    document.body.prepend(el);
     syncTickerOffset();
     startTickerCountdown(el, data.endTimestamp);
   }
@@ -1369,7 +1374,7 @@ function initEventModalWizard() {
     };
   }
 
-  function fetchCampaignTicker(nav) {
+  function fetchCampaignTicker() {
     fetch("/", { credentials: "same-origin" })
       .then(function (res) {
         return res.text();
@@ -1383,7 +1388,7 @@ function initEventModalWizard() {
             try {
               sessionStorage.setItem(TICKER_CACHE_KEY, JSON.stringify(data));
             } catch (e) {}
-            renderCampaignTicker(nav, data);
+            renderCampaignTicker(data);
             return;
           }
         }
@@ -1403,7 +1408,7 @@ function initEventModalWizard() {
             try {
               sessionStorage.setItem(TICKER_CACHE_KEY, JSON.stringify(data2));
             } catch (e) {}
-            renderCampaignTicker(nav, data2);
+            renderCampaignTicker(data2);
           });
       })
       .catch(function () {
@@ -1412,14 +1417,13 @@ function initEventModalWizard() {
   }
 
   function initCampaignTicker() {
-    var nav = document.querySelector("#ch-chanukah .ch-nav") || document.querySelector(".ch-nav");
-    if (!nav || document.getElementById("ch-campaign-ticker")) return;
+    if (document.getElementById("ch-campaign-ticker")) return;
     var cached = readTickerCache();
     if (cached) {
-      renderCampaignTicker(nav, cached);
+      renderCampaignTicker(cached);
       return;
     }
-    fetchCampaignTicker(nav);
+    fetchCampaignTicker();
     if (typeof window !== "undefined" && window.addEventListener) {
       var resizeTimer = null;
       window.addEventListener("resize", function () {
